@@ -24,3 +24,17 @@
 ## ER-диаграмма
 
 ![ER-диаграмма сущностей](https://github.com/hamzreg/wine-sales/raw/main/schemes/ER-diagram.png)
+
+## Лабораторная работа №2
+
+### Доска настроения
+
+[Доска настроения](https://www.figma.com/file/8EqNxMnvWhspPEhcoUxmJc/Mood-board?node-id=0%3A1&t=sEJINZSS4Z0tkRDx-1)
+
+### Дизайн-язык
+
+[Дизайн-язык](https://www.figma.com/file/5Nk0Qvzs0yEky68rDhkwsI/Design-language?node-id=0%3A1&t=10U2GYOWFzYmKxuu-1)
+
+### Макет приложения 
+
+[Макет](https://www.figma.com/file/l16LXfdSNHSLqTipHjDn4w/Lab_02?node-id=0%3A1&t=6CeEZpa3SBdGZ9hb-1)
