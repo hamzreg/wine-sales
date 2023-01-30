@@ -1,6 +1,6 @@
-﻿using WineSales.Domain.Models;
+﻿using WineSales.Domain.Exceptions;
+using WineSales.Domain.Models;
 using WineSales.Domain.RepositoryInterfaces;
-using WineSales.Domain.Exceptions;
 
 
 namespace WineSales.Domain.Interactors
@@ -15,50 +15,53 @@ namespace WineSales.Domain.Interactors
 
     public class CustomerInteractor : ICustomerInteractor
     {
-        private readonly ICustomerRepository customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
         public CustomerInteractor(ICustomerRepository customerRepository)
         {
-            this.customerRepository = customerRepository;
-        }
-
-        public Customer GetByID(int id)
-        {
-            return customerRepository.GetByID(id);
+            this._customerRepository = customerRepository;
         }
 
         public void CreateCustomer(Customer customer)
         {
-            if (Exist(customer.Phone))
+            if (IsExistByPhone(customer.Phone))
                 throw new CustomerException("This customer already exists.");
 
-            customerRepository.Create(customer);
+            _customerRepository.Create(customer);
+        }
+
+        public Customer GetByID(int id)
+        {
+            return _customerRepository.GetByID(id);
         }
 
         public void UpdateCustomer(Customer customer)
         {
-            if (NotExist(customer.ID))
+            if (!IsExistById(customer.ID))
                 throw new CustomerException("This customer doesn't exist.");
 
-            customerRepository.Update(customer);
+            if (IsExistByPhone(customer.Phone))
+                throw new CustomerException("This phone is already taken.");
+
+            _customerRepository.Update(customer);
         }
 
         public void DeleteCustomer(Customer customer)
         {
-            if (NotExist(customer.ID))
+            if (!IsExistById(customer.ID))
                 throw new CustomerException("This customer doesn't exist.");
 
-            customerRepository.Delete(customer);
+            _customerRepository.Delete(customer);
         }
 
-        private bool Exist(string phone)
+        private bool IsExistByPhone(string phone)
         {
-            return customerRepository.GetByPhone(phone) != null;
+            return _customerRepository.GetByPhone(phone) != null;
         }
 
-        private bool NotExist(int id)
+        private bool IsExistById(int id)
         {
-            return customerRepository.GetByID(id) == null;
+            return _customerRepository.GetByID(id) != null;
         }
     }
 }
