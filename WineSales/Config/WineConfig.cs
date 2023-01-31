@@ -13,12 +13,6 @@
         public const double MinAlcohol = 7.5;
         public const double MaxAlcohol = 22;
 
-        public const int MinAging = 2;
-        public const int MaxAging = 10;
-
         public const int MinNumber = 1;
-
-        public const double MinRating = 0;
-        public const double MaxRating = 10;
     }
 }
