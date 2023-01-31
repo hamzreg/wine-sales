@@ -1,6 +1,6 @@
-﻿using WineSales.Domain.Models;
+﻿using WineSales.Domain.Exceptions;
+using WineSales.Domain.Models;
 using WineSales.Domain.RepositoryInterfaces;
-using WineSales.Domain.Exceptions;
 
 
 namespace WineSales.Domain.Interactors
@@ -18,66 +18,76 @@ namespace WineSales.Domain.Interactors
 
     public class SupplierInteractor : ISupplierInteractor
     {
-        private readonly ISupplierRepository supplierRepository;
+        private readonly ISupplierRepository _supplierRepository;
 
         public SupplierInteractor(ISupplierRepository supplierRepository)
         {
-            this.supplierRepository = supplierRepository;
+            _supplierRepository = supplierRepository;
         }
 
         public void CreateSupplier(Supplier supplier)
         {
-            if (Exist(supplier.Name))
+            if (IsExistByName(supplier.Name))
                 throw new SupplierException("This supplier already exists.");
 
             supplier.License = false;
-            supplierRepository.Create(supplier);
+            _supplierRepository.Create(supplier);
         }
 
         public List<Supplier> GetAll()
         {
-            return supplierRepository.GetAll();
+            return _supplierRepository.GetAll();
         }
 
         public Supplier GetByID(int id)
         {
-            return supplierRepository.GetByID(id);
+            return _supplierRepository.GetByID(id);
         }
 
         public Supplier GetByName(string name)
         {
-            return supplierRepository.GetByName(name);
+            return _supplierRepository.GetByName(name);
         }
 
         public Supplier GetBySupplierWineID(int supplierWineID)
         {
-            return supplierRepository.GetBySupplierWineID(supplierWineID);
+            return _supplierRepository.GetBySupplierWineID(supplierWineID);
         }
 
         public void UpdateSupplier(Supplier supplier)
         {
-            if (NotExist(supplier.ID))
+            if (!IsExistById(supplier.ID))
                 throw new SupplierException("This supplier doesn't exist.");
 
-            supplierRepository.Update(supplier);
+            if (IsNameTaken(supplier.ID, supplier.Name))
+                throw new SupplierException("This name is already taken.");
+
+            _supplierRepository.Update(supplier);
         }
 
         public void DeleteSupplier(Supplier supplier)
         {
-            if (NotExist(supplier.ID))
+            if (!IsExistById(supplier.ID))
                 throw new SupplierException("This supplier doesn't exist.");
 
-            supplierRepository.Delete(supplier);
+            _supplierRepository.Delete(supplier);
         }
 
-        private bool Exist(string name)
+        private bool IsExistByName(string name)
         {
-            return supplierRepository.GetByName(name) != null;
+            return _supplierRepository.GetByName(name) != null;
         }
 
-        private bool NotExist(int id)
+        private bool IsExistById(int id)
         {
-            return supplierRepository.GetByID(id) == null;
+            return _supplierRepository.GetByID(id) != null;
+        }
+
+        private bool IsNameTaken(int id, string name)
+        {
+            return _supplierRepository.GetAll().Any(obj =>
+                                                    obj.ID != id &&
+                                                    obj.Name == name);
         }
     }
 }

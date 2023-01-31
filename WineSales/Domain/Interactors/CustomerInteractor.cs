@@ -19,7 +19,7 @@ namespace WineSales.Domain.Interactors
 
         public CustomerInteractor(ICustomerRepository customerRepository)
         {
-            this._customerRepository = customerRepository;
+            _customerRepository = customerRepository;
         }
 
         public void CreateCustomer(Customer customer)
@@ -40,7 +40,7 @@ namespace WineSales.Domain.Interactors
             if (!IsExistById(customer.ID))
                 throw new CustomerException("This customer doesn't exist.");
 
-            if (IsExistByPhone(customer.Phone))
+            if (IsPhoneTaken(customer.ID, customer.Phone))
                 throw new CustomerException("This phone is already taken.");
 
             _customerRepository.Update(customer);
@@ -54,14 +54,21 @@ namespace WineSales.Domain.Interactors
             _customerRepository.Delete(customer);
         }
 
+        private bool IsExistById(int id)
+        {
+            return _customerRepository.GetByID(id) != null;
+        }
+
         private bool IsExistByPhone(string phone)
         {
             return _customerRepository.GetByPhone(phone) != null;
         }
 
-        private bool IsExistById(int id)
+        private bool IsPhoneTaken(int id, string phone)
         {
-            return _customerRepository.GetByID(id) != null;
+            return _customerRepository.GetAll().Any(obj =>
+                                                    obj.ID != id &&
+                                                    obj.Phone == phone);
         }
     }
 }
