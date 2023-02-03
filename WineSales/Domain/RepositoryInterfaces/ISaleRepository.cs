@@ -9,7 +9,7 @@ namespace WineSales.Domain.RepositoryInterfaces
         List<Sale> GetByProfit(double profit);
         List<Sale> GetByWineNumber(int wineNumber);
         List<Sale> GetByDate(DateOnly date);
-        (List<Wine>, List<DateOnly>, List<double>) GetBySupplierID(int supplierID);
+        (List<Wine>, List<Sale>) GetBySupplierID(int supplierID);
         (List<Wine>, List<string>, List<Sale>) GetByAdmin();
     }
 }

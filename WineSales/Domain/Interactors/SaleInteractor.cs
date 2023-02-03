@@ -1,66 +1,42 @@
-﻿using WineSales.Domain.Models;
-using WineSales.Domain.RepositoryInterfaces;
+﻿using WineSales.Config;
 using WineSales.Domain.Exceptions;
-using WineSales.Config;
+using WineSales.Domain.Models;
+using WineSales.Domain.RepositoryInterfaces;
 
 
 namespace WineSales.Domain.Interactors
 {
     public interface ISaleInteractor
     {
-        void CreateSale(Sale sale, int percent);
-        (List<Wine>, List<DateOnly>, List<double>) GetBySupplierID(int supplierID);
+        void CreateSale(Sale sale);
+        (List<Wine>, List<Sale>) GetBySupplierID(int supplierID);
         (List<Wine>, List<string>, List<Sale>) GetByAdmin();
-        void DeleteSale(Sale sale);
     }
 
     public class SaleInteractor : ISaleInteractor
     {
-        private readonly ISaleRepository saleRepository;
+        private readonly ISaleRepository _saleRepository;
         public SaleInteractor(ISaleRepository saleRepository)
         {
-            this.saleRepository = saleRepository;
+            _saleRepository = saleRepository;
         }
 
-        public void CreateSale(Sale sale, int percent)
+        public void CreateSale(Sale sale)
         {
-            if (percent < SaleConfig.MinPercent)
-                throw new SaleException("Invalid input of percent.");
-            else if (sale.PurchasePrice < SaleConfig.MinPurchasePrice)
-                throw new SaleException("Invalid input of purchase price.");
-            else if (sale.WineNumber < SaleConfig.MinWineNumer)
+            if (sale.WineNumber < WineConfig.MinNumber)
                 throw new SaleException("Invalid input of wine number.");
-            else if (Exist(sale))
-                throw new SaleException("This sale already exists.");
 
-            sale.SellingPrice = sale.PurchasePrice * (1 + percent / 100.0);
-
-            saleRepository.Create(sale);
+            _saleRepository.Create(sale);
         }
 
-
-        public (List<Wine>, List<DateOnly>, List<double>) GetBySupplierID(int supplierID)
+        public (List<Wine>, List<Sale>) GetBySupplierID(int supplierID)
         {
-            return saleRepository.GetBySupplierID(supplierID);
+            return _saleRepository.GetBySupplierID(supplierID);
         }
 
         public (List<Wine>, List<string>, List<Sale>) GetByAdmin()
         {
-            return saleRepository.GetByAdmin();
-        }
-
-        public void DeleteSale(Sale sale)
-        {
-            if (!Exist(sale))
-                throw new SaleException("This sale doesn't exist.");
-
-            saleRepository.Delete(sale);
-        }
-
-        private bool Exist(Sale sale)
-        {
-            // TODO
-            return true;
+            return _saleRepository.GetByAdmin();
         }
     }
 }
