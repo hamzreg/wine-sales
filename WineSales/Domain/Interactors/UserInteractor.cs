@@ -1,7 +1,7 @@
-﻿using WineSales.Domain.Models;
-using WineSales.Domain.RepositoryInterfaces;
+﻿using WineSales.Config;
 using WineSales.Domain.Exceptions;
-using WineSales.Config;
+using WineSales.Domain.Models;
+using WineSales.Domain.RepositoryInterfaces;
 
 
 namespace WineSales.Domain.Interactors
@@ -9,130 +9,125 @@ namespace WineSales.Domain.Interactors
     public interface IUserInteractor
     {
         void CreateUser(User user);
-        void UpdateUser(User user);
-        void DeleteUser(User user);
-        void Register(LoginDetails info, string role, int roleID);
-        void SignIn(LoginDetails info);
         List<User> GetAll();
         int GetNowUserID();
         int GetNowUserRoleID();
-        User GetNowUser();
-        void SetNowUser(User user);
+        void UpdateUser(User user);
+        void DeleteUser(User user);
+        void RegisterUser(LoginDetails loginDetails, string role, int roleID);
+        void AuthorizeUser(LoginDetails loginDetails);
     }
 
     public class UserInteractor : IUserInteractor
     {
-        private readonly IUserRepository userRepository;
-        private User nowUser;
+        private readonly IUserRepository _userRepository;
+        private User _nowUser;
 
         public UserInteractor(IUserRepository userRepository)
         {
-            this.userRepository = userRepository;
-            nowUser = new User(UserConfig.Default,
-                               UserConfig.Default,
-                               UserConfig.Roles[3]);
+            _userRepository = userRepository;
+            _nowUser = new User(UserConfig.Default,
+                                UserConfig.Default,
+                                UserConfig.Roles["guest"]);
         }
 
-        public List<User> GetAll()
+        public User NowUser
         {
-            return userRepository.GetAll();
+            get => _nowUser;
+            set => _nowUser = value;
         }
 
         public int GetNowUserID()
         {
-            return nowUser.ID;
+            return _nowUser.ID;
         }
 
         public int GetNowUserRoleID()
         {
-            return nowUser.RoleID;
-        }
-
-        public User GetNowUser()
-        {
-            return nowUser;
-        }
-
-        public void SetNowUser(User user)
-        {
-            nowUser = user;
+            return _nowUser.RoleID;
         }
 
         public void CreateUser(User user)
         {
-            if (Exist(user.Login))
+            if (IsExistByLogin(user.Login))
                 throw new UserException("This user already exists.");
 
-            if (!CheckPassword(user.Password))
-                throw new UserException("Invalid input of password.");
+            _userRepository.Create(user);
+        }
 
-            userRepository.Create(user);
+        public List<User> GetAll()
+        {
+            return _userRepository.GetAll();
         }
 
         public void UpdateUser(User user)
         {
-            if (NotExist(user.ID))
+            if (!IsExistById(user.ID))
                 throw new UserException("This user doesn't exist.");
 
-            if (user.Login != null && Exist(user.Login))
+            if (IsLoginTaken(user.ID, user.Login))
                 throw new UserException("This login is already in use.");
 
-            if (user.Password != null && !CheckPassword(user.Password))
+            if (!IsPasswordCorrect(user.Password))
                 throw new UserException("Invalid input of password.");
 
-            userRepository.Update(user);
+            _userRepository.Update(user);
         }
 
         public void DeleteUser(User user)
         {
-            if (NotExist(user.ID))
+            if (!IsExistById(user.ID))
                 throw new UserException("This user doesn't exist.");
 
-            userRepository.Delete(user);
+            _userRepository.Delete(user);
         }
 
-        public void Register(LoginDetails info, string role, int roleID)
+        public void RegisterUser(LoginDetails loginDetails, string role, int roleID)
         {
-            if (Exist(info.Login))
+            if (IsExistByLogin(loginDetails.Login))
                 throw new UserException("This user already exists.");
 
-            if (!CheckPassword(info.Password))
+            if (!IsPasswordCorrect(loginDetails.Password))
                 throw new UserException("Invalid input of password.");
 
-            var newUser = new User(info.Login, info.Password, role);
+            var newUser = new User(loginDetails.Login, loginDetails.Password, role);
             newUser.RoleID = roleID;
-            userRepository.Register(newUser);
+            _userRepository.Register(newUser);
         }
 
-        public void SignIn(LoginDetails info)
+        public void AuthorizeUser(LoginDetails loginDetails)
         {
-            if (!CheckPassword(info.Password))
-                throw new UserException("Invalid input of password.");
-
-            var authorizedUser = userRepository.GetByLogin(info.Login);
+            var authorizedUser = _userRepository.GetByLogin(loginDetails.Login);
 
             if (authorizedUser == null)
                 throw new UserException("This user doesn't exist.");
 
-            if (info.Password != authorizedUser.Password)
+            if (loginDetails.Password != authorizedUser.Password)
                 throw new UserException("Invalid password.");
 
-            SetNowUser(authorizedUser);
+            NowUser = authorizedUser;
         }
 
-        private bool Exist(string login)
+        private bool IsExistByLogin(string login)
         {
-            return userRepository.GetByLogin(login) != null;
+            return _userRepository.GetByLogin(login) != null;
         }
 
-        private bool NotExist(int id)
+        private bool IsExistById(int id)
         {
-            return userRepository.GetByID(id) == null;
+            return _userRepository.GetByID(id) != null;
         }
 
-        private bool CheckPassword(string password)
+        private bool IsPasswordCorrect(string password)
         {
             return UserConfig.MinPasswordLen <= password.Length;
+        }
+
+        private bool IsLoginTaken(int id, string login)
+        {
+            return _userRepository.GetAll().Any(obj =>
+                                                obj.ID != id &&
+                                                obj.Login == login);
         }
     }
 }
