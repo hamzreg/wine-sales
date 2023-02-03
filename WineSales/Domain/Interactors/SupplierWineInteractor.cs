@@ -1,7 +1,7 @@
-﻿using WineSales.Domain.Models;
-using WineSales.Domain.RepositoryInterfaces;
+﻿using WineSales.Config;
 using WineSales.Domain.Exceptions;
-using WineSales.Config;
+using WineSales.Domain.Models;
+using WineSales.Domain.RepositoryInterfaces;
 
 
 namespace WineSales.Domain.Interactors
@@ -12,92 +12,78 @@ namespace WineSales.Domain.Interactors
         SupplierWine GetByID(int id);
         (List<Wine>, List<SupplierWine>) GetBySupplierID(int supplierID);
         (List<int>, List<Wine>, List<double>) GetAllWine();
-        (List<Wine>, List<string>, List<double>) GetByAdmin();
-        (List<Wine>, List<double>) GetRating();
         void UpdateSupplierWine(SupplierWine supplierWine);
         void DeleteSupplierWine(SupplierWine supplierWine);
     }
     public class SupplierWineInteractor : ISupplierWineInteractor
     {
-        private ISupplierWineRepository supplierWineRepository;
+        private ISupplierWineRepository _supplierWineRepository;
 
         public SupplierWineInteractor(ISupplierWineRepository supplierWineRepository)
         {
-            this.supplierWineRepository = supplierWineRepository;
+            _supplierWineRepository = supplierWineRepository;
         }
 
         public void CreateSupplierWine(SupplierWine supplierWine)
         {
-            if (!CheckSupplierWine(supplierWine))
+            if (!IsSupplierWineCorrect(supplierWine))
                 throw new SupplierWineException("Invalid input of supplierWine.");
-            else if (Exist(supplierWine))
+            else if (IsSupplierWine(supplierWine.SupplierID, supplierWine.WineID))
                 throw new SupplierWineException("This supplier already has this wine.");
 
-            supplierWineRepository.Create(supplierWine);
+            _supplierWineRepository.Create(supplierWine);
         }
 
         public SupplierWine GetByID(int id)
         {
-            return supplierWineRepository.GetByID(id);
+            return _supplierWineRepository.GetByID(id);
         }
 
         public (List<Wine>, List<SupplierWine>) GetBySupplierID(int supplierID)
         {
-            return supplierWineRepository.GetBySupplierID(supplierID);
+            return _supplierWineRepository.GetBySupplierID(supplierID);
         }
 
         public (List<int>, List<Wine>, List<double>) GetAllWine()
         {
-            return supplierWineRepository.GetAllWine();
-        }
-
-        public (List<Wine>, List<string>, List<double>) GetByAdmin()
-        {
-            return supplierWineRepository.GetByAdmin();
-        }
-
-        public (List<Wine>, List<double>) GetRating()
-        {
-            return supplierWineRepository.GetRating();
+            return _supplierWineRepository.GetAllWine();
         }
 
         public void UpdateSupplierWine(SupplierWine supplierWine)
         {
-            if (!CheckSupplierWine(supplierWine))
+            if (!IsSupplierWineCorrect(supplierWine))
                 throw new SupplierWineException("Invalid input of supplierWine.");
-            else if (NotExist(supplierWine.ID))
+            else if (!IsExistById(supplierWine.ID))
                 throw new SupplierWineException("This supplier doesn't have this wine.");
 
-            supplierWineRepository.Update(supplierWine);
+            _supplierWineRepository.Update(supplierWine);
         }
 
         public void DeleteSupplierWine(SupplierWine supplierWine)
         {
-            if (!CheckSupplierWine(supplierWine))
-                throw new SupplierWineException("Invalid input of supplierWine.");
-            else if (NotExist(supplierWine.ID))
+            if (!IsExistById(supplierWine.ID))
                 throw new SupplierWineException("This supplier doesn't have this wine.");
 
-            supplierWineRepository.Delete(supplierWine);
+            _supplierWineRepository.Delete(supplierWine);
         }
 
-        private bool Exist(SupplierWine supplierWine)
+        private bool IsSupplierWine(int supplierID, int wineID)
         {
-            return supplierWineRepository.GetAll().Any(obj =>
-                                                       obj.SupplierID == supplierWine.SupplierID &&
-                                                       obj.WineID == supplierWine.WineID);
+            return _supplierWineRepository.GetAll().Any(obj =>
+                                                       obj.SupplierID == supplierID &&
+                                                       obj.WineID == wineID);
         }
 
-        private bool NotExist(int id)
+        private bool IsExistById(int id)
         {
-            return supplierWineRepository.GetByID(id) == null;
+            return _supplierWineRepository.GetByID(id) != null;
         }
 
-        private bool CheckSupplierWine(SupplierWine supplierWine)
+        private bool IsSupplierWineCorrect(SupplierWine supplierWine)
         {
-            if (supplierWine.Percent < SaleConfig.MinPercent)
+            if (supplierWine.Percent < WineConfig.MinPercent)
                 return false;
-            else if (supplierWine.Price < SaleConfig.MinPurchasePrice)
+            else if (supplierWine.Price < WineConfig.MinPurchasePrice)
                 return false;
             return true;
         }

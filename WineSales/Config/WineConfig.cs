@@ -14,5 +14,8 @@
         public const double MaxAlcohol = 22;
 
         public const int MinNumber = 1;
+
+        public const double MinPurchasePrice = 118;
+        public const int MinPercent = 43;
     }
 }
