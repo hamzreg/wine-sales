@@ -14,12 +14,14 @@ namespace WineSales.Data.Repositories
             _context = context;
         }
 
-        public void Create(Supplier supplier)
+        public Supplier Create(Supplier supplier)
         {
             try
             {
                 _context.Suppliers.Add(supplier);
                 _context.SaveChanges();
+
+                return GetByID(supplier.ID);
             }
             catch
             {
@@ -60,12 +62,14 @@ namespace WineSales.Data.Repositories
             return GetByID(supplierWine.SupplierID);
         }
 
-        public void Update(Supplier supplier)
+        public Supplier Update(Supplier supplier)
         {
             try
             {
                 _context.Suppliers.Update(supplier);
                 _context.SaveChanges();
+
+                return GetByID(supplier.ID);
             }
             catch
             {
@@ -73,17 +77,21 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public void Delete(Supplier supplier)
+        public Supplier Delete(Supplier supplier)
         {
-            var foundSupplier = GetByID(supplier.ID);
-
-            if (foundSupplier == null)
-                throw new SupplierException("Failed to get supplier by id.");
-
             try
             {
-                _context.Suppliers.Remove(foundSupplier);
-                _context.SaveChanges();
+                var foundSupplier = GetByID(supplier.ID);
+
+                if (foundSupplier == null)
+                    return null;
+                else
+                {
+                    _context.Suppliers.Remove(foundSupplier);
+                    _context.SaveChanges();
+
+                    return foundSupplier;
+                }
             }
             catch
             {

@@ -2,10 +2,10 @@
 {
     public interface ICrudRepository<T>
     {
-        void Create(T entity);
+        T Create(T entity);
         List<T> GetAll();
         T GetByID(int ID);
-        void Update(T entity);
-        void Delete(T entity);
+        T Update(T entity);
+        T Delete(T entity);
     }
 }

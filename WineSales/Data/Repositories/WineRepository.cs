@@ -14,12 +14,14 @@ namespace WineSales.Data.Repositories
             _context = context;
         }
 
-        public void Create(Wine wine)
+        public Wine Create(Wine wine)
         {
             try
             {
                 _context.Wines.Add(wine);
                 _context.SaveChanges();
+
+                return GetByID(wine.ID);
             }
             catch
             {
@@ -83,12 +85,14 @@ namespace WineSales.Data.Repositories
                 .ToList();
         }
 
-        public void Update(Wine wine)
+        public Wine Update(Wine wine)
         {
             try
             {
                 _context.Wines.Update(wine);
                 _context.SaveChanges();
+
+                return GetByID(wine.ID);
             }
             catch
             {
@@ -134,17 +138,21 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public void Delete(Wine wine)
+        public Wine Delete(Wine wine)
         {
-            var foundWine = GetByID(wine.ID);
-
-            if (foundWine == null)
-                throw new WineException("Failed to get wine by id.");
-
             try
             {
-                _context.Wines.Remove(foundWine);
-                _context.SaveChanges();
+                var foundWine = GetByID(wine.ID);
+
+                if (foundWine == null)
+                    return null;
+                else
+                {
+                    _context.Wines.Remove(foundWine);
+                    _context.SaveChanges();
+
+                    return foundWine;
+                }
             }
             catch
             {

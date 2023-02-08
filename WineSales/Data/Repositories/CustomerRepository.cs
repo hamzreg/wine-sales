@@ -14,12 +14,14 @@ namespace WineSales.Data.Repositories
             _context = context;
         }
 
-        public void Create(Customer customer)
+        public Customer Create(Customer customer)
         {
             try
             {
                 _context.Customers.Add(customer);
                 _context.SaveChanges();
+
+                return GetByID(customer.ID);
             }
             catch
             {
@@ -54,12 +56,14 @@ namespace WineSales.Data.Repositories
             return _context.Customers.FirstOrDefault(customer => customer.Phone == phone);
         }
 
-        public void Update(Customer customer)
+        public Customer Update(Customer customer)
         {
             try
             {
                 _context.Customers.Update(customer);
                 _context.SaveChanges();
+
+                return GetByID(customer.ID);
             }
             catch
             {
@@ -67,17 +71,21 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public void Delete(Customer customer)
+        public Customer Delete(Customer customer)
         {
-            var foundCustomer = GetByID(customer.ID);
-
-            if (foundCustomer == null)
-                throw new CustomerException("Failed to get customer by id.");
-
             try
             {
-                _context.Customers.Remove(foundCustomer);
-                _context.SaveChanges();
+                var foundCustomer = GetByID(customer.ID);
+
+                if (foundCustomer == null)
+                    return null;
+                else
+                {
+                    _context.Customers.Remove(foundCustomer);
+                    _context.SaveChanges();
+
+                    return foundCustomer;
+                }
             }
             catch
             {

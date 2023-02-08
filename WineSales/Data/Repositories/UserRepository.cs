@@ -14,12 +14,14 @@ namespace WineSales.Data.Repositories
             _context = context;
         }
 
-        public void Create(User user)
+        public User Create(User user)
         {
             try
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
+
+                return GetByID(user.ID);
             }
             catch
             {
@@ -61,12 +63,14 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public void Update(User user)
+        public User Update(User user)
         {
             try
             {
                 _context.Users.Update(user);
                 _context.SaveChanges();
+
+                return GetByID(user.ID);
             }
             catch
             {
@@ -74,17 +78,21 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public void Delete(User user)
+        public User Delete(User user)
         {
-            var foundUser = GetByID(user.ID);
-
-            if (foundUser == null)
-                throw new UserException("Failed to get user by id.");
-
             try
             {
-                _context.Users.Remove(foundUser);
-                _context.SaveChanges();
+                var foundUser = GetByID(user.ID);
+
+                if (foundUser == null)
+                    return null;
+                else
+                {
+                    _context.Users.Remove(foundUser);
+                    _context.SaveChanges();
+
+                    return foundUser;
+                }
             }
             catch
             {
