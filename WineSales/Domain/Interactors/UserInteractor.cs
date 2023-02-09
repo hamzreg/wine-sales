@@ -1,6 +1,9 @@
-﻿using WineSales.Config;
+﻿using AutoMapper;
+
+using WineSales.Config;
 using WineSales.Domain.Exceptions;
 using WineSales.Domain.Models;
+using WineSales.Domain.ModelsBL;
 using WineSales.Domain.RepositoryInterfaces;
 
 
@@ -8,30 +11,34 @@ namespace WineSales.Domain.Interactors
 {
     public interface IUserInteractor
     {
-        void CreateUser(User user);
-        List<User> GetAll();
+        UserBL CreateUser(UserBL user);
+        List<UserBL> GetAll();
         int GetNowUserID();
         int GetNowUserRoleID();
-        void UpdateUser(User user);
-        void DeleteUser(User user);
-        void RegisterUser(LoginDetails loginDetails, string role, int roleID);
-        void AuthorizeUser(LoginDetails loginDetails);
+        UserBL UpdateUser(UserBL user);
+        UserBL DeleteUser(UserBL user);
+        UserBL RegisterUser(LoginDetailsBL loginDetails, string role, int roleID);
+        UserBL AuthorizeUser(LoginDetailsBL loginDetails);
     }
 
     public class UserInteractor : IUserInteractor
     {
         private readonly IUserRepository _userRepository;
-        private User _nowUser;
+        private readonly IMapper _mapper;
+        private UserBL _nowUser;
 
-        public UserInteractor(IUserRepository userRepository)
+        public UserInteractor(IUserRepository userRepository,
+                              IMapper mapper)
         {
             _userRepository = userRepository;
-            _nowUser = new User(UserConfig.Default,
-                                UserConfig.Default,
-                                UserConfig.Roles["guest"]);
+            _mapper = mapper;
+
+            _nowUser = new UserBL(UserConfig.Default,
+                                  UserConfig.Default,
+                                  UserConfig.Roles["guest"]);
         }
 
-        public User NowUser
+        public UserBL NowUser
         {
             get => _nowUser;
             set => _nowUser = value;
@@ -47,20 +54,21 @@ namespace WineSales.Domain.Interactors
             return _nowUser.RoleID;
         }
 
-        public void CreateUser(User user)
+        public UserBL CreateUser(UserBL user)
         {
             if (IsExistByLogin(user.Login))
                 throw new UserException("This user already exists.");
 
-            _userRepository.Create(user);
+            var transmittedUser = _mapper.Map<User>(user);
+            return _mapper.Map<UserBL>(_userRepository.Create(transmittedUser));
         }
 
-        public List<User> GetAll()
+        public List<UserBL> GetAll()
         {
-            return _userRepository.GetAll();
+            return _mapper.Map<List<UserBL>>(_userRepository.GetAll());
         }
 
-        public void UpdateUser(User user)
+        public UserBL UpdateUser(UserBL user)
         {
             if (!IsExistById(user.ID))
                 throw new UserException("This user doesn't exist.");
@@ -71,18 +79,20 @@ namespace WineSales.Domain.Interactors
             if (!IsPasswordCorrect(user.Password))
                 throw new UserException("Invalid input of password.");
 
-            _userRepository.Update(user);
+            var transmittedUser = _mapper.Map<User>(user);
+            return _mapper.Map<UserBL>(_userRepository.Update(transmittedUser));
         }
 
-        public void DeleteUser(User user)
+        public UserBL DeleteUser(UserBL user)
         {
             if (!IsExistById(user.ID))
                 throw new UserException("This user doesn't exist.");
 
-            _userRepository.Delete(user);
+            var transmittedUser = _mapper.Map<User>(user);
+            return _mapper.Map<UserBL>(_userRepository.Delete(transmittedUser));
         }
 
-        public void RegisterUser(LoginDetails loginDetails, string role, int roleID)
+        public UserBL RegisterUser(LoginDetailsBL loginDetails, string role, int roleID)
         {
             if (IsExistByLogin(loginDetails.Login))
                 throw new UserException("This user already exists.");
@@ -92,10 +102,10 @@ namespace WineSales.Domain.Interactors
 
             var newUser = new User(loginDetails.Login, loginDetails.Password, role);
             newUser.RoleID = roleID;
-            _userRepository.Register(newUser);
+            return _mapper.Map<UserBL>(_userRepository.Register(newUser));
         }
 
-        public void AuthorizeUser(LoginDetails loginDetails)
+        public UserBL AuthorizeUser(LoginDetailsBL loginDetails)
         {
             var authorizedUser = _userRepository.GetByLogin(loginDetails.Login);
 
@@ -105,7 +115,9 @@ namespace WineSales.Domain.Interactors
             if (loginDetails.Password != authorizedUser.Password)
                 throw new UserException("Invalid password.");
 
-            NowUser = authorizedUser;
+            NowUser = _mapper.Map<UserBL>(authorizedUser);
+
+            return _mapper.Map<UserBL>(authorizedUser);
         }
 
         private bool IsExistByLogin(string login)

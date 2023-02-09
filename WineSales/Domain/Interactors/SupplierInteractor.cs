@@ -1,5 +1,8 @@
-﻿using WineSales.Domain.Exceptions;
+﻿using AutoMapper;
+
+using WineSales.Domain.Exceptions;
 using WineSales.Domain.Models;
+using WineSales.Domain.ModelsBL;
 using WineSales.Domain.RepositoryInterfaces;
 
 
@@ -7,54 +10,59 @@ namespace WineSales.Domain.Interactors
 {
     public interface ISupplierInteractor
     {
-        void CreateSupplier(Supplier supplier);
-        List<Supplier> GetAll();
-        Supplier GetByID(int id);
-        Supplier GetByName(string name);
-        Supplier GetBySupplierWineID(int supplierWineID);
-        void UpdateSupplier(Supplier supplier);
-        void DeleteSupplier(Supplier supplier);
+        SupplierBL CreateSupplier(SupplierBL supplier);
+        List<SupplierBL> GetAll();
+        SupplierBL GetByID(int id);
+        SupplierBL GetByName(string name);
+        SupplierBL GetBySupplierWineID(int supplierWineID);
+        SupplierBL UpdateSupplier(SupplierBL supplier);
+        SupplierBL DeleteSupplier(SupplierBL supplier);
     }
 
     public class SupplierInteractor : ISupplierInteractor
     {
         private readonly ISupplierRepository _supplierRepository;
+        private readonly IMapper _mapper;
 
-        public SupplierInteractor(ISupplierRepository supplierRepository)
+        public SupplierInteractor(ISupplierRepository supplierRepository,
+                                  IMapper mapper)
         {
             _supplierRepository = supplierRepository;
+            _mapper = mapper;
         }
 
-        public void CreateSupplier(Supplier supplier)
+        public SupplierBL CreateSupplier(SupplierBL supplier)
         {
             if (IsExistByName(supplier.Name))
                 throw new SupplierException("This supplier already exists.");
 
             supplier.License = false;
-            _supplierRepository.Create(supplier);
+
+            var transmittedSupplier = _mapper.Map<Supplier>(supplier);
+            return _mapper.Map<SupplierBL>(_supplierRepository.Create(transmittedSupplier));
         }
 
-        public List<Supplier> GetAll()
+        public List<SupplierBL> GetAll()
         {
-            return _supplierRepository.GetAll();
+            return _mapper.Map<List<SupplierBL>>(_supplierRepository.GetAll());
         }
 
-        public Supplier GetByID(int id)
+        public SupplierBL GetByID(int id)
         {
-            return _supplierRepository.GetByID(id);
+            return _mapper.Map<SupplierBL>(_supplierRepository.GetByID(id));
         }
 
-        public Supplier GetByName(string name)
+        public SupplierBL GetByName(string name)
         {
-            return _supplierRepository.GetByName(name);
+            return _mapper.Map<SupplierBL>(_supplierRepository.GetByName(name));
         }
 
-        public Supplier GetBySupplierWineID(int supplierWineID)
+        public SupplierBL GetBySupplierWineID(int supplierWineID)
         {
-            return _supplierRepository.GetBySupplierWineID(supplierWineID);
+            return _mapper.Map<SupplierBL>(_supplierRepository.GetBySupplierWineID(supplierWineID));
         }
 
-        public void UpdateSupplier(Supplier supplier)
+        public SupplierBL UpdateSupplier(SupplierBL supplier)
         {
             if (!IsExistById(supplier.ID))
                 throw new SupplierException("This supplier doesn't exist.");
@@ -62,15 +70,17 @@ namespace WineSales.Domain.Interactors
             if (IsNameTaken(supplier.ID, supplier.Name))
                 throw new SupplierException("This name is already taken.");
 
-            _supplierRepository.Update(supplier);
+            var transmittedSupplier = _mapper.Map<Supplier>(supplier);
+            return _mapper.Map<SupplierBL>(_supplierRepository.Update(transmittedSupplier));
         }
 
-        public void DeleteSupplier(Supplier supplier)
+        public SupplierBL DeleteSupplier(SupplierBL supplier)
         {
             if (!IsExistById(supplier.ID))
                 throw new SupplierException("This supplier doesn't exist.");
 
-            _supplierRepository.Delete(supplier);
+            var transmittedSupplier = _mapper.Map<Supplier>(supplier);
+            return _mapper.Map<SupplierBL>(_supplierRepository.Delete(transmittedSupplier));
         }
 
         private bool IsExistByName(string name)

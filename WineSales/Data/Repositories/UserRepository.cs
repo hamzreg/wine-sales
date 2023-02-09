@@ -50,12 +50,14 @@ namespace WineSales.Data.Repositories
                 .ToList();
         }
 
-        public void Register(User user)
+        public User Register(User user)
         {
             try
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
+
+                return GetByID(user.ID);
             }
             catch
             {

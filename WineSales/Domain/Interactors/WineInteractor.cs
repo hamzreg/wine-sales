@@ -1,6 +1,9 @@
-﻿using WineSales.Config;
+﻿using AutoMapper;
+
+using WineSales.Config;
 using WineSales.Domain.Exceptions;
 using WineSales.Domain.Models;
+using WineSales.Domain.ModelsBL;
 using WineSales.Domain.RepositoryInterfaces;
 
 
@@ -8,21 +11,24 @@ namespace WineSales.Domain.Interactors
 {
     public interface IWineInteractor
     {
-        Wine GetByAllFields(Wine wine);
-        void CreateWine(Wine wine);
-        void DeleteWine(Wine wine);
+        WineBL GetByAllFields(WineBL wine);
+        WineBL CreateWine(WineBL wine);
+        WineBL DeleteWine(WineBL wine);
     }
 
     public class WineInteractor : IWineInteractor
     {
         private readonly IWineRepository _wineRepository;
+        private readonly IMapper _mapper;
 
-        public WineInteractor(IWineRepository wineRepository)
+        public WineInteractor(IWineRepository wineRepository,
+                              IMapper mapper)
         {
             _wineRepository = wineRepository;
+            _mapper = mapper;
         }
 
-        public void CreateWine(Wine wine)
+        public WineBL CreateWine(WineBL wine)
         {
             if (!IsWineCorrect(wine))
                 throw new WineException("Invalid input of wine.");
@@ -32,19 +38,21 @@ namespace WineSales.Domain.Interactors
             if (existingWine != null)
             {
                 _wineRepository.IncreaseNumber(existingWine.ID);
-                return;
+                return existingWine;
             }
 
             wine.Number = WineConfig.MinNumber;
-            _wineRepository.Create(wine);
+            var transmittedWine = _mapper.Map<Wine>(wine);
+            return _mapper.Map<WineBL>(_wineRepository.Create(transmittedWine));
         }
 
-        public Wine GetByAllFields(Wine wine)
+        public WineBL GetByAllFields(WineBL wine)
         {
-            return _wineRepository.GetByAllFields(wine);
+            var transmittedWine = _mapper.Map<Wine>(wine);
+            return _mapper.Map<WineBL>(_wineRepository.GetByAllFields(transmittedWine));
         }
 
-        public void DeleteWine(Wine wine)
+        public WineBL DeleteWine(WineBL wine)
         {
             if (!IsExistById(wine.ID))
                 throw new WineException("This wine doesn't exist.");
@@ -52,10 +60,11 @@ namespace WineSales.Domain.Interactors
             if (wine.Number > WineConfig.MinNumber)
             {
                 _wineRepository.DecreaseNumber(wine.ID);
-                return;
+                return wine;
             }
 
-            _wineRepository.Delete(wine);
+            var transmittedWine = _mapper.Map<Wine>(wine);
+            return _mapper.Map<WineBL>(_wineRepository.Delete(transmittedWine));
         }
 
         private bool IsExistById(int id)
@@ -63,7 +72,7 @@ namespace WineSales.Domain.Interactors
             return _wineRepository.GetByID(id) != null;
         }
 
-        private bool IsWineCorrect(Wine wine)
+        private bool IsWineCorrect(WineBL wine)
         {
             if (!WineConfig.Colors.Contains(wine.Color))
                 return false;

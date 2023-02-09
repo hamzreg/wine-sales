@@ -1,13 +1,11 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 using WineSales.Data;
 using WineSales.Data.Repositories;
 using WineSales.Domain.Interactors;
 using WineSales.Domain.RepositoryInterfaces;
-
-using AutoMapper;
 using WineSales.Domain.Utils;
-
 
 
 void ConfigureServices(IServiceCollection services)

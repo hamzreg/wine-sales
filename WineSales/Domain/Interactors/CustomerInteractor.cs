@@ -1,5 +1,8 @@
-﻿using WineSales.Domain.Exceptions;
+﻿using AutoMapper;
+
+using WineSales.Domain.Exceptions;
 using WineSales.Domain.Models;
+using WineSales.Domain.ModelsBL;
 using WineSales.Domain.RepositoryInterfaces;
 
 
@@ -7,35 +10,39 @@ namespace WineSales.Domain.Interactors
 {
     public interface ICustomerInteractor
     {
-        void CreateCustomer(Customer customer);
-        Customer GetByID(int id);
-        void UpdateCustomer(Customer customer);
-        void DeleteCustomer(Customer customer);
+        CustomerBL CreateCustomer(CustomerBL customer);
+        CustomerBL GetByID(int id);
+        CustomerBL UpdateCustomer(CustomerBL customer);
+        CustomerBL DeleteCustomer(CustomerBL customer);
     }
 
     public class CustomerInteractor : ICustomerInteractor
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly IMapper _mapper;
 
-        public CustomerInteractor(ICustomerRepository customerRepository)
+        public CustomerInteractor(ICustomerRepository customerRepository,
+                                  IMapper mapper)
         {
             _customerRepository = customerRepository;
+            _mapper = mapper;
         }
 
-        public void CreateCustomer(Customer customer)
+        public CustomerBL CreateCustomer(CustomerBL customer)
         {
             if (IsExistByPhone(customer.Phone))
                 throw new CustomerException("This customer already exists.");
 
-            _customerRepository.Create(customer);
+            var transmittedCustomer = _mapper.Map<Customer>(customer);
+            return _mapper.Map<CustomerBL>(_customerRepository.Create(transmittedCustomer));
         }
 
-        public Customer GetByID(int id)
+        public CustomerBL GetByID(int id)
         {
-            return _customerRepository.GetByID(id);
+            return _mapper.Map<CustomerBL>(_customerRepository.GetByID(id));
         }
 
-        public void UpdateCustomer(Customer customer)
+        public CustomerBL UpdateCustomer(CustomerBL customer)
         {
             if (!IsExistById(customer.ID))
                 throw new CustomerException("This customer doesn't exist.");
@@ -43,15 +50,17 @@ namespace WineSales.Domain.Interactors
             if (IsPhoneTaken(customer.ID, customer.Phone))
                 throw new CustomerException("This phone is already taken.");
 
-            _customerRepository.Update(customer);
+            var transmittedCustomer = _mapper.Map<Customer>(customer);
+            return _mapper.Map<CustomerBL>(_customerRepository.Update(transmittedCustomer));
         }
 
-        public void DeleteCustomer(Customer customer)
+        public CustomerBL DeleteCustomer(CustomerBL customer)
         {
             if (!IsExistById(customer.ID))
                 throw new CustomerException("This customer doesn't exist.");
 
-            _customerRepository.Delete(customer);
+            var transmittedCustomer = _mapper.Map<Customer>(customer);
+            return _mapper.Map<CustomerBL>(_customerRepository.Delete(transmittedCustomer));
         }
 
         private bool IsExistById(int id)

@@ -1,6 +1,9 @@
-﻿using WineSales.Config;
+﻿using AutoMapper;
+
+using WineSales.Config;
 using WineSales.Domain.Exceptions;
 using WineSales.Domain.Models;
+using WineSales.Domain.ModelsBL;
 using WineSales.Domain.RepositoryInterfaces;
 
 
@@ -8,35 +11,40 @@ namespace WineSales.Domain.Interactors
 {
     public interface ISaleInteractor
     {
-        void CreateSale(Sale sale);
-        (List<Wine>, List<Sale>) GetBySupplierID(int supplierID);
-        (List<Wine>, List<string>, List<Sale>) GetByAdmin();
+        SaleBL CreateSale(SaleBL sale);
+        (List<WineBL>, List<SaleBL>) GetBySupplierID(int supplierID);
+        (List<WineBL>, List<string>, List<SaleBL>) GetByAdmin();
     }
 
     public class SaleInteractor : ISaleInteractor
     {
         private readonly ISaleRepository _saleRepository;
-        public SaleInteractor(ISaleRepository saleRepository)
+        private readonly IMapper _mapper;
+
+        public SaleInteractor(ISaleRepository saleRepository,
+                              IMapper mapper)
         {
             _saleRepository = saleRepository;
+            _mapper = mapper;
         }
 
-        public void CreateSale(Sale sale)
+        public SaleBL CreateSale(SaleBL sale)
         {
             if (sale.WineNumber < WineConfig.MinNumber)
                 throw new SaleException("Invalid input of wine number.");
 
-            _saleRepository.Create(sale);
+            var transmittedSale = _mapper.Map<Sale>(sale);
+            return _mapper.Map<SaleBL>(_saleRepository.Create(transmittedSale));
         }
 
-        public (List<Wine>, List<Sale>) GetBySupplierID(int supplierID)
+        public (List<WineBL>, List<SaleBL>) GetBySupplierID(int supplierID)
         {
-            return _saleRepository.GetBySupplierID(supplierID);
+            return _mapper.Map<(List<WineBL>, List<SaleBL>)>(_saleRepository.GetBySupplierID(supplierID));
         }
 
-        public (List<Wine>, List<string>, List<Sale>) GetByAdmin()
+        public (List<WineBL>, List<string>, List<SaleBL>) GetByAdmin()
         {
-            return _saleRepository.GetByAdmin();
+            return _mapper.Map<(List<WineBL>, List<string>, List<SaleBL>)>(_saleRepository.GetByAdmin());
         }
     }
 }
