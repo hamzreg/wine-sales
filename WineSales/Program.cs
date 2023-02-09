@@ -5,6 +5,10 @@ using WineSales.Data.Repositories;
 using WineSales.Domain.Interactors;
 using WineSales.Domain.RepositoryInterfaces;
 
+using AutoMapper;
+using WineSales.Domain.Utils;
+
+
 
 void ConfigureServices(IServiceCollection services)
 {
@@ -21,6 +25,8 @@ void ConfigureServices(IServiceCollection services)
     services.AddTransient<ISupplierWineRepository, SupplierWineRepository>();
     services.AddTransient<IUserRepository, UserRepository>();
     services.AddTransient<IWineRepository, WineRepository>();
+
+    services.AddAutoMapper(typeof(AutoMappingProfile));
 }
 
 
