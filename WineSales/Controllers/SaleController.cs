@@ -31,12 +31,12 @@ namespace WineSales.Controllers
             //this.userConverters = userConverters;
         }
 
-        //[HttpGet]
-        //[ProducesResponseType(typeof(IEnumerable<SaleDTO>), StatusCodes.Status200OK)]
-        //public IActionResult GetAll()
-        //{
-        //    return Ok(mapper.Map<IEnumerable<SaleDTO>>(saleInteractor.GetAll()));
-        //}
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<SaleDTO>), StatusCodes.Status200OK)]
+        public IActionResult GetAll()
+        {
+            return Ok(mapper.Map<IEnumerable<SaleDTO>>(saleInteractor.GetAll()));
+        }
 
         [HttpPost]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status201Created)]
@@ -55,23 +55,23 @@ namespace WineSales.Controllers
             }
         }
 
-        //[HttpDelete("{id}")]
-        //[ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        //public IActionResult Delete(int id)
-        //{
-        //    var deletedSale = saleInteractor.DeleteSale(id);
-        //    return deletedSale != null ? Ok(mapper.Map<SaleDTO>(deletedSale)) : NotFound();
-        //}
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
+        {
+            var deletedSale = saleInteractor.DeleteSale(id);
+            return deletedSale != null ? Ok(mapper.Map<SaleDTO>(deletedSale)) : NotFound();
+        }
 
-        //[HttpGet("{id}")]
-        //[ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        //public IActionResult GetById(int id)
-        //{
-        //    var sale = saleInteractor.GetByID(id);
-        //    return sale != null ? Ok(mapper.Map<SaleDTO>(sale)) : NotFound();
-        //}
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetById(int id)
+        {
+            var sale = saleInteractor.GetByID(id);
+            return sale != null ? Ok(mapper.Map<SaleDTO>(sale)) : NotFound();
+        }
     }
 }
 

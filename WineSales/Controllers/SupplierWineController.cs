@@ -21,22 +21,24 @@ namespace WineSales.Controllers
     public class SupplierWineController : Controller
     {
         private readonly ISupplierWineInteractor supplierWineInteractor;
+        private readonly ISupplierInteractor supplierInteractor;
         private readonly IMapper mapper;
         //private readonly UserConverters userConverters;
 
-        public SupplierWineController(ISupplierWineInteractor supplierWineInteractor, IMapper mapper)//, UserConverters userConverters)
+        public SupplierWineController(ISupplierWineInteractor supplierWineInteractor, ISupplierInteractor supplierInteractor, IMapper mapper)//, UserConverters userConverters)
         {
             this.supplierWineInteractor = supplierWineInteractor;
+            this.supplierInteractor = supplierInteractor;
             this.mapper = mapper;
             //this.userConverters = userConverters;
         }
 
-        //[HttpGet]
-        //[ProducesResponseType(typeof(IEnumerable<SupplierWineDTO>), StatusCodes.Status200OK)]
-        //public IActionResult GetAll()
-        //{
-        //    return Ok(mapper.Map<IEnumerable<SupplierWineDTO>>(supplierWineInteractor.GetAll()));
-        //}
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<SupplierWineDTO>), StatusCodes.Status200OK)]
+        public IActionResult GetAll()
+        {
+            return Ok(mapper.Map<IEnumerable<SupplierWineDTO>>(supplierWineInteractor.GetAll()));
+        }
 
         [HttpPost]
         [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status201Created)]
@@ -71,6 +73,15 @@ namespace WineSales.Controllers
         {
             var supplierWine = supplierWineInteractor.GetByID(id);
             return supplierWine != null ? Ok(mapper.Map<SupplierWineDTO>(supplierWine)) : NotFound();
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetBySupplierWineID(int id)
+        {
+            var supplier = supplierInteractor.GetBySupplierWineID(id);
+            return supplier != null ? Ok(mapper.Map<SupplierDTO>(supplier)) : NotFound();
         }
     }
 }
