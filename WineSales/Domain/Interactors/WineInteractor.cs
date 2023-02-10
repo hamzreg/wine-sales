@@ -14,6 +14,9 @@ namespace WineSales.Domain.Interactors
         WineBL CreateWine(WineBL wine);
         List<WineBL> GetAll();
         WineBL GetByID(int id);
+        List<WineBL> GetBySupplierID(int supplierID);
+        List<WineBL> GetSoldWinesBySupplierID(int supplierID);
+        List<WineBL> GetSoldWinesByAdmin();
         WineBL UpdateWine(WineBL wine);
         WineBL DeleteWine(int id);
     }
@@ -21,12 +24,18 @@ namespace WineSales.Domain.Interactors
     public class WineInteractor : IWineInteractor
     {
         private readonly IWineRepository _wineRepository;
+        private readonly ISupplierWineRepository _supplierWineRepository;
+        private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
 
         public WineInteractor(IWineRepository wineRepository,
+                              ISupplierWineRepository supplierWineRepository,
+                              ISaleRepository saleRepository,
                               IMapper mapper)
         {
             _wineRepository = wineRepository;
+            _supplierWineRepository = supplierWineRepository;
+            _saleRepository = saleRepository;
             _mapper = mapper;
         }
 
@@ -53,6 +62,21 @@ namespace WineSales.Domain.Interactors
         public WineBL GetByID(int id)
         {
             return _mapper.Map<WineBL>(_wineRepository.GetByID(id));
+        }
+
+        public List<WineBL> GetBySupplierID(int supplierID)
+        {
+            return _mapper.Map<List<WineBL>>(_supplierWineRepository.GetWinesBySupplierID(supplierID));
+        }
+
+        public List<WineBL> GetSoldWinesBySupplierID(int supplierID)
+        {
+            return _mapper.Map<List<WineBL>>(_saleRepository.GetSoldWinesBySupplierID(supplierID));
+        }
+
+        public List<WineBL> GetSoldWinesByAdmin()
+        {
+            return _mapper.Map<List<WineBL>>(_saleRepository.GetSoldWinesByAdmin());
         }
 
         public WineBL UpdateWine(WineBL wine)

@@ -12,9 +12,10 @@ namespace WineSales.Domain.Interactors
     public interface ISupplierWineInteractor
     {
         SupplierWineBL CreateSupplierWine(SupplierWineBL supplierWine);
+        List<SupplierWineBL> GetAll();
         SupplierWineBL GetByID(int id);
-        (List<WineBL>, List<SupplierWineBL>) GetBySupplierID(int supplierID);
-        (List<int>, List<WineBL>, List<double>) GetAllWine();
+        List<SupplierWineBL> GetBySupplierID(int supplierID);
+        List<double> GetSellingPrices();
         SupplierWineBL UpdateSupplierWine(SupplierWineBL supplierWine);
         SupplierWineBL DeleteSupplierWine(int id);
     }
@@ -42,19 +43,24 @@ namespace WineSales.Domain.Interactors
             return _mapper.Map<SupplierWineBL>(_supplierWineRepository.Create(transmittedSupplierWine));
         }
 
+        public List<SupplierWineBL> GetAll()
+        {
+            return _mapper.Map<List<SupplierWineBL>>(_supplierWineRepository.GetAll());
+        }
+
         public SupplierWineBL GetByID(int id)
         {
             return _mapper.Map<SupplierWineBL>(_supplierWineRepository.GetByID(id));
         }
 
-        public (List<WineBL>, List<SupplierWineBL>) GetBySupplierID(int supplierID)
+        public List<SupplierWineBL> GetBySupplierID(int supplierID)
         {
-            return _mapper.Map<(List<WineBL>, List<SupplierWineBL>)>(_supplierWineRepository.GetBySupplierID(supplierID));
+            return _mapper.Map<List<SupplierWineBL>>(_supplierWineRepository.GetBySupplierID(supplierID));
         }
 
-        public (List<int>, List<WineBL>, List<double>) GetAllWine()
+        public List<double> GetSellingPrices()
         {
-            return _mapper.Map<(List<int>, List<WineBL>, List<double>)>(_supplierWineRepository.GetAllWine());
+            return _supplierWineRepository.GetSellingPrices();
         }
 
         public SupplierWineBL UpdateSupplierWine(SupplierWineBL supplierWine)

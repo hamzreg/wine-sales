@@ -75,7 +75,25 @@ namespace WineSales.Data.Repositories
                 .ToList();
         }
 
-        public (List<Wine>, List<Sale>) GetBySupplierID(int supplierID)
+        public List<Sale> GetBySupplierID(int supplierID)
+        {
+            var supplierWines = _context.SupplierWines.Where(wine => wine.SupplierID == supplierID)
+                .ToList();
+
+            var sales = new List<Sale>();
+
+            foreach (SupplierWine supplierWine in supplierWines)
+            {
+                var nowSales = GetBySupplierWineID(supplierWine.ID);
+
+                if (nowSales.Count != 0)
+                    sales.AddRange(nowSales);
+            }
+
+            return sales;
+        }
+
+        public List<Wine> GetSoldWinesBySupplierID(int supplierID)
         {
             var supplierWines = _context.SupplierWines.Where(wine => wine.SupplierID == supplierID)
                 .ToList();
@@ -90,30 +108,39 @@ namespace WineSales.Data.Repositories
                 foreach (Sale sale in sales)
                 {
                     wines.Add(_context.Wines.Find(supplierWine.WineID));
-                    sales.Add(sale);
                 }
             }
 
-            return (wines, sales);
+            return wines;
         }
 
-        public (List<Wine>, List<string>, List<Sale>) GetByAdmin()
+        public List<Wine> GetSoldWinesByAdmin()
         {
             var sales = GetAll();
-
             var wines = new List<Wine>();
-            var suppliers = new List<string>();
 
             foreach (Sale sale in sales)
             {
                 var supplierWine = _context.SupplierWines.Find(sale.SupplierWineID);
                 wines.Add(_context.Wines.Find(supplierWine.WineID));
+            }
 
+            return wines;
+        }
+
+        public List<string> GetSupplierNames()
+        {
+            var sales = GetAll();
+            var suppliers = new List<string>();
+
+            foreach (Sale sale in sales)
+            {
+                var supplierWine = _context.SupplierWines.Find(sale.SupplierWineID);
                 var supplier = _context.Suppliers.Find(supplierWine.SupplierID);
                 suppliers.Add(supplier.Name);
             }
 
-            return (wines, suppliers, sales);
+            return suppliers;
         }
 
         public Sale Update(Sale sale)
