@@ -17,6 +17,7 @@ namespace WineSales.Controllers
     [EnableCors("MyPolicy")]
     [ApiController]
     [Route("/api/v1/users")]
+
     public class UserController : Controller
     {
         private readonly IUserInteractor userInteractor;
