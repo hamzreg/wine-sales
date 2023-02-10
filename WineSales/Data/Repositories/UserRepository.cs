@@ -80,11 +80,11 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public User Delete(User user)
+        public User Delete(int id)
         {
             try
             {
-                var foundUser = GetByID(user.ID);
+                var foundUser = GetByID(id);
 
                 if (foundUser == null)
                     return null;

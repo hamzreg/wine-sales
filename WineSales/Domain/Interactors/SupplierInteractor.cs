@@ -16,7 +16,7 @@ namespace WineSales.Domain.Interactors
         SupplierBL GetByName(string name);
         SupplierBL GetBySupplierWineID(int supplierWineID);
         SupplierBL UpdateSupplier(SupplierBL supplier);
-        SupplierBL DeleteSupplier(SupplierBL supplier);
+        SupplierBL DeleteSupplier(int id);
     }
 
     public class SupplierInteractor : ISupplierInteractor
@@ -65,7 +65,7 @@ namespace WineSales.Domain.Interactors
         public SupplierBL UpdateSupplier(SupplierBL supplier)
         {
             if (!IsExistById(supplier.ID))
-                throw new SupplierException("This supplier doesn't exist.");
+                return null;
 
             if (IsNameTaken(supplier.ID, supplier.Name))
                 throw new SupplierException("This name is already taken.");
@@ -74,13 +74,12 @@ namespace WineSales.Domain.Interactors
             return _mapper.Map<SupplierBL>(_supplierRepository.Update(transmittedSupplier));
         }
 
-        public SupplierBL DeleteSupplier(SupplierBL supplier)
+        public SupplierBL DeleteSupplier(int id)
         {
-            if (!IsExistById(supplier.ID))
-                throw new SupplierException("This supplier doesn't exist.");
+            if (!IsExistById(id))
+                return null;
 
-            var transmittedSupplier = _mapper.Map<Supplier>(supplier);
-            return _mapper.Map<SupplierBL>(_supplierRepository.Delete(transmittedSupplier));
+            return _mapper.Map<SupplierBL>(_supplierRepository.Delete(id));
         }
 
         private bool IsExistByName(string name)

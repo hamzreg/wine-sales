@@ -16,7 +16,7 @@ namespace WineSales.Domain.Interactors
         int GetNowUserID();
         int GetNowUserRoleID();
         UserBL UpdateUser(UserBL user);
-        UserBL DeleteUser(UserBL user);
+        UserBL DeleteUser(int id);
         UserBL RegisterUser(LoginDetailsBL loginDetails, string role, int roleID);
         UserBL AuthorizeUser(LoginDetailsBL loginDetails);
     }
@@ -71,7 +71,7 @@ namespace WineSales.Domain.Interactors
         public UserBL UpdateUser(UserBL user)
         {
             if (!IsExistById(user.ID))
-                throw new UserException("This user doesn't exist.");
+                return null;
 
             if (IsLoginTaken(user.ID, user.Login))
                 throw new UserException("This login is already in use.");
@@ -83,13 +83,12 @@ namespace WineSales.Domain.Interactors
             return _mapper.Map<UserBL>(_userRepository.Update(transmittedUser));
         }
 
-        public UserBL DeleteUser(UserBL user)
+        public UserBL DeleteUser(int id)
         {
-            if (!IsExistById(user.ID))
-                throw new UserException("This user doesn't exist.");
+            if (!IsExistById(id))
+                return null;
 
-            var transmittedUser = _mapper.Map<User>(user);
-            return _mapper.Map<UserBL>(_userRepository.Delete(transmittedUser));
+            return _mapper.Map<UserBL>(_userRepository.Delete(id));
         }
 
         public UserBL RegisterUser(LoginDetailsBL loginDetails, string role, int roleID)

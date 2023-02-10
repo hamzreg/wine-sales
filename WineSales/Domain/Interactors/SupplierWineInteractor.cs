@@ -16,7 +16,7 @@ namespace WineSales.Domain.Interactors
         (List<WineBL>, List<SupplierWineBL>) GetBySupplierID(int supplierID);
         (List<int>, List<WineBL>, List<double>) GetAllWine();
         SupplierWineBL UpdateSupplierWine(SupplierWineBL supplierWine);
-        SupplierWineBL DeleteSupplierWine(SupplierWineBL supplierWine);
+        SupplierWineBL DeleteSupplierWine(int id);
     }
 
     public class SupplierWineInteractor : ISupplierWineInteractor
@@ -62,19 +62,18 @@ namespace WineSales.Domain.Interactors
             if (!IsSupplierWineCorrect(supplierWine))
                 throw new SupplierWineException("Invalid input of supplierWine.");
             else if (!IsExistById(supplierWine.ID))
-                throw new SupplierWineException("This supplier doesn't have this wine.");
+                return null;
 
             var transmittedSupplierWine = _mapper.Map<SupplierWine>(supplierWine);
             return _mapper.Map<SupplierWineBL>(_supplierWineRepository.Update(transmittedSupplierWine));
         }
 
-        public SupplierWineBL DeleteSupplierWine(SupplierWineBL supplierWine)
+        public SupplierWineBL DeleteSupplierWine(int id)
         {
-            if (!IsExistById(supplierWine.ID))
-                throw new SupplierWineException("This supplier doesn't have this wine.");
+            if (!IsExistById(id))
+                return null;
 
-            var transmittedSupplierWine = _mapper.Map<SupplierWine>(supplierWine);
-            return _mapper.Map<SupplierWineBL>(_supplierWineRepository.Delete(transmittedSupplierWine));
+            return _mapper.Map<SupplierWineBL>(_supplierWineRepository.Delete(id));
         }
 
         private bool IsSupplierWine(int supplierID, int wineID)

@@ -16,9 +16,8 @@ using WineSales.Domain.Interactors;
 using WineSales.Domain.RepositoryInterfaces;
 using WineSales.Domain.Utils;
 using System.Collections.Generic;
-using Microsoft.OpenApi.Models;
 
-namespace ServerING
+namespace WineSales
 {
     public class Startup
     {

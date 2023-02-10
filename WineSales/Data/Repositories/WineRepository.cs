@@ -100,18 +100,22 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public void IncreaseNumber(int id)
+        public Wine IncreaseNumber(int id)
         {
-            var foundWine = GetByID(id);
-
-            if (foundWine == null)
-                throw new WineException("Failed to get wine by id.");
-
             try
             {
-                foundWine.Number++;
-                _context.Wines.Update(foundWine);
-                _context.SaveChanges();
+                var foundWine = GetByID(id);
+
+                if (foundWine == null)
+                    return null;
+                else
+                {
+                    foundWine.Number++;
+                    _context.Wines.Update(foundWine);
+                    _context.SaveChanges();
+
+                    return foundWine;
+                }
             }
             catch
             {
@@ -119,18 +123,22 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public void DecreaseNumber(int id)
+        public Wine DecreaseNumber(int id)
         {
-            var foundWine = GetByID(id);
-
-            if (foundWine == null)
-                throw new WineException("Failed to get wine by id.");
-
             try
             {
-                foundWine.Number--;
-                _context.Wines.Update(foundWine);
-                _context.SaveChanges();
+                var foundWine = GetByID(id);
+
+                if (foundWine == null)
+                    return null;
+                else
+                {
+                    foundWine.Number--;
+                    _context.Wines.Update(foundWine);
+                    _context.SaveChanges();
+
+                    return foundWine;
+                }
             }
             catch
             {
@@ -138,11 +146,11 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public Wine Delete(Wine wine)
+        public Wine Delete(int id)
         {
             try
             {
-                var foundWine = GetByID(wine.ID);
+                var foundWine = GetByID(id);
 
                 if (foundWine == null)
                     return null;

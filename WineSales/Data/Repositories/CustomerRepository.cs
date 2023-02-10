@@ -71,11 +71,11 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public Customer Delete(Customer customer)
+        public Customer Delete(int id)
         {
             try
             {
-                var foundCustomer = GetByID(customer.ID);
+                var foundCustomer = GetByID(id);
 
                 if (foundCustomer == null)
                     return null;

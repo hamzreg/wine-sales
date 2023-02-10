@@ -77,11 +77,11 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public Supplier Delete(Supplier supplier)
+        public Supplier Delete(int id)
         {
             try
             {
-                var foundSupplier = GetByID(supplier.ID);
+                var foundSupplier = GetByID(id);
 
                 if (foundSupplier == null)
                     return null;

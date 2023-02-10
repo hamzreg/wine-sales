@@ -11,7 +11,7 @@ namespace WineSales.Domain.RepositoryInterfaces
         List<Wine> GetByAlcohol(double alcohol);
         List<Wine> GetByNumber(int number);
         Wine GetByAllFields(Wine wine);
-        void IncreaseNumber(int id);
-        void DecreaseNumber(int id);
+        Wine IncreaseNumber(int id);
+        Wine DecreaseNumber(int id);
     }
 }

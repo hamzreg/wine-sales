@@ -131,11 +131,11 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public Sale Delete(Sale sale)
+        public Sale Delete(int id)
         {
             try
             {
-                var foundSale = GetByID(sale.ID);
+                var foundSale = GetByID(id);
 
                 if (foundSale == null)
                     return null;

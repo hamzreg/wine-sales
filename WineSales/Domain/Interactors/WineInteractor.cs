@@ -13,7 +13,7 @@ namespace WineSales.Domain.Interactors
     {
         WineBL GetByAllFields(WineBL wine);
         WineBL CreateWine(WineBL wine);
-        WineBL DeleteWine(WineBL wine);
+        WineBL DeleteWine(int id);
     }
 
     public class WineInteractor : IWineInteractor
@@ -36,10 +36,7 @@ namespace WineSales.Domain.Interactors
             var existingWine = GetByAllFields(wine);
 
             if (existingWine != null)
-            {
-                _wineRepository.IncreaseNumber(existingWine.ID);
-                return existingWine;
-            }
+                return _mapper.Map<WineBL>(_wineRepository.IncreaseNumber(existingWine.ID));
 
             wine.Number = WineConfig.MinNumber;
             var transmittedWine = _mapper.Map<Wine>(wine);
@@ -52,19 +49,17 @@ namespace WineSales.Domain.Interactors
             return _mapper.Map<WineBL>(_wineRepository.GetByAllFields(transmittedWine));
         }
 
-        public WineBL DeleteWine(WineBL wine)
+        public WineBL DeleteWine(int id)
         {
-            if (!IsExistById(wine.ID))
-                throw new WineException("This wine doesn't exist.");
+            var existingWine = _wineRepository.GetByID(id);
 
-            if (wine.Number > WineConfig.MinNumber)
-            {
-                _wineRepository.DecreaseNumber(wine.ID);
-                return wine;
-            }
+            if (existingWine == null)
+                return null;
 
-            var transmittedWine = _mapper.Map<Wine>(wine);
-            return _mapper.Map<WineBL>(_wineRepository.Delete(transmittedWine));
+            if (existingWine.Number > WineConfig.MinNumber)
+                return _mapper.Map<WineBL>(_wineRepository.DecreaseNumber(id));
+
+            return _mapper.Map<WineBL>(_wineRepository.Delete(id));
         }
 
         private bool IsExistById(int id)

@@ -104,11 +104,11 @@ namespace WineSales.Data.Repositories
             }
         }
 
-        public SupplierWine Delete(SupplierWine supplierWine)
+        public SupplierWine Delete(int id)
         {
             try
             {
-                var foundSupplierWine = GetByID(supplierWine.ID);
+                var foundSupplierWine = GetByID(id);
 
                 if (foundSupplierWine == null)
                     return null;
