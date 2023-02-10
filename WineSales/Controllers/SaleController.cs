@@ -56,21 +56,21 @@ namespace WineSales.Controllers
         }
 
         //[HttpDelete("{id}")]
-        //[ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
         //[ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         //public IActionResult Delete(int id)
         //{
-        //    var deletedSupplier = supplierInteractor.DeleteSupplier(id);
-        //    return deletedSupplier != null ? Ok(mapper.Map<SupplierDTO>(deletedSupplier)) : NotFound();
+        //    var deletedSale = saleInteractor.DeleteSale(id);
+        //    return deletedSale != null ? Ok(mapper.Map<SaleDTO>(deletedSale)) : NotFound();
         //}
 
         //[HttpGet("{id}")]
-        //[ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
         //[ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         //public IActionResult GetById(int id)
         //{
-        //    var supplier = supplierInteractor.GetByID(id);
-        //    return supplier != null ? Ok(mapper.Map<SupplierDTO>(supplier)) : NotFound();
+        //    var sale = saleInteractor.GetByID(id);
+        //    return sale != null ? Ok(mapper.Map<SaleDTO>(sale)) : NotFound();
         //}
     }
 }
