@@ -21,5 +21,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Swashbuckle.AspNetCore" />
+    <None Remove="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 </Project>
