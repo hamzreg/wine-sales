@@ -55,6 +55,25 @@ namespace WineSales.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Put(int id, WineBaseDTO wine)
+        {
+            try
+            {
+                var updatedWine = wineInteractor.UpdateWine(mapper.Map<WineBL>(wine, o => o.AfterMap((src, dest) => dest.ID = id)));
+
+                return updatedWine != null ? Ok(mapper.Map<WineDTO>(updatedWine)) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
