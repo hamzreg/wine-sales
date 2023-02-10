@@ -13,6 +13,7 @@ namespace WineSales.Domain.Interactors
     {
         UserBL CreateUser(UserBL user);
         List<UserBL> GetAll();
+        UserBL GetByID(int id);
         int GetNowUserID();
         int GetNowUserRoleID();
         UserBL UpdateUser(UserBL user);
@@ -66,6 +67,11 @@ namespace WineSales.Domain.Interactors
         public List<UserBL> GetAll()
         {
             return _mapper.Map<List<UserBL>>(_userRepository.GetAll());
+        }
+
+        public UserBL GetByID(int id)
+        {
+            return _mapper.Map<UserBL>(_userRepository.GetByID(id));
         }
 
         public UserBL UpdateUser(UserBL user)
