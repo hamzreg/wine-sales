@@ -11,8 +11,10 @@ namespace WineSales.Domain.Interactors
 {
     public interface IWineInteractor
     {
-        WineBL GetByAllFields(WineBL wine);
         WineBL CreateWine(WineBL wine);
+        List<WineBL> GetAll();
+        WineBL GetByID(int id);
+        WineBL UpdateWine(WineBL wine);
         WineBL DeleteWine(int id);
     }
 
@@ -43,10 +45,26 @@ namespace WineSales.Domain.Interactors
             return _mapper.Map<WineBL>(_wineRepository.Create(transmittedWine));
         }
 
-        public WineBL GetByAllFields(WineBL wine)
+        public List<WineBL> GetAll()
         {
+            return _mapper.Map<List<WineBL>>(_wineRepository.GetAll());
+        }
+
+        public WineBL GetByID(int id)
+        {
+            return _mapper.Map<WineBL>(_wineRepository.GetByID(id));
+        }
+
+        public WineBL UpdateWine(WineBL wine)
+        {
+            if (!IsWineCorrect(wine))
+                throw new WineException("Invalid input of wine.");
+            
+            if (!IsExistById(wine.ID))
+                return null;
+
             var transmittedWine = _mapper.Map<Wine>(wine);
-            return _mapper.Map<WineBL>(_wineRepository.GetByAllFields(transmittedWine));
+            return _mapper.Map<WineBL>(_wineRepository.Update(transmittedWine));
         }
 
         public WineBL DeleteWine(int id)
@@ -60,6 +78,12 @@ namespace WineSales.Domain.Interactors
                 return _mapper.Map<WineBL>(_wineRepository.DecreaseNumber(id));
 
             return _mapper.Map<WineBL>(_wineRepository.Delete(id));
+        }
+
+        private WineBL GetByAllFields(WineBL wine)
+        {
+            var transmittedWine = _mapper.Map<Wine>(wine);
+            return _mapper.Map<WineBL>(_wineRepository.GetByAllFields(transmittedWine));
         }
 
         private bool IsExistById(int id)
