@@ -11,6 +11,7 @@ namespace WineSales.Domain.Interactors
     public interface ICustomerInteractor
     {
         CustomerBL CreateCustomer(CustomerBL customer);
+        List<CustomerBL> GetAll();
         CustomerBL GetByID(int id);
         CustomerBL UpdateCustomer(CustomerBL customer);
         CustomerBL DeleteCustomer(int id);
@@ -35,6 +36,11 @@ namespace WineSales.Domain.Interactors
 
             var transmittedCustomer = _mapper.Map<Customer>(customer);
             return _mapper.Map<CustomerBL>(_customerRepository.Create(transmittedCustomer));
+        }
+
+        public List<CustomerBL> GetAll()
+        {
+            return _mapper.Map<List<CustomerBL>>(_customerRepository.GetAll());
         }
 
         public CustomerBL GetByID(int id)
