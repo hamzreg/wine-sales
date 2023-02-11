@@ -7,6 +7,8 @@ using WineSales.Domain.DTO;
 using WineSales.Domain.ModelsBL;
 using WineSales.Domain.Models;
 using WineSales.Domain.Interactors;
+using WineSales.Domain.ModelConverters;
+using WineSales.Domain.Exceptions;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
@@ -22,13 +24,13 @@ namespace WineSales.Controllers
     {
         private readonly IWineInteractor wineInteractor;
         private readonly IMapper mapper;
-        //private readonly UserConverters userConverters;
+        private readonly WineConverter wineConverters;
 
-        public WineController(IWineInteractor wineInteractor, IMapper mapper)//, UserConverters userConverters)
+        public WineController(IWineInteractor wineInteractor, IMapper mapper, WineConverter wineConverters)
         {
             this.wineInteractor = wineInteractor;
             this.mapper = mapper;
-            //this.userConverters = userConverters;
+            this.wineConverters = wineConverters;
         }
 
         [HttpGet]
@@ -55,20 +57,20 @@ namespace WineSales.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Put(int id, WineBaseDTO wine)
+        public IActionResult Patch(int id, WineBaseDTO wine)
         {
             try
             {
-                var updatedWine = wineInteractor.UpdateWine(mapper.Map<WineBL>(wine, o => o.AfterMap((src, dest) => dest.ID = id)));
-
+                var updatedWine = wineInteractor
+                    .UpdateWine(wineConverters.ConvertWine(id, wine));
                 return updatedWine != null ? Ok(mapper.Map<WineDTO>(updatedWine)) : NotFound();
             }
-            catch (Exception ex)
+            catch (WineException ex)
             {
                 return Conflict(ex.Message);
             }

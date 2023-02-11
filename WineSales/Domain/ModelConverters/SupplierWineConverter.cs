@@ -3,7 +3,7 @@ using WineSales.Domain.ModelsBL;
 using WineSales.Domain.Interactors;
 
 
-namespace WineSales.Domain.ModelCoverters
+namespace WineSales.Domain.ModelConverters
 {
     public class SupplierWineConverter
     {

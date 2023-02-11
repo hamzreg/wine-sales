@@ -10,6 +10,8 @@ using WineSales.Domain.Interactors;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
+using WineSales.Domain.ModelConverters;
+using WineSales.Domain.Exceptions;
 using WineSales.Data.Repositories;
 
 namespace WineSales.Controllers
@@ -22,13 +24,13 @@ namespace WineSales.Controllers
     {
         private readonly IUserInteractor userInteractor;
         private readonly IMapper mapper;
-        //private readonly UserConverters userConverters;
+        private readonly UserConverter userConverters;
 
-        public UserController(IUserInteractor userInteractor, IMapper mapper)//, UserConverters userConverters)
+        public UserController(IUserInteractor userInteractor, IMapper mapper, UserConverter userConverters)
         {
             this.userInteractor = userInteractor;
             this.mapper = mapper;
-            //this.userConverters = userConverters;
+            this.userConverters = userConverters;
         }
 
         [HttpGet]
@@ -50,6 +52,25 @@ namespace WineSales.Controllers
                 return Ok(mapper.Map<UserPasswordDTO>(addedUser));
             }
             catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Patch(int id, UserBaseDTO user)
+        {
+            try
+            {
+                var updatedUser = userInteractor
+                    .UpdateUser(userConverters.ConvertUser(id, user));
+                return updatedUser != null ? Ok(mapper.Map<UserDTO>(updatedUser)) : NotFound();
+            }
+            catch (UserException ex)
             {
                 return Conflict(ex.Message);
             }

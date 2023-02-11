@@ -7,6 +7,8 @@ using WineSales.Domain.DTO;
 using WineSales.Domain.ModelsBL;
 using WineSales.Domain.Models;
 using WineSales.Domain.Interactors;
+using WineSales.Domain.ModelConverters;
+using WineSales.Domain.Exceptions;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
@@ -22,13 +24,13 @@ namespace WineSales.Controllers
     {
         private readonly ICustomerInteractor customerInteractor;
         private readonly IMapper mapper;
-        //private readonly UserConverters userConverters;
+        private readonly CustomerConverter customerConverters;
 
-        public CustomerController(ICustomerInteractor customerInteractor, IMapper mapper)//, UserConverters userConverters)
+        public CustomerController(ICustomerInteractor customerInteractor, IMapper mapper, CustomerConverter customerConverters)
         {
             this.customerInteractor = customerInteractor;
             this.mapper = mapper;
-            //this.userConverters = userConverters;
+            this.customerConverters = customerConverters;
         }
 
         [HttpGet]
@@ -50,6 +52,25 @@ namespace WineSales.Controllers
                 return Ok(mapper.Map<CustomerDTO>(addedCustomer));
             }
             catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Patch(int id, CustomerBaseDTO customer)
+        {
+            try
+            {
+                var updatedCustomer = customerInteractor
+                    .UpdateCustomer(customerConverters.ConvertCustomer(id, customer));
+                return updatedCustomer != null ? Ok(mapper.Map<CustomerDTO>(updatedCustomer)) : NotFound();
+            }
+            catch (CustomerException ex)
             {
                 return Conflict(ex.Message);
             }

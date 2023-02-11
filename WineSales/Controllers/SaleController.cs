@@ -22,13 +22,11 @@ namespace WineSales.Controllers
     {
         private readonly ISaleInteractor saleInteractor;
         private readonly IMapper mapper;
-        //private readonly UserConverters userConverters;
 
-        public SaleController(ISaleInteractor saleInteractor, IMapper mapper)//, UserConverters userConverters)
+        public SaleController(ISaleInteractor saleInteractor, IMapper mapper)
         {
             this.saleInteractor = saleInteractor;
             this.mapper = mapper;
-            //this.userConverters = userConverters;
         }
 
         [HttpGet]
@@ -48,6 +46,25 @@ namespace WineSales.Controllers
             {
                 var addedSale = saleInteractor.CreateSale(mapper.Map<SaleBL>(saleDTO));
                 return Ok(mapper.Map<SupplierDTO>(addedSale));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Put(int id, SaleBaseDTO sale)
+        {
+            try
+            {
+                var updatedSale = saleInteractor.UpdateSale(mapper.Map<SaleBL>(sale, o => o.AfterMap((src, dest) => dest.ID = id)));
+
+                return updatedSale != null ? Ok(mapper.Map<SaleDTO>(updatedSale)) : NotFound();
             }
             catch (Exception ex)
             {

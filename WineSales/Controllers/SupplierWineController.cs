@@ -7,6 +7,8 @@ using WineSales.Domain.DTO;
 using WineSales.Domain.ModelsBL;
 using WineSales.Domain.Models;
 using WineSales.Domain.Interactors;
+using WineSales.Domain.Exceptions;
+using WineSales.Domain.ModelConverters;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
@@ -23,14 +25,14 @@ namespace WineSales.Controllers
         private readonly ISupplierWineInteractor supplierWineInteractor;
         private readonly ISupplierInteractor supplierInteractor;
         private readonly IMapper mapper;
-        //private readonly UserConverters userConverters;
+        private readonly SupplierWineConverter supplierWineConverter;
 
-        public SupplierWineController(ISupplierWineInteractor supplierWineInteractor, ISupplierInteractor supplierInteractor, IMapper mapper)//, UserConverters userConverters)
+        public SupplierWineController(ISupplierWineInteractor supplierWineInteractor, ISupplierInteractor supplierInteractor, IMapper mapper, SupplierWineConverter supplierWineConverter)
         {
             this.supplierWineInteractor = supplierWineInteractor;
             this.supplierInteractor = supplierInteractor;
             this.mapper = mapper;
-            //this.userConverters = userConverters;
+            this.supplierWineConverter = supplierWineConverter;
         }
 
         [HttpGet]
@@ -52,6 +54,25 @@ namespace WineSales.Controllers
                 return Ok(mapper.Map<SupplierDTO>(addedSupplierWine));
             }
             catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Patch(int id, SupplierWineBaseDTO supplierWine)
+        {
+            try
+            {
+                var updatedSupplierWine = supplierWineInteractor
+                    .UpdateSupplierWine(supplierWineConverter.ConvertSupplierWine(id, supplierWine));
+                return updatedSupplierWine != null ? Ok(mapper.Map<SupplierWineDTO>(updatedSupplierWine)) : NotFound();
+            }
+            catch (SupplierWineException ex)
             {
                 return Conflict(ex.Message);
             }
