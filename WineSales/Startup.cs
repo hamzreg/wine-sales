@@ -97,11 +97,13 @@ namespace WineSales
         {
             if (env.IsDevelopment())
             {
-                // app.UseSwagger();
-                app.UseSwagger(c => {
+                app.UseSwagger();
+                app.UseSwagger(c =>
+                {
                     c.RouteTemplate = "/api/v1/swagger/{documentName}/swagger.json";
                 });
-                app.UseSwaggerUI(c => {
+                app.UseSwaggerUI(c =>
+                {
                     //Notice the lack of / making it relative
                     c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V1");
                     //This is the reverse proxy address

@@ -75,14 +75,14 @@ namespace WineSales.Controllers
             return supplierWine != null ? Ok(mapper.Map<SupplierWineDTO>(supplierWine)) : NotFound();
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult GetBySupplierWineID(int id)
-        {
-            var supplier = supplierInteractor.GetBySupplierWineID(id);
-            return supplier != null ? Ok(mapper.Map<SupplierDTO>(supplier)) : NotFound();
-        }
+        //[HttpGet("{supplierWineId}")]
+        //[ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        //public IActionResult GetBySupplierWineID(int id)
+        //{
+        //    var supplier = supplierInteractor.GetBySupplierWineID(id);
+        //    return supplier != null ? Ok(mapper.Map<SupplierDTO>(supplier)) : NotFound();
+        //}
     }
 }
 

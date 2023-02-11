@@ -28,11 +28,11 @@ services:
     restart: always
     volumes:
       # пробрасываем папку static в папку hmtl в контейнере
-      - ../../docs/static:/usr/share/nginx/html
+      - ./docs/static:/usr/share/nginx/html
       # пробрасываем конфиг
-      - ../../docs/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docs/nginx/nginx.conf:/etc/nginx/nginx.conf
       # пробрасываем логи
-      - ../../docs/nginx/logs:/var/log/nginx
+      - ./docs/nginx/logs:/var/log/nginx
     ports:
       # на маке 8080 в контейнере 80 порт
       - "8080:80"
