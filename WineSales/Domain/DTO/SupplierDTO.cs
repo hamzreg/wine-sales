@@ -4,7 +4,7 @@
     {
         public string? Name { get; set; }
         public string? Country { get; set; }
-        public bool License { get; set; }
+        public bool? License { get; set; }
     }
 
     public class SupplierDTO: SupplierBaseDTO

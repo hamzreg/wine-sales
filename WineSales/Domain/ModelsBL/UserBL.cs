@@ -8,11 +8,11 @@
         public string? Password { get; set; }
         public string? Role { get; set; }
 
-        public UserBL(string login, string password, string role)
-        {
-            Login = login;
-            Password = password;
-            Role = role;
-        }
+        // public UserBL(string login, string password, string role)
+        // {
+        //     Login = login;
+        //     Password = password;
+        //     Role = role;
+        // }
     }
 }

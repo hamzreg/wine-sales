@@ -34,9 +34,12 @@ namespace WineSales.Domain.Interactors
             _userRepository = userRepository;
             _mapper = mapper;
 
-            _nowUser = new UserBL(UserConfig.Default,
-                                  UserConfig.Default,
-                                  UserConfig.Roles["guest"]);
+            _nowUser = new UserBL
+            {
+                Login = UserConfig.Default,
+                Password = UserConfig.Default,
+                Role = UserConfig.Roles["guest"]
+            };
         }
 
         public UserBL NowUser
