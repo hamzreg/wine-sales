@@ -14,6 +14,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
 
+
 namespace WineSales.Controllers
 {
     [EnableCors("MyPolicy")]
@@ -22,39 +23,44 @@ namespace WineSales.Controllers
 
     public class SupplierController : Controller
     {
-        private readonly ISupplierInteractor supplierInteractor;
-        private readonly ISaleInteractor saleInteractor;
-        private readonly IWineInteractor wineInteractor;
-        private readonly IMapper mapper;
-        private readonly SupplierConverter supplierConverters;
+        private readonly ISupplierInteractor _supplierInteractor;
+        private readonly ISaleInteractor _saleInteractor;
+        private readonly ISupplierWineInteractor _supplierWineInteractor;
+        private readonly IMapper _mapper;
+        private readonly SupplierConverter _supplierConverter;
 
-        public SupplierController(ISupplierInteractor supplierInteractor, ISaleInteractor saleInteractor
-                                  ,IWineInteractor wineInteractor, IMapper mapper, SupplierConverter supplierConverters)
+        public SupplierController(ISupplierInteractor supplierInteractor, 
+                                  ISaleInteractor saleInteractor,
+                                  ISupplierWineInteractor supplierWineInteractor,
+                                  IMapper mapper, 
+                                  SupplierConverter supplierConverter)
         {
-            this.supplierInteractor = supplierInteractor;
-            this.saleInteractor = saleInteractor;
-            this.wineInteractor = wineInteractor;
-            this.mapper = mapper;
-            this.supplierConverters = supplierConverters;
+            _supplierInteractor = supplierInteractor;
+            _saleInteractor = saleInteractor;
+            _supplierWineInteractor = supplierWineInteractor;
+            _mapper = mapper;
+            _supplierConverter = supplierConverter;
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(List<SupplierDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            return Ok(mapper.Map<List<SupplierDTO>>(supplierInteractor.GetAll()));
+            return Ok(_mapper.Map<List<SupplierDTO>>(_supplierInteractor.GetAll()));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(SupplierDTO supplierDTO)
+        public IActionResult Create(SupplierDTO supplier)
         {
             try
             {
-                var addedSupplier = supplierInteractor.CreateSupplier(mapper.Map<SupplierBL>(supplierDTO));
-                return Ok(mapper.Map<SupplierDTO>(addedSupplier));
+                var createdSupplier = _supplierInteractor
+                    .CreateSupplier(_mapper.Map<SupplierBL>(supplier));
+
+                return Ok(_mapper.Map<SupplierDTO>(createdSupplier));
             }
             catch (Exception ex)
             {
@@ -71,9 +77,10 @@ namespace WineSales.Controllers
         {
             try
             {
-                var updatedSupplier = supplierInteractor
-                    .UpdateSupplier(supplierConverters.ConvertSupplier(id, supplier));
-                return updatedSupplier != null ? Ok(mapper.Map<SupplierDTO>(updatedSupplier)) : NotFound();
+                var updatedSupplier = _supplierInteractor
+                    .UpdateSupplier(_supplierConverter.ConvertSupplier(id, supplier));
+
+                return updatedSupplier != null ? Ok(_mapper.Map<SupplierDTO>(updatedSupplier)) : NotFound();
             }
             catch (SupplierException ex)
             {
@@ -86,8 +93,8 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var deletedSupplier = supplierInteractor.DeleteSupplier(id);
-            return deletedSupplier != null ? Ok(mapper.Map<SupplierDTO>(deletedSupplier)) : NotFound();
+            var deletedSupplier = _supplierInteractor.DeleteSupplier(id);
+            return deletedSupplier != null ? Ok(_mapper.Map<SupplierDTO>(deletedSupplier)) : NotFound();
         }
 
         [HttpGet("{id}")]
@@ -95,36 +102,22 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            var supplier = supplierInteractor.GetByID(id);
-            return supplier != null ? Ok(mapper.Map<SupplierDTO>(supplier)) : NotFound();
+            var supplier = _supplierInteractor.GetByID(id);
+            return supplier != null ? Ok(_mapper.Map<SupplierDTO>(supplier)) : NotFound();
         }
 
-        [HttpGet("{SupplierId}/sales")]
-        [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [HttpGet("{supplierId}/sales")]
+        [ProducesResponseType(typeof(List<SaleDTO>), StatusCodes.Status200OK)]
         public IActionResult GetSalesBySupplierId(int supplierId)
         {
-            var sales = saleInteractor.GetBySupplierID(supplierId);
-            return sales != null ? Ok(mapper.Map<SaleDTO>(sales)) : NotFound();
+            return Ok(_mapper.Map<List<SaleDTO>>(_saleInteractor.GetBySupplierID(supplierId)));
         }
 
-        [HttpGet("{SupplierId}/wines")]
-        [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult GetWinesBySupplierId(int supplierId)
+        [HttpGet("{supplierId}/supplierWines")]
+        [ProducesResponseType(typeof(List<SupplierWineDTO>), StatusCodes.Status200OK)]
+        public IActionResult GetSupplierWinesBySupplierId(int supplierId)
         {
-            var wines = wineInteractor.GetBySupplierID(supplierId);
-            return wines != null ? Ok(mapper.Map<WineDTO>(wines)) : NotFound();
-        }
-
-        [HttpGet("{SupplierId}/soldWines")]
-        [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult GetSoldWinesBySupplierId(int supplierId)
-        {
-            var soldWines = wineInteractor.GetSoldWinesBySupplierID(supplierId);
-            return soldWines != null ? Ok(mapper.Map<WineDTO>(soldWines)) : NotFound();
+            return Ok(_mapper.Map<List<SupplierWineDTO>>(_supplierWineInteractor.GetBySupplierID(supplierId)));
         }
     }
 }
-

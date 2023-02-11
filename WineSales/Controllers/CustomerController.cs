@@ -14,6 +14,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
 
+
 namespace WineSales.Controllers
 {
     [EnableCors("MyPolicy")]
@@ -22,34 +23,38 @@ namespace WineSales.Controllers
 
     public class CustomerController : Controller
     {
-        private readonly ICustomerInteractor customerInteractor;
-        private readonly IMapper mapper;
-        private readonly CustomerConverter customerConverters;
+        private readonly ICustomerInteractor _customerInteractor;
+        private readonly IMapper _mapper;
+        private readonly CustomerConverter _customerConverter;
 
-        public CustomerController(ICustomerInteractor customerInteractor, IMapper mapper, CustomerConverter customerConverters)
+        public CustomerController(ICustomerInteractor customerInteractor, 
+                                  IMapper mapper, 
+                                  CustomerConverter customerConverter)
         {
-            this.customerInteractor = customerInteractor;
-            this.mapper = mapper;
-            this.customerConverters = customerConverters;
+            _customerInteractor = customerInteractor;
+            _mapper = mapper;
+            _customerConverter = customerConverter;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<CustomerDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<CustomerDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            return Ok(mapper.Map<IEnumerable<CustomerDTO>>(customerInteractor.GetAll()));
+            return Ok(_mapper.Map<List<CustomerDTO>>(_customerInteractor.GetAll()));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(UserPasswordDTO customerDTO)
+        public IActionResult Create(CustomerDTO customer)
         {
             try
             {
-                var addedCustomer = customerInteractor.CreateCustomer(mapper.Map<CustomerBL>(customerDTO));
-                return Ok(mapper.Map<CustomerDTO>(addedCustomer));
+                var createdCustomer = _customerInteractor
+                    .CreateCustomer(_mapper.Map<CustomerBL>(customer));
+
+                return Ok(_mapper.Map<CustomerDTO>(createdCustomer));
             }
             catch (Exception ex)
             {
@@ -66,9 +71,10 @@ namespace WineSales.Controllers
         {
             try
             {
-                var updatedCustomer = customerInteractor
-                    .UpdateCustomer(customerConverters.ConvertCustomer(id, customer));
-                return updatedCustomer != null ? Ok(mapper.Map<CustomerDTO>(updatedCustomer)) : NotFound();
+                var updatedCustomer = _customerInteractor
+                    .UpdateCustomer(_customerConverter.ConvertCustomer(id, customer));
+
+                return updatedCustomer != null ? Ok(_mapper.Map<CustomerDTO>(updatedCustomer)) : NotFound();
             }
             catch (CustomerException ex)
             {
@@ -81,18 +87,17 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var deletedCustomer = customerInteractor.DeleteCustomer(id);
-            return deletedCustomer != null ? Ok(mapper.Map<CustomerDTO>(deletedCustomer)) : NotFound();
+            var deletedCustomer = _customerInteractor.DeleteCustomer(id);
+            return deletedCustomer != null ? Ok(_mapper.Map<CustomerDTO>(deletedCustomer)) : NotFound();
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public IActionResult GetByID(int id)
         {
-            var customer = customerInteractor.GetByID(id);
-            return customer != null ? Ok(mapper.Map<CustomerDTO>(customer)) : NotFound();
+            var customer = _customerInteractor.GetByID(id);
+            return customer != null ? Ok(_mapper.Map<CustomerDTO>(customer)) : NotFound();
         }
     }
 }
-

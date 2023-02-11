@@ -22,12 +22,15 @@ namespace WineSales.Domain.Interactors
     public class SaleInteractor : ISaleInteractor
     {
         private readonly ISaleRepository _saleRepository;
+        private readonly ISupplierWineRepository _supplierWineRepository;
         private readonly IMapper _mapper;
 
         public SaleInteractor(ISaleRepository saleRepository,
+                              ISupplierWineRepository supplierWineRepository,
                               IMapper mapper)
         {
             _saleRepository = saleRepository;
+            _supplierWineRepository = supplierWineRepository;
             _mapper = mapper;
         }
 
@@ -52,7 +55,19 @@ namespace WineSales.Domain.Interactors
 
         public List<SaleBL> GetBySupplierID(int supplierID)
         {
-            return _mapper.Map<List<SaleBL>>(_saleRepository.GetBySupplierID(supplierID));
+            var supplierWines = _supplierWineRepository.GetBySupplierID(supplierID);
+
+            var sales = new List<Sale>();
+
+            foreach (SupplierWine supplierWine in supplierWines)
+            {
+                var nowSales = _saleRepository.GetBySupplierWineID(supplierWine.ID);
+
+                if (nowSales.Count != 0)
+                    sales.AddRange(nowSales);
+            }
+
+            return _mapper.Map<List<SaleBL>>(sales);
         }
 
         public SaleBL UpdateSale(SaleBL sale)

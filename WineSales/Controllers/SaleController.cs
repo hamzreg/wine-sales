@@ -12,6 +12,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
 
+
 namespace WineSales.Controllers
 {
     [EnableCors("MyPolicy")]
@@ -20,32 +21,34 @@ namespace WineSales.Controllers
 
     public class SaleController : Controller
     {
-        private readonly ISaleInteractor saleInteractor;
-        private readonly IMapper mapper;
+        private readonly ISaleInteractor _saleInteractor;
+        private readonly IMapper _mapper;
 
         public SaleController(ISaleInteractor saleInteractor, IMapper mapper)
         {
-            this.saleInteractor = saleInteractor;
-            this.mapper = mapper;
+            _saleInteractor = saleInteractor;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<SaleDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<SaleDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            return Ok(mapper.Map<IEnumerable<SaleDTO>>(saleInteractor.GetAll()));
+            return Ok(_mapper.Map<List<SaleDTO>>(_saleInteractor.GetAll()));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(SaleDTO saleDTO)
+        public IActionResult Create(SaleDTO sale)
         {
             try
             {
-                var addedSale = saleInteractor.CreateSale(mapper.Map<SaleBL>(saleDTO));
-                return Ok(mapper.Map<SupplierDTO>(addedSale));
+                var createdSale = _saleInteractor
+                    .CreateSale(_mapper.Map<SaleBL>(sale));
+
+                return Ok(_mapper.Map<SupplierDTO>(createdSale));
             }
             catch (Exception ex)
             {
@@ -62,9 +65,10 @@ namespace WineSales.Controllers
         {
             try
             {
-                var updatedSale = saleInteractor.UpdateSale(mapper.Map<SaleBL>(sale, o => o.AfterMap((src, dest) => dest.ID = id)));
+                var updatedSale = _saleInteractor
+                    .UpdateSale(_mapper.Map<SaleBL>(sale, x => x.AfterMap((src, dest) => dest.ID = id)));
 
-                return updatedSale != null ? Ok(mapper.Map<SaleDTO>(updatedSale)) : NotFound();
+                return updatedSale != null ? Ok(_mapper.Map<SaleDTO>(updatedSale)) : NotFound();
             }
             catch (Exception ex)
             {
@@ -77,18 +81,17 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var deletedSale = saleInteractor.DeleteSale(id);
-            return deletedSale != null ? Ok(mapper.Map<SaleDTO>(deletedSale)) : NotFound();
+            var deletedSale = _saleInteractor.DeleteSale(id);
+            return deletedSale != null ? Ok(_mapper.Map<SaleDTO>(deletedSale)) : NotFound();
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public IActionResult GetByID(int id)
         {
-            var sale = saleInteractor.GetByID(id);
-            return sale != null ? Ok(mapper.Map<SaleDTO>(sale)) : NotFound();
+            var sale = _saleInteractor.GetByID(id);
+            return sale != null ? Ok(_mapper.Map<SaleDTO>(sale)) : NotFound();
         }
     }
 }
-

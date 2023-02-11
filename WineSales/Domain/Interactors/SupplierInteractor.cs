@@ -15,7 +15,7 @@ namespace WineSales.Domain.Interactors
         SupplierBL GetByID(int id);
         SupplierBL GetByName(string name);
         SupplierBL GetBySupplierWineID(int supplierWineID);
-        List<string> GetNames();
+        string GetNameBySupplierWineID(int supplierWineID);
         SupplierBL UpdateSupplier(SupplierBL supplier);
         SupplierBL DeleteSupplier(int id);
     }
@@ -23,15 +23,15 @@ namespace WineSales.Domain.Interactors
     public class SupplierInteractor : ISupplierInteractor
     {
         private readonly ISupplierRepository _supplierRepository;
-        private readonly ISaleRepository _saleRepository;
+        private readonly ISupplierWineRepository _supplierWineRepository;
         private readonly IMapper _mapper;
 
         public SupplierInteractor(ISupplierRepository supplierRepository,
-                                  ISaleRepository saleRepository,
+                                  ISupplierWineRepository supplierWineRepository,
                                   IMapper mapper)
         {
             _supplierRepository = supplierRepository;
-            _saleRepository = saleRepository;
+            _supplierWineRepository = supplierWineRepository;
             _mapper = mapper;
         }
 
@@ -63,12 +63,14 @@ namespace WineSales.Domain.Interactors
 
         public SupplierBL GetBySupplierWineID(int supplierWineID)
         {
-            return _mapper.Map<SupplierBL>(_supplierRepository.GetBySupplierWineID(supplierWineID));
+            var supplierWine = _supplierWineRepository.GetByID(supplierWineID);
+            return GetByID(supplierWine.SupplierID);
         }
 
-        public List<string> GetNames()
+        public string GetNameBySupplierWineID(int supplierWineID)
         {
-            return _saleRepository.GetSupplierNames();
+            var supplier = GetBySupplierWineID(supplierWineID);
+            return supplier.Name;
         }
 
         public SupplierBL UpdateSupplier(SupplierBL supplier)

@@ -8,6 +8,5 @@ namespace WineSales.Domain.RepositoryInterfaces
         Supplier GetByName(string name);
         List<Supplier> GetByCountry(string country);
         List<Supplier> GetByLicense(bool license);
-        Supplier GetBySupplierWineID(int supplierWineID);
     }
 }

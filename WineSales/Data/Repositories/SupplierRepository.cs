@@ -56,12 +56,6 @@ namespace WineSales.Data.Repositories
                 .ToList();
         }
 
-        public Supplier GetBySupplierWineID(int supplierWineID)
-        {
-            var supplierWine = _context.SupplierWines.Find(supplierWineID);
-            return GetByID(supplierWine.SupplierID);
-        }
-
         public Supplier Update(Supplier supplier)
         {
             try

@@ -15,7 +15,6 @@ namespace WineSales.Domain.Interactors
         List<SupplierWineBL> GetAll();
         SupplierWineBL GetByID(int id);
         List<SupplierWineBL> GetBySupplierID(int supplierID);
-        List<double> GetSellingPrices();
         SupplierWineBL UpdateSupplierWine(SupplierWineBL supplierWine);
         SupplierWineBL DeleteSupplierWine(int id);
     }
@@ -58,11 +57,6 @@ namespace WineSales.Domain.Interactors
             return _mapper.Map<List<SupplierWineBL>>(_supplierWineRepository.GetBySupplierID(supplierID));
         }
 
-        public List<double> GetSellingPrices()
-        {
-            return _supplierWineRepository.GetSellingPrices();
-        }
-
         public SupplierWineBL UpdateSupplierWine(SupplierWineBL supplierWine)
         {
             if (!IsSupplierWineCorrect(supplierWine))
@@ -101,6 +95,11 @@ namespace WineSales.Domain.Interactors
             else if (supplierWine.Price < WineConfig.MinPurchasePrice)
                 return false;
             return true;
+        }
+
+        private double GetSellingPrice(double purchasePrice, int percent)
+        {
+            return purchasePrice * (1 + percent / 100.0);
         }
     }
 }

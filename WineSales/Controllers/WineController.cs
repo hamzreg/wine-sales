@@ -14,6 +14,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
 
+
 namespace WineSales.Controllers
 {
     [EnableCors("MyPolicy")]
@@ -22,34 +23,38 @@ namespace WineSales.Controllers
 
     public class WineController : Controller
     {
-        private readonly IWineInteractor wineInteractor;
-        private readonly IMapper mapper;
-        private readonly WineConverter wineConverters;
+        private readonly IWineInteractor _wineInteractor;
+        private readonly IMapper _mapper;
+        private readonly WineConverter _wineConverter;
 
-        public WineController(IWineInteractor wineInteractor, IMapper mapper, WineConverter wineConverters)
+        public WineController(IWineInteractor wineInteractor, 
+                              IMapper mapper, 
+                              WineConverter wineConverter)
         {
-            this.wineInteractor = wineInteractor;
-            this.mapper = mapper;
-            this.wineConverters = wineConverters;
+            _wineInteractor = wineInteractor;
+            _mapper = mapper;
+            _wineConverter = wineConverter;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<WineDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<WineDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            return Ok(mapper.Map<IEnumerable<WineDTO>>(wineInteractor.GetAll()));
+            return Ok(_mapper.Map<List<WineDTO>>(_wineInteractor.GetAll()));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(WineDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(WineDTO wineDTO)
+        public IActionResult Create(WineDTO wine)
         {
             try
             {
-                var addedSupplier = wineInteractor.CreateWine(mapper.Map<WineBL>(wineDTO));
-                return Ok(mapper.Map<SupplierDTO>(addedSupplier));
+                var createdWine = _wineInteractor
+                    .CreateWine(_mapper.Map<WineBL>(wine));
+
+                return Ok(_mapper.Map<WineDTO>(createdWine));
             }
             catch (Exception ex)
             {
@@ -66,9 +71,10 @@ namespace WineSales.Controllers
         {
             try
             {
-                var updatedWine = wineInteractor
-                    .UpdateWine(wineConverters.ConvertWine(id, wine));
-                return updatedWine != null ? Ok(mapper.Map<WineDTO>(updatedWine)) : NotFound();
+                var updatedWine = _wineInteractor
+                    .UpdateWine(_wineConverter.ConvertWine(id, wine));
+
+                return updatedWine != null ? Ok(_mapper.Map<WineDTO>(updatedWine)) : NotFound();
             }
             catch (WineException ex)
             {
@@ -81,8 +87,8 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var deletedWine = wineInteractor.DeleteWine(id);
-            return deletedWine != null ? Ok(mapper.Map<WineDTO>(deletedWine)) : NotFound();
+            var deletedWine = _wineInteractor.DeleteWine(id);
+            return deletedWine != null ? Ok(_mapper.Map<WineDTO>(deletedWine)) : NotFound();
         }
 
         [HttpGet("{id}")]
@@ -90,9 +96,8 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            var wine = wineInteractor.GetByID(id);
-            return wine != null ? Ok(mapper.Map<WineDTO>(wine)) : NotFound();
+            var wine = _wineInteractor.GetByID(id);
+            return wine != null ? Ok(_mapper.Map<WineDTO>(wine)) : NotFound();
         }
     }
 }
-

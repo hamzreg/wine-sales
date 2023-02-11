@@ -14,6 +14,7 @@ using WineSales.Domain.ModelConverters;
 using WineSales.Domain.Exceptions;
 using WineSales.Data.Repositories;
 
+
 namespace WineSales.Controllers
 {
     [EnableCors("MyPolicy")]
@@ -22,34 +23,38 @@ namespace WineSales.Controllers
 
     public class UserController : Controller
     {
-        private readonly IUserInteractor userInteractor;
-        private readonly IMapper mapper;
-        private readonly UserConverter userConverters;
+        private readonly IUserInteractor _userInteractor;
+        private readonly IMapper _mapper;
+        private readonly UserConverter _userConverter;
 
-        public UserController(IUserInteractor userInteractor, IMapper mapper, UserConverter userConverters)
+        public UserController(IUserInteractor userInteractor, 
+                              IMapper mapper, 
+                              UserConverter userConverter)
         {
-            this.userInteractor = userInteractor;
-            this.mapper = mapper;
-            this.userConverters = userConverters;
+            _userInteractor = userInteractor;
+            _mapper = mapper;
+            _userConverter = userConverter;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<UserDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            return Ok(mapper.Map<IEnumerable<UserDTO>>(userInteractor.GetAll()));
+            return Ok(_mapper.Map<List<UserDTO>>(_userInteractor.GetAll()));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(UserIdPasswordDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(UserPasswordDTO userDTO)
+        public IActionResult Create(UserPasswordDTO user)
         {
             try
             {
-                var addedUser = userInteractor.CreateUser(mapper.Map<UserBL>(userDTO));
-                return Ok(mapper.Map<UserPasswordDTO>(addedUser));
+                var createdUser = _userInteractor
+                    .CreateUser(_mapper.Map<UserBL>(user));
+
+                return Ok(_mapper.Map<UserPasswordDTO>(createdUser));
             }
             catch (Exception ex)
             {
@@ -66,9 +71,9 @@ namespace WineSales.Controllers
         {
             try
             {
-                var updatedUser = userInteractor
-                    .UpdateUser(userConverters.ConvertUser(id, user));
-                return updatedUser != null ? Ok(mapper.Map<UserDTO>(updatedUser)) : NotFound();
+                var updatedUser = _userInteractor
+                    .UpdateUser(_userConverter.ConvertUser(id, user));
+                return updatedUser != null ? Ok(_mapper.Map<UserDTO>(updatedUser)) : NotFound();
             }
             catch (UserException ex)
             {
@@ -81,8 +86,8 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var deletedUser = userInteractor.DeleteUser(id);
-            return deletedUser != null ? Ok(mapper.Map<UserDTO>(deletedUser)) : NotFound();
+            var deletedUser = _userInteractor.DeleteUser(id);
+            return deletedUser != null ? Ok(_mapper.Map<UserDTO>(deletedUser)) : NotFound();
         }
 
         [HttpGet("{id}")]
@@ -90,34 +95,33 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            var user = userInteractor.GetByID(id);
-            return user != null ? Ok(mapper.Map<UserDTO>(user)) : NotFound();
+            var user = _userInteractor.GetByID(id);
+            return user != null ? Ok(_mapper.Map<UserDTO>(user)) : NotFound();
         }
 
         [HttpPost("login")]
         [ProducesResponseType(typeof(LoginDetailsDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult Login(LoginDetailsDTO loginDTO)
+        public IActionResult Login(LoginDetailsDTO login)
         {
-            var result = userInteractor.AuthorizeUser(mapper.Map<LoginDetailsBL>(loginDTO));
-            return result != null ? Ok(mapper.Map<LoginDetailsDTO>(result)) : NotFound();
+            var result = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(login));
+            return result != null ? Ok(_mapper.Map<LoginDetailsDTO>(result)) : NotFound();
         }
 
         [HttpPost("register")]
         [ProducesResponseType(typeof(UserIdPasswordDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Register(LoginDTO loginDTO)
+        public IActionResult Register(LoginDTO login)
         {
-            var userDto = new UserPasswordDTO
+            var user = new UserPasswordDTO
             {
-                Login = loginDTO.Login,
-                Password = loginDTO.Password,
+                Login = login.Login,
+                Password = login.Password,
                 Role = "user"
             };
 
-            return Add(userDto);
+            return Create(user);
         }
     }
 }
-

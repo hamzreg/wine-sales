@@ -14,9 +14,7 @@ namespace WineSales.Domain.Interactors
         WineBL CreateWine(WineBL wine);
         List<WineBL> GetAll();
         WineBL GetByID(int id);
-        List<WineBL> GetBySupplierID(int supplierID);
-        List<WineBL> GetSoldWinesBySupplierID(int supplierID);
-        List<WineBL> GetSoldWinesByAdmin();
+        WineBL GetBySupplierWineID(int supplierWineID);
         WineBL UpdateWine(WineBL wine);
         WineBL DeleteWine(int id);
     }
@@ -25,17 +23,14 @@ namespace WineSales.Domain.Interactors
     {
         private readonly IWineRepository _wineRepository;
         private readonly ISupplierWineRepository _supplierWineRepository;
-        private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
 
         public WineInteractor(IWineRepository wineRepository,
                               ISupplierWineRepository supplierWineRepository,
-                              ISaleRepository saleRepository,
                               IMapper mapper)
         {
             _wineRepository = wineRepository;
             _supplierWineRepository = supplierWineRepository;
-            _saleRepository = saleRepository;
             _mapper = mapper;
         }
 
@@ -64,19 +59,10 @@ namespace WineSales.Domain.Interactors
             return _mapper.Map<WineBL>(_wineRepository.GetByID(id));
         }
 
-        public List<WineBL> GetBySupplierID(int supplierID)
+        public WineBL GetBySupplierWineID(int supplierWineID)
         {
-            return _mapper.Map<List<WineBL>>(_supplierWineRepository.GetWinesBySupplierID(supplierID));
-        }
-
-        public List<WineBL> GetSoldWinesBySupplierID(int supplierID)
-        {
-            return _mapper.Map<List<WineBL>>(_saleRepository.GetSoldWinesBySupplierID(supplierID));
-        }
-
-        public List<WineBL> GetSoldWinesByAdmin()
-        {
-            return _mapper.Map<List<WineBL>>(_saleRepository.GetSoldWinesByAdmin());
+            var supplierWine = _supplierWineRepository.GetByID(supplierWineID);
+            return GetByID(supplierWine.WineID);
         }
 
         public WineBL UpdateWine(WineBL wine)
