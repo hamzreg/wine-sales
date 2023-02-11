@@ -22,12 +22,15 @@ namespace WineSales.Domain.Interactors
     public class SupplierWineInteractor : ISupplierWineInteractor
     {
         private ISupplierWineRepository _supplierWineRepository;
+        private IWineRepository _wineRepository;
         private IMapper _mapper;
 
         public SupplierWineInteractor(ISupplierWineRepository supplierWineRepository,
+                                      IWineRepository wineRepository,
                                       IMapper mapper)
         {
             _supplierWineRepository = supplierWineRepository;
+            _wineRepository = wineRepository;
             _mapper = mapper;
         }
 
@@ -95,6 +98,40 @@ namespace WineSales.Domain.Interactors
             else if (supplierWine.Price < WineConfig.MinPurchasePrice)
                 return false;
             return true;
+        }
+
+        private List<SupplierWineBL> GetSupplierWinesByColor(string color)
+        {
+            var wines = _wineRepository.GetByColor(color);
+            var supplierWines = new List<SupplierWine>();
+
+            foreach (Wine wine in wines)
+            {
+                var nowSupplierWines = _supplierWineRepository.GetByWineID(wine.ID);
+
+                if (nowSupplierWines.Count != 0)
+                    supplierWines.AddRange(nowSupplierWines);
+            }
+
+            return _mapper.Map<List<SupplierWineBL>>(supplierWines);
+        }
+
+        private List<SupplierWineBL> SortSupplierWinesByAlcohol(double minValue, double maxValue)
+        {
+            var wines = _wineRepository.GetByAlcohol(minValue, maxValue);
+            var sortedWines = wines.OrderBy(wine => wine.Alcohol);
+
+            var supplierWines = new List<SupplierWine>();
+
+            foreach (Wine wine in sortedWines)
+            {
+                var nowSupplierWines = _supplierWineRepository.GetByWineID(wine.ID);
+
+                if (nowSupplierWines.Count != 0)
+                    supplierWines.AddRange(nowSupplierWines);
+            }
+
+            return _mapper.Map<List<SupplierWineBL>>(supplierWines);
         }
 
         private double GetSellingPrice(double purchasePrice, int percent)

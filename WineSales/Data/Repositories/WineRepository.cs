@@ -73,9 +73,10 @@ namespace WineSales.Data.Repositories
                 .ToList();
         }
 
-        public List<Wine> GetByAlcohol(double alcohol)
+        public List<Wine> GetByAlcohol(double minValue, double maxValue)
         {
-            return _context.Wines.Where(wine => wine.Alcohol == alcohol)
+            return _context.Wines.Where(wine => (wine.Alcohol.CompareTo(minValue) >= 0) &&
+                                                (wine.Alcohol.CompareTo(maxValue) <= 0))
                 .ToList();
         }
 

@@ -8,7 +8,7 @@ namespace WineSales.Domain.RepositoryInterfaces
         List<Wine> GetByColor(string color);
         List<Wine> GetBySugar(string sugar);
         List<Wine> GetByVolume(double volume);
-        List<Wine> GetByAlcohol(double alcohol);
+        List<Wine> GetByAlcohol(double minValue, double maxValue);
         List<Wine> GetByNumber(int number);
         Wine GetByAllFields(Wine wine);
         Wine IncreaseNumber(int id);
