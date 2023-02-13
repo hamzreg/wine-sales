@@ -51,7 +51,7 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(List<SupplierDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            _logger.LogInformation("Clubs (Request: GET)");
+            _logger.LogInformation("Supplier (Request: GET)");
             return Ok(_mapper.Map<List<SupplierDTO>>(_supplierInteractor.GetAll()));
         }
 
