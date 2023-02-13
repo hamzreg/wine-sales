@@ -13,6 +13,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace WineSales.Controllers
@@ -43,9 +44,11 @@ namespace WineSales.Controllers
             return Ok(_mapper.Map<List<CustomerDTO>>(_customerInteractor.GetAll()));
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Create(CustomerDTO customer)
         {
@@ -62,9 +65,11 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Patch(int id, CustomerBaseDTO customer)
@@ -82,8 +87,10 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {

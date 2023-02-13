@@ -13,6 +13,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace WineSales.Controllers
@@ -43,9 +44,11 @@ namespace WineSales.Controllers
             return Ok(_mapper.Map<List<WineDTO>>(_wineInteractor.GetAll()));
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(WineDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Create(WineDTO wine)
         {
@@ -62,9 +65,11 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Patch(int id, WineBaseDTO wine)
@@ -82,8 +87,10 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
@@ -93,6 +100,7 @@ namespace WineSales.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(WineDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {

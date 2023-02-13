@@ -28,4 +28,10 @@
         public string? Login { get; set; }
         public string? Password { get; set; }
     }
+
+    public class TokenDTO
+    {
+        public string AccessToken { get; set; }
+        public string Username { get; set; }
+    }
 }

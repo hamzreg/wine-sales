@@ -13,6 +13,8 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace WineSales.Controllers
@@ -28,30 +30,36 @@ namespace WineSales.Controllers
         private readonly ISupplierWineInteractor _supplierWineInteractor;
         private readonly IMapper _mapper;
         private readonly SupplierConverter _supplierConverter;
+        private readonly ILogger<SupplierController> _logger;
 
         public SupplierController(ISupplierInteractor supplierInteractor, 
                                   ISaleInteractor saleInteractor,
                                   ISupplierWineInteractor supplierWineInteractor,
                                   IMapper mapper, 
-                                  SupplierConverter supplierConverter)
+                                  SupplierConverter supplierConverter,
+                                  ILogger<SupplierController> logger)
         {
             _supplierInteractor = supplierInteractor;
             _saleInteractor = saleInteractor;
             _supplierWineInteractor = supplierWineInteractor;
             _mapper = mapper;
             _supplierConverter = supplierConverter;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(List<SupplierDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
+            _logger.LogInformation("Clubs (Request: GET)");
             return Ok(_mapper.Map<List<SupplierDTO>>(_supplierInteractor.GetAll()));
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Create(SupplierDTO supplier)
         {
@@ -68,9 +76,11 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Patch(int id, SupplierBaseDTO supplier)
@@ -88,8 +98,10 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
@@ -106,15 +118,19 @@ namespace WineSales.Controllers
             return supplier != null ? Ok(_mapper.Map<SupplierDTO>(supplier)) : NotFound();
         }
 
+        [Authorize]
         [HttpGet("{supplierId}/sales")]
         [ProducesResponseType(typeof(List<SaleDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         public IActionResult GetSalesBySupplierId(int supplierId)
         {
             return Ok(_mapper.Map<List<SaleDTO>>(_saleInteractor.GetBySupplierID(supplierId)));
         }
 
+        [Authorize]
         [HttpGet("{supplierId}/supplierWines")]
         [ProducesResponseType(typeof(List<SupplierWineDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         public IActionResult GetSupplierWinesBySupplierId(int supplierId)
         {
             return Ok(_mapper.Map<List<SupplierWineDTO>>(_supplierWineInteractor.GetBySupplierID(supplierId)));

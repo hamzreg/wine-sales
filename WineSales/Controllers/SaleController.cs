@@ -11,6 +11,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using WineSales.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace WineSales.Controllers
@@ -30,16 +31,20 @@ namespace WineSales.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(List<SaleDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         public IActionResult GetAll()
         {
             return Ok(_mapper.Map<List<SaleDTO>>(_saleInteractor.GetAll()));
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Create(SaleDTO sale)
         {
@@ -56,9 +61,11 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Put(int id, SaleBaseDTO sale)
@@ -76,8 +83,10 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
@@ -85,8 +94,10 @@ namespace WineSales.Controllers
             return deletedSale != null ? Ok(_mapper.Map<SaleDTO>(deletedSale)) : NotFound();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetByID(int id)
         {

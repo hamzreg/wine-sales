@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Cors;
 using WineSales.Domain.ModelConverters;
 using WineSales.Domain.Exceptions;
 using WineSales.Data.Repositories;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace WineSales.Controllers
@@ -36,16 +40,20 @@ namespace WineSales.Controllers
             _userConverter = userConverter;
         }
 
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         public IActionResult GetAll()
         {
             return Ok(_mapper.Map<List<UserDTO>>(_userInteractor.GetAll()));
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(UserIdPasswordDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Create(UserPasswordDTO user)
         {
@@ -62,9 +70,11 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Patch(int id, UserBaseDTO user)
@@ -81,8 +91,10 @@ namespace WineSales.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
@@ -90,8 +102,10 @@ namespace WineSales.Controllers
             return deletedUser != null ? Ok(_mapper.Map<UserDTO>(deletedUser)) : NotFound();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
@@ -99,13 +113,63 @@ namespace WineSales.Controllers
             return user != null ? Ok(_mapper.Map<UserDTO>(user)) : NotFound();
         }
 
+        //[HttpPost("login")]
+        //[ProducesResponseType(typeof(LoginDetailsDTO), StatusCodes.Status201Created)]
+        //[ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        //public IActionResult Login(LoginDetailsDTO login)
+        //{
+        //    var result = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(login));
+        //    return result != null ? Ok(_mapper.Map<LoginDetailsDTO>(result)) : NotFound();
+        //}
+
         [HttpPost("login")]
-        [ProducesResponseType(typeof(LoginDetailsDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult Login(LoginDetailsDTO login)
+        public IActionResult Login(LoginDetailsDTO loginDetailsDTO)
         {
-            var result = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(login));
-            return result != null ? Ok(_mapper.Map<LoginDetailsDTO>(result)) : NotFound();
+            var user = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(loginDetailsDTO));
+
+            if (user == null)
+            {
+                return NotFound("Такого пользователя не существует");
+            }
+
+            var identity = GetIdentity(user);
+            var now = DateTime.UtcNow;
+
+            // создаем JWT-токен
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var tokenDto = new TokenDTO
+            {
+                AccessToken = encodedJwt,
+                Username = identity.Name
+            };
+
+            return Json(tokenDto);
+        }
+
+        private ClaimsIdentity GetIdentity(UserBL user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
+            };
+
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+
+            return claimsIdentity;
         }
 
         [HttpPost("register")]
