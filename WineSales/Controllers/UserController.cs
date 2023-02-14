@@ -51,7 +51,7 @@ namespace WineSales.Controllers
 
         [Authorize]
         [HttpPost]
-        [ProducesResponseType(typeof(UserIdPasswordDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
@@ -113,15 +113,6 @@ namespace WineSales.Controllers
             return user != null ? Ok(_mapper.Map<UserDTO>(user)) : NotFound();
         }
 
-        //[HttpPost("login")]
-        //[ProducesResponseType(typeof(LoginDetailsDTO), StatusCodes.Status201Created)]
-        //[ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        //public IActionResult Login(LoginDetailsDTO login)
-        //{
-        //    var result = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(login));
-        //    return result != null ? Ok(_mapper.Map<LoginDetailsDTO>(result)) : NotFound();
-        //}
-
         [HttpPost("login")]
         [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
@@ -173,7 +164,7 @@ namespace WineSales.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(UserIdPasswordDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Register(LoginDTO login)

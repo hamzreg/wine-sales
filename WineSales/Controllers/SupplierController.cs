@@ -122,6 +122,7 @@ namespace WineSales.Controllers
         [HttpGet("{supplierId}/sales")]
         [ProducesResponseType(typeof(List<SaleDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetSalesBySupplierId(int supplierId)
         {
             return Ok(_mapper.Map<List<SaleDTO>>(_saleInteractor.GetBySupplierID(supplierId)));
@@ -131,6 +132,7 @@ namespace WineSales.Controllers
         [HttpGet("{supplierId}/supplierWines")]
         [ProducesResponseType(typeof(List<SupplierWineDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetSupplierWinesBySupplierId(int supplierId)
         {
             return Ok(_mapper.Map<List<SupplierWineDTO>>(_supplierWineInteractor.GetBySupplierID(supplierId)));
