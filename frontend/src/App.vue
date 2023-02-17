@@ -1,4 +1,5 @@
 <template>
+  <notifications position="top center" classes="notify" width="20%" />
   <router-view/>
 </template>
 
@@ -12,6 +13,16 @@
 
 #app {
   font-family: "Frenchpress";
+}
+
+.notify {
+  font-size: 28px;
+  background: var(--white) !important;
+  margin: 0 5px 5px;
+  padding: 10px;
+  border-left: 15px solid var(--pink);
+  color: var(--gray);
+  text-shadow: 0px 0px 20px var(--wite);
 }
 
 :root {

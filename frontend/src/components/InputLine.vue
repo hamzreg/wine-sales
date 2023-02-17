@@ -1,6 +1,6 @@
 <template>
-  <input v-model="data" v-if="name == 'password'" type="password" class="input-line" :style="{fontSize}">
-  <input v-model="data" v-else class="input-line" :style="{fontSize}">
+  <input v-model="data" v-if="name == 'password'" type="password" class="input-line" :style="{fontSize}" :placeholder="placeholderText">
+  <input v-model="data" v-else class="input-line" :style="{fontSize}" :placeholder="placeholderText">
 </template>
 
 <script lang="ts">
@@ -13,7 +13,7 @@ data () {
   }
 },
 components: {},
-props: ['name', 'fontSize'],
+props: ['name', 'fontSize', 'placeholderText'],
 watch: { 
   data: function() {
     console.log(this.name, this.data);
@@ -35,8 +35,11 @@ watch: {
   align-items: center;
   background-color: var(--beige-color);
   border: var(--green-color);
+  border: none;
   border-radius: 18px;
-  padding: 5px 10px;
+  padding: 2px 10px;
+  min-width: 120px;
   font-family: var(--font-name);
+  outline: none;
 }
 </style>
