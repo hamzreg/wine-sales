@@ -29,7 +29,8 @@ export default defineComponent({
   background-color: var(--beige-color);
   border: var(--beige-color);
   border-radius: 18px;
-  padding: 1.2% 3%;
+  padding: 5px 10px;
+  min-width: 100px;
   font-family: var(--font-name);
 }
 </style>
