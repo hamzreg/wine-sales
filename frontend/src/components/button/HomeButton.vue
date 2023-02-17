@@ -1,5 +1,5 @@
 <template>
-  <button class="button">
+  <button class="home-button">
     <Text fontSize="var(--little-text)" color="var(--green-color)">
       <slot></slot>
     </Text>
@@ -21,7 +21,7 @@ export default defineComponent({
   
 
 <style>
-.button{
+.home-button{
   display: flex;
   flex-direction: row;
   justify-content: center;
