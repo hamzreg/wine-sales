@@ -1,33 +1,36 @@
 <template>
+<Background>
   <body class="container">
     <body class="authorization-container">
       <form class="form-column" @submit.prevent="onSubmit">
-          <Text fontSize="var(--large-text)" fontColor>
-            Authorization
+          <Text fontSize="var(--little-text)" fontColor>
+            Войти в аккаунт
           </Text>
-          <InputLine @login="setLogin" name="login" fontSize="var(--middle-text)" defaultText="Login*"/>
-          <InputLine @password="setPassword" name="password" fontSize="var(--middle-text)" defaultText="Password*"/>
-          <Button>
-            Log In
-          </Button>
+          <InputLine @login="setLogin" name="login" fontSize="var(--tiny-text)" placeholderText="Логин"/>
+          <InputLine @password="setPassword" name="password" fontSize="var(--tiny-text)" placeholderText="Пароль"/>
+          <FormButton>
+            Войти
+          </FormButton>
           <div class="form-row">
-            <Text fontSize="var(--little-text)">
-                Don't have an account?
+            <Text fontSize="var(--tiny-text)">
+                Все еще нет аккаунта?
             </Text>
-            <Text fontSize="var(--little-text)">
-              <router-link style="color: var(--pink)" to="/registration">Sign Up now</router-link>
+            <Text fontSize="var(--tiny-text)">
+              <router-link style="color: var(--wine-color)" to="/registration">Зарегестрироваться</router-link>
             </Text>
           </div>
       </form>
     </body>
   </body>
+</Background>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import InputLine from '@/components/InputLine.vue'
 import Text from "@/components/Text.vue"
-import Button from "@/components/button/Button.vue"
+import FormButton from "@/components/button/FormButton.vue"
+import Background from "@/components/background/Background.vue"
 
 import auth from "@/authentificationService";
 import router from "@/router";
@@ -36,8 +39,9 @@ export default defineComponent({
   name: "Authorization",
   components: {
     InputLine,
-    Button,
+    FormButton,
     Text,
+    Background,
   },
   data () {
     return {
@@ -83,16 +87,25 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
 .authorization-container {
-  background: blue;
+  background: var(--green-color);
   box-shadow: 0px 0px 20px ;
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 18px;
   padding-left: 2%;
   padding-right: 2%;
   padding-top: 1%;
   padding-bottom: 1%; 
-  color: red;
-  width: 35%;
+  color: var(--beige-color);
+  width: 30%;
+  
 }
 .form-column {
   display: flex;
@@ -100,9 +113,10 @@ export default defineComponent({
   text-align: center;
   gap: 10px;
 }
+
 .form-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 10px;
   justify-content: center;
 }
