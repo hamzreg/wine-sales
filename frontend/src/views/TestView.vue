@@ -1,5 +1,7 @@
 <template>
     <HomeBackground>
+        <HomeButton>
+        </HomeButton>
     </HomeBackground>
 </template>
   
@@ -7,13 +9,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import HomeBackground from "@/components/HomeBackground.vue"
+import HomeButton from "@/components/HomeButton.vue"
 
 export default defineComponent({
 setup() {
     // auth.logout()
 },
 components: {
-    HomeBackground
+    HomeBackground,
+    HomeButton
 },
 });
 </script>
