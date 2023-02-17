@@ -118,7 +118,7 @@ namespace WineSales.Domain.Interactors
             var authorizedUser = _userRepository.GetByLogin(loginDetails.Login);
 
             if (authorizedUser == null)
-                throw new UserException("This user doesn't exist.");
+                return null;
 
             if (loginDetails.Password != authorizedUser.Password)
                 throw new UserException("Invalid password.");
