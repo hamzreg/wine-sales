@@ -3,7 +3,6 @@
   <router-view/>
 </template>
 
-
 <style>
 @font-face {
   font-family: "Frenchpress";
@@ -17,12 +16,13 @@
 
 .notify {
   font-size: 28px;
-  background: var(--white) !important;
+  background: var(--beige-color) !important;
   margin: 0 5px 5px;
   padding: 10px;
-  border-left: 15px solid var(--pink);
-  color: var(--gray);
-  text-shadow: 0px 0px 20px var(--wite);
+  border-left: 15px solid var(--wine-color);
+  color: var(--green-color);
+
+  text-shadow: 0px 0px 20px;
 }
 
 :root {
