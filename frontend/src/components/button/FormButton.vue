@@ -1,5 +1,5 @@
 <template>
-  <button class="FormButton">
+  <button class="form-button">
     <Text fontSize="var(--little-text)" color="var(--emerald-color)">
       <slot></slot>
     </Text>
@@ -21,7 +21,7 @@ export default defineComponent({
     
   
 <style>
-.FormButton{
+.form-button{
   display: flex;
   flex-direction: row;
   justify-content: center;

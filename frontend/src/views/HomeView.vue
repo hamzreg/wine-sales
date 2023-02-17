@@ -1,6 +1,8 @@
 <template>
   <HomeBackground>
-    <img src="@/assets/img/logo.png" height="500" class="logo"/>
+    <NavBarHomeView>
+      <img src="@/assets/img/logo.png" height="500" class="logo"/>
+    </NavBarHomeView>
   </HomeBackground>
 </template>
 
@@ -8,13 +10,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import HomeBackground from "@/components/background/HomeBackground.vue"
+import NavBarHomeView from '@/views/NavBarHomeView.vue'
 
 export default defineComponent({
   setup() {
     // auth.logout()
   },
   components: {
-    HomeBackground
+    HomeBackground,
+    NavBarHomeView,
   },
 });
 </script>
