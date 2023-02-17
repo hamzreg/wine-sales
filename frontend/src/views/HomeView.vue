@@ -1,10 +1,9 @@
 <template>
   <HomeBackground>
-  <div class="home">
-    <img src="../assets/img/logo.png" height="100"/>
-  </div>
-</HomeBackground>
+    <img src="@/assets/img/logo.png" height="500" class="logo"/>
+  </HomeBackground>
 </template>
+
 
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -19,3 +18,12 @@ export default defineComponent({
   },
 });
 </script>
+
+
+<style scoped>
+.logo {
+  position: absolute;
+  left: 35%;
+  bottom: 0%;
+}
+</style>

@@ -2,26 +2,26 @@
     <div class="bg">
       <slot></slot>
     </div>
-  </template>
-  
-  <script lang="ts">
-  import { defineComponent } from 'vue'
+</template>
 
-  export default defineComponent({
-    name: "HomeBackground"
-  })
-  </script>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: "HomeBackground"
+})
+</script>
   
   
-  <style scoped>
-  .bg {
-    top: 0pt;
-    left: 0pt;
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    background-color: #465F5A;
-    background-size: cover;
-    size: cover;
-  }
-  </style>
+<style scoped>
+.bg {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  height: 100vh;
+  width: 100vw;
+  background-color: #465F5A;
+  size: cover;
+}
+</style>
