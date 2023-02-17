@@ -1,17 +1,17 @@
 <template>
-  <div v-if="isInRole == 'supplier'" class="navbar-menu-container">
+  <div v-if="isInRole == 'supplier'" class="navbar-menu-container-home">
     <SupplierNavbarMenu />
     <LogoutNavbarMenu />
   </div>
-  <div v-else-if="isInRole == 'customer'" class="navbar-menu-container">
+  <div v-else-if="isInRole == 'customer'" class="navbar-menu-container-home">
     <CustomerNavbarMenu />
     <LogoutNavbarMenu />
   </div>
-  <div v-else-if="isInRole == 'administrator'" class="navbar-menu-container">
+  <div v-else-if="isInRole == 'administrator'" class="navbar-menu-container-home">
     <AdministratorNavbarMenu />
     <LogoutNavbarMenu />
   </div>
-  <div v-else class="navbar-menu-container">
+  <div v-else class="navbar-menu-container-home">
     <GuestNavbarMenu />
     <LoginNavbarMenu />
   </div>
@@ -19,16 +19,16 @@
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from 'vue'
-import GuestNavbarMenu from '@/components/navBar/GuestNavbarMenu.vue'
-import SupplierNavbarMenu from '@/components/navBar/SupplierNavbarMenu.vue'
-import CustomerNavbarMenu from '@/components/navBar/CustomerNavbarMenu.vue'
-import AdministratorNavbarMenu from '@/components/navBar/AdministratorNavbarMenu.vue'
-import LoginNavbarMenu from '@/components/navBar/LoginNavbarMenu.vue'
-import LogoutNavbarMenu from '@/components/navBar/LogoutNavbarMenu.vue'
+import GuestNavbarMenu from '@/components/navBarHome/GuestNavbarMenuHome.vue'
+import SupplierNavbarMenu from '@/components/navBarHome/SupplierNavbarMenuHome.vue'
+import CustomerNavbarMenu from '@/components/navBarHome/CustomerNavbarMenuHome.vue'
+import AdministratorNavbarMenu from '@/components/navBarHome/AdministratorNavbarMenuHome.vue'
+import LoginNavbarMenu from '@/components/navBarHome/LoginNavbarMenuHome.vue'
+import LogoutNavbarMenu from '@/components/navBarHome/LogoutNavbarMenuHome.vue'
 // import auth from '@/authentificationService'
 
 export default defineComponent({
-  name: "NavBar",
+  name: "NavBarHome",
   components: {
     GuestNavbarMenu,
     SupplierNavbarMenu,
@@ -60,7 +60,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.navbar-menu-container {
+.navbar-menu-container-home {
   position: fixed;
   height: var(--navbar-height);
   left: 1;
@@ -71,17 +71,17 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--green-color);
+  border-bottom: 2px solid var(--beige-color);
   width: 100%;
 }
-.navbar-menu {
+.navbar-menu-home {
   display: flex;
   gap: 2%;
   padding-left: 4%;
   width: 100%;
   /* border: 2px solid var(--beige-color); */
 }
-.authorization-menu {
+.authorization-menu-home {
   display: flex;
   gap: 10%;
   /* border: 2px solid var(--beige-color); */

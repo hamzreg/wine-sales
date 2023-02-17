@@ -1,41 +1,41 @@
 <template>
   <div class="navbar-menu">
     <router-link style="text-decoration: none" to="/">
-      <Button>
+      <HomeButton>
         Каталог
-      </Button>
+      </HomeButton>
     </router-link>
     <router-link style="text-decoration: none" to="/">
-      <Button>
+      <HomeButton>
         Продажи
-      </Button>
+      </HomeButton>
     </router-link>
     <router-link style="text-decoration: none" to="/">
-      <Button>
+      <HomeButton>
         Поставщики
-      </Button>
+      </HomeButton>
     </router-link>
     <router-link style="text-decoration: none" to="/">
-      <Button>
+      <HomeButton>
         Пользователи
-      </Button>
+      </HomeButton>
     </router-link>
     <router-link style="text-decoration: none" to="/">
-      <Button>
+      <HomeButton>
         О Винах
-      </Button>
+      </HomeButton>
     </router-link>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Button from '@/components/button/Button.vue'
+import HomeButton from '@/components/button/HomeButton.vue'
 
 export default defineComponent({
   name: "AdministratorNavbarMenu",
   components: {
-    Button
+    HomeButton
   }
 })
 </script>

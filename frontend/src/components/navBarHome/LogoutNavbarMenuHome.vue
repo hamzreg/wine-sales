@@ -1,20 +1,20 @@
 <template>
-  <div class="authorization-menu">
-    <Button @click="logout">
+  <div class="authorization-menu-home">
+    <HomeButton @click="logout">
       Выйти
-    </Button>
+    </HomeButton>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Button from '@/components/button/Button.vue'
+import HomeButton from '@/components/button/HomeButton.vue'
 // import auth from "@/authentificationService"
 
 export default defineComponent({
-  name: "LogoutNavbarMenu",
+  name: "LogoutNavbarMenuHome",
   components: {
-    Button,
+    HomeButton,
   },
   methods: {
     logout () {

@@ -1,23 +1,13 @@
 <template>
-  <div class="navbar-menu">
+  <div class="authorization-menu-home">
     <router-link style="text-decoration: none" to="/">
-      <HomeButton>
-        Каталог
+      <HomeButton >
+        Авторизация
       </HomeButton>
     </router-link>
     <router-link style="text-decoration: none" to="/">
       <HomeButton>
-        Мои Вина
-      </HomeButton>
-    </router-link>
-    <router-link style="text-decoration: none" to="/">
-      <HomeButton>
-        Продажи
-      </HomeButton>
-    </router-link>
-    <router-link style="text-decoration: none" to="/">
-      <HomeButton>
-        О Винах
+        Регистрация
       </HomeButton>
     </router-link>
   </div>
@@ -28,9 +18,9 @@ import { defineComponent } from 'vue'
 import HomeButton from '@/components/button/HomeButton.vue'
 
 export default defineComponent({
-  name: "SupplierNavbarMenu",
+  name: "LoginNavbarMenuHome",
   components: {
-    HomeButton
+    HomeButton,
   }
 })
 </script>

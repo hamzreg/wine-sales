@@ -1,13 +1,13 @@
 <template>
-  <div class="authorization-menu">
+  <div class="navbar-menu-home">
     <router-link style="text-decoration: none" to="/">
       <Button>
-        Авторизация
+        Каталог
       </Button>
     </router-link>
     <router-link style="text-decoration: none" to="/">
       <Button>
-        Регистрация
+        О Винах
       </Button>
     </router-link>
   </div>
@@ -18,9 +18,9 @@ import { defineComponent } from 'vue'
 import Button from '@/components/button/Button.vue'
 
 export default defineComponent({
-  name: "LoginNavbarMenu",
+  name: "GuestNavbarMenuHome",
   components: {
-    Button,
+    Button
   }
 })
 </script>
