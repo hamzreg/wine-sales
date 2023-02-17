@@ -2,6 +2,7 @@
   <router-view/>
 </template>
 
+
 <style>
 @font-face {
   font-family: "Frenchpress";
@@ -11,10 +12,6 @@
 
 #app {
   font-family: "Frenchpress";
-  /* -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
-  text-align: center;
-  /* color: #2c3e50; */
 }
 
 :root {
