@@ -15,6 +15,14 @@
 }
 
 :root {
+  --tiny-text: 24px;
+  --little-text: 32px;
+  --middle-text: 48px;
+  --large-text: 60px;
+  --huge-text: 96px;
+
   --green-color: #465F5A;
+  --beige-color: #F8EFE5;
+  --wine-color: #A12626;
 }
 </style>

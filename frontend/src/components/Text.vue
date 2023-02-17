@@ -2,22 +2,24 @@
     <div class="text" :style="{ fontSize, color } ">
       <slot></slot>
     </div>
-  </template>
+</template>
+
+
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
+  name: "Text",
+  components: {},
+  props: {
+    fontSize: String,
+    color: String,
+  },
+});
+</script>
   
-  <script lang="ts">
-  import { defineComponent } from "vue";
-  export default defineComponent({
-    name: "Text",
-    components: {},
-    props: {
-      fontSize: String,
-      color: String,
-    },
-  });
-  </script>
-  
-  <style scoped>
-  .text {
-    font: "Frenchpress";
-  }
-  </style>
+
+<style scoped>
+.text {
+  font: "Frenchpress";
+}
+</style>
