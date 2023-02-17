@@ -20,6 +20,6 @@ export default defineComponent({
 
 <style scoped>
 .text {
-  font: "Frenchpress";
+  font: var(--font-name);
 }
 </style>

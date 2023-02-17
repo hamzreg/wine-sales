@@ -9,7 +9,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "HomeBackground"
+  name: "Background"
 })
 </script>
   
@@ -21,7 +21,7 @@ export default defineComponent({
   left: 0%;
   height: 100vh;
   width: 100vw;
-  background-color: var(--green-color);
+  background-color: var(--beige-color);
   size: cover;
 }
 </style>

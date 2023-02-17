@@ -24,5 +24,7 @@
   --green-color: #465F5A;
   --beige-color: #F8EFE5;
   --wine-color: #A12626;
+
+  --font-name: "Frenchpress";
 }
 </style>
