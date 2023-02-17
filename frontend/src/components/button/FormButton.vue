@@ -1,5 +1,5 @@
 <template>
-  <button class="button">
+  <button class="FormButton">
     <Text fontSize="var(--little-text)" color="var(--emerald-color)">
       <slot></slot>
     </Text>
@@ -12,7 +12,7 @@ import { defineComponent } from 'vue'
 import Text from '@/components/Text.vue'
   
 export default defineComponent({
-  name: "Button",
+  name: "FormButton",
   components: {
     Text
   }
@@ -21,13 +21,13 @@ export default defineComponent({
     
   
 <style>
-.button{
+.FormButton{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: var(--beige-color);
-  border: 2px solid var(--emerald-color);
+  border: 1px solid var(--emerald-color);
   border-radius: 18px;
   padding: 5px 10px;
   font-family: var(--font-name);
