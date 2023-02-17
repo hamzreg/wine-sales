@@ -1,23 +1,24 @@
 <template>
-    <HomeBackground>
-        <HomeButton>
-        </HomeButton>
-    </HomeBackground>
+    <Background>
+        <FormButton>
+            Авторизация
+        </FormButton>
+    </Background>
 </template>
   
   
 <script lang="ts">
 import { defineComponent } from "vue";
-import HomeBackground from "@/components/HomeBackground.vue"
-import HomeButton from "@/components/HomeButton.vue"
+import Background from "@/components/background/Background.vue"
+import FormButton from "@/components/button/FormButton.vue"
 
 export default defineComponent({
 setup() {
     // auth.logout()
 },
 components: {
-    HomeBackground,
-    HomeButton
+    Background,
+    FormButton
 },
 });
 </script>

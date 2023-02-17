@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HomeBackground from "@/components/HomeBackground.vue"
+import HomeBackground from "@/components/background/HomeBackground.vue"
 
 export default defineComponent({
   setup() {
