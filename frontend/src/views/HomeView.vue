@@ -26,6 +26,8 @@ export default defineComponent({
 
 <style scoped>
 .logo {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   left: 35%;
   bottom: 0%;

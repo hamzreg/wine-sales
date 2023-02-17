@@ -27,7 +27,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   background-color: var(--beige-color);
-  border: 2px solid var(--emerald-color);
+  border: 1px solid var(--emerald-color);
   border-radius: 18px;
   padding: 5px 10px;
   font-family: var(--font-name);

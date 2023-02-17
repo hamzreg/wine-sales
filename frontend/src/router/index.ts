@@ -2,6 +2,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TestView from '../views/TestView.vue'
 import TestViewGadzhi from '../views/TestViewGadzhi.vue'
+import Authorization from '../views/AuthorizationView.vue'
+import Registration from '../views/RegistrationView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +22,18 @@ const routes: Array<RouteRecordRaw> = [
     path: '/testG',
     name: 'testG',
     component: TestViewGadzhi
+  },
+
+  {
+    path: '/auth',
+    name: 'Authorization',
+    component: Authorization
+  },
+
+  {
+    path: '/registration',
+    name: 'Registration',
+    component: Registration
   },
 ]
 
