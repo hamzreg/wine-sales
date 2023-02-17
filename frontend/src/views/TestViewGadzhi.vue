@@ -1,6 +1,6 @@
 <template>
   <HomeBackground>
-      <InputLine>
+      <InputLine placeholderText="qweqwewqeqwe">
       </InputLine>
   </HomeBackground>
 </template>
@@ -9,7 +9,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import HomeBackground from "@/components/background/HomeBackground.vue"
-import FormButton from "@/components/button/FormButton.vue"
 import InputLine from "@/components/InputLine.vue"
 
 export default defineComponent({
