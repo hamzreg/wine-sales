@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TestView from '../views/TestView.vue'
+import TestViewGadzhi from '../views/TestViewGadzhi.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,6 +14,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/test',
     name: 'test',
     component: TestView
+  },
+
+  {
+    path: '/testG',
+    name: 'testG',
+    component: TestViewGadzhi
   },
 ]
 

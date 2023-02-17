@@ -46,12 +46,10 @@ namespace WineSales.Controllers
         {
             return Ok(_mapper.Map<List<SupplierWineDTO>>(_supplierWineInteractor.GetAll()));
         }
-
-        [Authorize]
+      
         [HttpPost]
         [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]    
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Create(SupplierWineDTO supplierWine)
         {
@@ -67,12 +65,10 @@ namespace WineSales.Controllers
                 return Conflict(ex.Message);
             }
         }
-
-        [Authorize]
+   
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]   
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Patch(int id, SupplierWineBaseDTO supplierWine)
@@ -89,11 +85,9 @@ namespace WineSales.Controllers
                 return Conflict(ex.Message);
             }
         }
-
-        [Authorize]
+     
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]     
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
@@ -109,11 +103,9 @@ namespace WineSales.Controllers
             var supplierWine = _supplierWineInteractor.GetByID(id);
             return supplierWine != null ? Ok(_mapper.Map<SupplierWineDTO>(supplierWine)) : NotFound();
         }
-
-        [Authorize]
+   
         [HttpGet("{supplierWineId}/supplier")]
-        [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(SupplierDTO), StatusCodes.Status200OK)] 
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetSupplierBySupplierWineID(int id)
         {
