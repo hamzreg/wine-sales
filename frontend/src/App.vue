@@ -22,6 +22,7 @@
   --huge-text: 96px;
 
   --green-color: #465F5A;
+  --emerald-color: #225721;
   --beige-color: #F8EFE5;
   --wine-color: #A12626;
 
