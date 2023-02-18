@@ -33,14 +33,6 @@ export default defineComponent({
       type: Object,
       required: true
     }
-  },
-  data() {
-    return {
-      wine: '',
-      supplier: '',
-    }
-  },
-  mounted() {
   }
 })
 </script>
