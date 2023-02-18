@@ -45,7 +45,7 @@ export default {
     },
 
     changeRole (id: string, Role: string) {
-        console.log("changePermission:", {id, Role} );
+        console.log("changeRole:", {id, Role} );
         console.log(this.execute('patch', `/${id}`, {Role}));
         return this.execute('patch', `/${id}`, {Role});
     },
