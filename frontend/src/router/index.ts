@@ -4,6 +4,7 @@ import TestView from '../views/TestView.vue'
 import TestViewGadzhi from '../views/TestViewGadzhi.vue'
 import Authorization from '../views/AuthorizationView.vue'
 import Registration from '../views/RegistrationView.vue'
+import AdminSalesView from '@/views/AdminSalesView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -34,6 +35,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/registration',
     name: 'Registration',
     component: Registration
+  },
+
+  {
+    path: '/sales',
+    name: 'Sales',
+    component: AdminSalesView
   },
 ]
 
