@@ -19,7 +19,7 @@ export default defineComponent({
   methods: {
     logout () {
       auth.logout();
-      this.$router.push({ path: '/authorization' })
+      this.$router.push({ path: '/auth' })
     },
   }
 })

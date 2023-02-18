@@ -58,6 +58,7 @@ export default defineComponent({
           title: "Error",
           text: "Login and Password are Required",
         });
+        
         return;
       }
 
