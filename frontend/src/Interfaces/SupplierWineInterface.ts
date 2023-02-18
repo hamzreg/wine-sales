@@ -13,7 +13,7 @@ export interface SupplierWine {
 }
 
 const client = axios.create({
-    baseURL: 'http://localhost:5555/api/v1/supplierWines',
+    baseURL: 'http://localhost:5555/api/v1/supplierWine',
     validateStatus: function (status) {
         return status < 500;
     }

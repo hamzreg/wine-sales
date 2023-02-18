@@ -1,7 +1,7 @@
 <template>
   <HomeBackground>
-      <SaleList>
-      </SaleList>
+      <CatalogList>
+      </CatalogList>
   </HomeBackground>
 </template>
 
@@ -10,7 +10,7 @@
 import { defineComponent } from "vue";
 import HomeBackground from "@/components/background/HomeBackground.vue"
 import InputLine from "@/components/InputLine.vue"
-import SaleList from '@/components/sales/SaleList.vue'
+import CatalogList from '@/components/catalog/CatalogList.vue'
 
 export default defineComponent({
 setup() {
@@ -18,7 +18,7 @@ setup() {
 },
 components: {
   HomeBackground,
-  SaleList
+  CatalogList
 },
 });
 </script>
