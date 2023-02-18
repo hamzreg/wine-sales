@@ -11,4 +11,4 @@ start-mirror:
 	dotnet run WineSales.csproj --urls "http://host.docker.internal:5555"
 
 start:
-	dotnet run WineSales.csproj --urls "http://localhost:5550"
+	dotnet run WineSales.csproj --urls "http://host.docker.internal:5555"

@@ -19,7 +19,7 @@
                   Уже есть аккаунт?
               </Text>
               <Text fontSize="var(--tiny-text)">
-                <router-link style="color: var(--wine-color)" to="/registration">Войти в аккаунт</router-link>
+                <router-link style="color: var(--wine-color)" to="/auth">Войти в аккаунт</router-link>
               </Text>
             </div>
         </form>
