@@ -4,26 +4,25 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 
-export interface Sale {
+export interface Wine {
     id: number
-    sellingPrice: number
-    purchasePrice: number
-    profit: number
-    date: Date
-    wineNumber: number
-    customerId: number
-    supplierWineId: number
+    kind: string
+    color: string
+    sugar: string
+    volume: number
+    alcohol: number
+    number: number
 }
 
 const client = axios.create({
-    baseURL: 'http://localhost:5555/api/v1/sales',
+    baseURL: 'http://localhost:5555/api/v1/wines',
     validateStatus: function (status) {
         return status < 500;
     }
 })
 
 export default {
-    name: "SaleInterface",
+    name: "WineInterface",
 
     execute(method: any, resource: any, data?: any, params?: any) {
         return client({
@@ -43,12 +42,12 @@ export default {
         return this.execute('get', `/${id}`);
     },
 
-    post(sale: Sale) {
-        return this.execute('post', '/', sale, null);
+    post(wine: Wine) {
+        return this.execute('post', '/', wine, null);
     },
 
-    put(id: number, sale: Sale) {
-        return this.execute('put', `/${id}`, sale, null);
+    patch(id: number, wine: Wine) {
+        return this.execute('put', `/${id}`, wine, null);
     },
 
     delete(id: number) {

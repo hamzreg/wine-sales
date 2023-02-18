@@ -4,15 +4,11 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 
-export interface Sale {
+export interface Customer {
     id: number
-    sellingPrice: number
-    purchasePrice: number
-    profit: number
-    date: Date
-    wineNumber: number
-    customerId: number
-    supplierWineId: number
+    name: string
+    surname: string
+    phone: string
 }
 
 const client = axios.create({
@@ -23,7 +19,7 @@ const client = axios.create({
 })
 
 export default {
-    name: "SaleInterface",
+    name: "CustomerInterface",
 
     execute(method: any, resource: any, data?: any, params?: any) {
         return client({
@@ -43,12 +39,12 @@ export default {
         return this.execute('get', `/${id}`);
     },
 
-    post(sale: Sale) {
-        return this.execute('post', '/', sale, null);
+    post(customer: Customer) {
+        return this.execute('post', '/', customer, null);
     },
 
-    put(id: number, sale: Sale) {
-        return this.execute('put', `/${id}`, sale, null);
+    patch(id: number, customer: Customer) {
+        return this.execute('put', `/${id}`, customer, null);
     },
 
     delete(id: number) {

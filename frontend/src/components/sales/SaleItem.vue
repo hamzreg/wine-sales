@@ -1,19 +1,19 @@
 <template>
   <div class="sale-item">
 		<Text font-size="var(--little-text)" color="var(--green-color)">
-			{{ sale.purchasePrice }}
+			{{ sale.purchasePrice }} ₽
 		</Text>
 		<Text font-size="var(--little-text)" color="var(--green-color)">
-			{{ sale.sellingPrice }}
+			{{ sale.sellingPrice }} ₽
 		</Text>
 		<Text font-size="var(--little-text)" color="var(--green-color)">
-			{{ sale.wineNumber }}
+			{{ sale.wineNumber }} шт
 		</Text>
 		<Text font-size="var(--little-text)" color="var(--green-color)">
 			{{ sale.date }}
 		</Text>
 		<Text font-size="var(--little-text)" color="var(--green-color)">
-			{{ sale.profit }}
+			{{ sale.profit }} ₽
 		</Text>
   </div>
 </template>
@@ -33,6 +33,14 @@ export default defineComponent({
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      wine: '',
+      supplier: '',
+    }
+  },
+  mounted() {
   }
 })
 </script>
@@ -45,5 +53,6 @@ export default defineComponent({
   column-gap: 50px;
   width: 100%;
 	border-top: 1px solid var(--green-color);
+  padding-top: 2%;
 }
 </style>

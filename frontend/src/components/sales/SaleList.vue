@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <AdminSaleTitle/>
     <SaleItem
       v-for="sale in sales"
       v-bind:sale="sale"
@@ -11,6 +12,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import AdminSaleTitle from '@/components/sales/AdminSaleTitle.vue'
 import SaleItem from './SaleItem.vue';
 
 import SaleInterface from '@/Interfaces/SaleInterface'
@@ -18,6 +20,7 @@ import SaleInterface from '@/Interfaces/SaleInterface'
 export default defineComponent({
   name: "SaleList",
   components: {
+    AdminSaleTitle,
     SaleItem
   },
   data() {
@@ -40,9 +43,11 @@ export default defineComponent({
 <style scoped>
 .container {
   display: flex;
-  flex-wrap: wrap;
-  align-content: space-between;
-  min-height: 550px;
-  width: 100%
+  flex-direction: column;
+  margin: 8%;
+  width: 90%;
+  height: 90%;
+  justify-content: top;
+  align-items: center;
 }
 </style>

@@ -4,26 +4,22 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 
-export interface Sale {
+export interface Supplier {
     id: number
-    sellingPrice: number
-    purchasePrice: number
-    profit: number
-    date: Date
-    wineNumber: number
-    customerId: number
-    supplierWineId: number
+    name: string
+    country: string
+    license: boolean
 }
 
 const client = axios.create({
-    baseURL: 'http://localhost:5555/api/v1/sales',
+    baseURL: 'http://localhost:5555/api/v1/suppliers',
     validateStatus: function (status) {
         return status < 500;
     }
 })
 
 export default {
-    name: "SaleInterface",
+    name: "SupplierInterface",
 
     execute(method: any, resource: any, data?: any, params?: any) {
         return client({
@@ -43,15 +39,23 @@ export default {
         return this.execute('get', `/${id}`);
     },
 
-    post(sale: Sale) {
-        return this.execute('post', '/', sale, null);
+    post(supplier: Supplier) {
+        return this.execute('post', '/', supplier, null);
     },
 
-    put(id: number, sale: Sale) {
-        return this.execute('put', `/${id}`, sale, null);
+    patch(id: number, supplier: Supplier) {
+        return this.execute('put', `/${id}`, supplier, null);
     },
 
     delete(id: number) {
         return this.execute('delete', `/${id}`);
+    },
+
+    getSales(id: number) {
+      return this.execute('get', `/${id}/sales`);
+    },
+
+    getSupplierWines(id: number) {
+      return this.execute('get', `/${id}/supplierWines`)
     }
 }

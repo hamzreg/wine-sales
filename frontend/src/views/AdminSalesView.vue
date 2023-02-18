@@ -1,14 +1,15 @@
 <template>
   <Background>
-    <AdminSaleTitle></AdminSaleTitle>
-    <SaleList></SaleList>
+    <NavBarView>
+      <SaleList/>
+    </NavBarView>
   </Background>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Background from '@/components/background/Background.vue'
-import AdminSaleTitle from '@/components/sales/AdminSaleTitle.vue'
+import NavBarView from './NavBarView.vue'
 import SaleList from '@/components/sales/SaleList.vue'
     
 export default defineComponent({
@@ -17,7 +18,7 @@ export default defineComponent({
   },
   components: {
     Background,
-    AdminSaleTitle,
+    NavBarView,
     SaleList
   },
 })
@@ -25,14 +26,4 @@ export default defineComponent({
 
 
 <style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  width: 90%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
 </style>
