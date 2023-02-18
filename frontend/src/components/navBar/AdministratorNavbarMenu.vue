@@ -20,7 +20,7 @@
         Пользователи
       </HomeButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/aboutWines">
       <HomeButton>
         О Винах
       </HomeButton>

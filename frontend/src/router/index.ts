@@ -6,6 +6,7 @@ import Authorization from '../views/AuthorizationView.vue'
 import Registration from '../views/RegistrationView.vue'
 import AdminSalesView from '@/views/AdminSalesView.vue'
 import CatalogView from '@/views/CatalogView.vue'
+import AboutWinesView from '@/views/AboutWinesView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,6 +49,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/catalog',
     name: 'Catalog',
     component: CatalogView
+  },
+
+  {
+    path: '/aboutWines',
+    name: 'AboutWines',
+    component: AboutWinesView
   },
 ]
 
