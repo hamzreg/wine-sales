@@ -1,4 +1,3 @@
-//import SquadInterface from "./Interfaces/SquadInterface";
 import UserInterface from "./Interfaces/UserInterface";
 
 interface User {

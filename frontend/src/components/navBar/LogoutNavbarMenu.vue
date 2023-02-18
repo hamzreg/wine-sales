@@ -9,7 +9,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Button from '@/components/button/Button.vue'
-// import auth from "@/authentificationService"
+import auth from "@/authentificationService"
 
 export default defineComponent({
   name: "LogoutNavbarMenu",
@@ -18,8 +18,8 @@ export default defineComponent({
   },
   methods: {
     logout () {
-      // auth.logout();
-      // this.$router.push({ path: '/authorization' })
+      auth.logout();
+      this.$router.push({ path: '/authorization' })
     },
   }
 })
