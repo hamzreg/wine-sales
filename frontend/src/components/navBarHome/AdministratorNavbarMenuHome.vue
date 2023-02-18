@@ -1,6 +1,6 @@
 <template>
   <div class="navbar-menu-home">
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/catalog">
       <Button>
         Каталог
       </Button>

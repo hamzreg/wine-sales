@@ -30,6 +30,7 @@ export default defineComponent({
   border: var(--green-color);
   border-radius: 18px;
   padding: 5px 10px;
+  min-width: 110px;
   font-family: var(--font-name);
 }
 </style>
