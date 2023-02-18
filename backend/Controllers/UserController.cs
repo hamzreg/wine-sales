@@ -104,12 +104,12 @@ namespace WineSales.Controllers
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(LoginDetailsDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Login(LoginDetailsDTO login)
         {
             var result = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(login));
-            return result != null ? Ok(_mapper.Map<LoginDetailsDTO>(result)) : NotFound();
+            return result != null ? Ok(_mapper.Map<UserDTO>(result)) : NotFound();
         }
 
         [HttpPost("register")]

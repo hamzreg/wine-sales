@@ -15,7 +15,7 @@ export interface UserPermission {
 }
 
 const client = axios.create({
-    baseURL: 'https://localhost:5555/api/v1/users',
+    baseURL: 'http://localhost:5555/api/v1/users',
     validateStatus: function (status) {
         return status < 500;
     }
@@ -33,6 +33,8 @@ export default {
     },
 
     login (login: string, password: string) {
+        console.log("Login: ", {login, password})
+        console.log(this.execute('post', '/login', {login, password}))
         return this.execute('post', '/login', {login, password});
     },
 
