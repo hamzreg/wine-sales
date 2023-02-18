@@ -1,10 +1,10 @@
 <template>
   <div class="sale-item">
 		<Text font-size="var(--little-text)" color="var(--green-color)">
-			{{ sale.purchasePrice }} ₽
+			{{ wine.kind }} {{ wine.color }} {{ wine.sugar }} {{ wine.volume }} л
 		</Text>
 		<Text font-size="var(--little-text)" color="var(--green-color)">
-			{{ sale.sellingPrice }} ₽
+			{{ supplierWine.price }} ₽
 		</Text>
 		<Text font-size="var(--little-text)" color="var(--green-color)">
 			{{ sale.wineNumber }} шт
@@ -13,7 +13,7 @@
 			{{ sale.date }}
 		</Text>
 		<Text font-size="var(--little-text)" color="var(--green-color)">
-			{{ sale.profit }} ₽
+			{{ Math.round(supplierWine.price * sale.wineNumber) }} ₽
 		</Text>
   </div>
 </template>
@@ -22,9 +22,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Text from '@/components/Text.vue'
+
+import SupplierWineInterface from '@/Interfaces/SupplierWineInterface'
+import WineInterface from '@/Interfaces/WineInterface'
     
 export default defineComponent({
-  name: "SaleItem",
+  name: "SupplierSaleItem",
   components: {
     Text
   },
@@ -33,6 +36,25 @@ export default defineComponent({
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      supplierWine: {
+        wineID: 0,
+        supplierID: 0,
+        price: 0
+      },
+      wine: {
+        kind: '',
+        color: '',
+        sugar: '',
+        volume: 0
+      }
+    }
+  },
+  async mounted() {
+    this.supplierWine = await (await SupplierWineInterface.getById(this.sale.id)).data;
+    this.wine = await (await WineInterface.getById(this.supplierWine.wineID)).data;
   }
 })
 </script>
@@ -42,7 +64,7 @@ export default defineComponent({
 .sale-item {
   display: grid;
   grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
-  column-gap: 0px;
+  column-gap: 50px;
   width: 100%;
 	border-top: 1px solid var(--green-color);
   padding-top: 2%;
