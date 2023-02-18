@@ -7,7 +7,7 @@
     <CustomerNavbarMenu />
     <LogoutNavbarMenu />
   </div>
-  <div v-else-if="isInRole == 'administrator'" class="navbar-menu-container">
+  <div v-else-if="isInRole == 'admin'" class="navbar-menu-container">
     <AdministratorNavbarMenu />
     <LogoutNavbarMenu />
   </div>
@@ -25,7 +25,7 @@ import CustomerNavbarMenu from '@/components/navBar/CustomerNavbarMenu.vue'
 import AdministratorNavbarMenu from '@/components/navBar/AdministratorNavbarMenu.vue'
 import LoginNavbarMenu from '@/components/navBar/LoginNavbarMenu.vue'
 import LogoutNavbarMenu from '@/components/navBar/LogoutNavbarMenu.vue'
-// import auth from '@/authentificationService'
+import auth from '@/authentificationService'
 
 export default defineComponent({
   name: "NavBar",
@@ -39,18 +39,14 @@ export default defineComponent({
   },
   computed: {
     isInRole () {
-      // if (auth.getCurrentUser()) { 
-      //   return auth.getCurrentUser().permission;
-      // }
-      // else {
-      //   auth.logout()
-      //   return "guest"
-      // }
+      if (auth.getCurrentUser()) { 
+        return auth.getCurrentUser().role;
+      }
       
-      // return "supplier"
-      // return "customer"
-      // return "administrator"
-      return "guest"
+      else {
+        auth.logout()
+        return "user"
+      }
     }
   },
   methods: {
@@ -72,6 +68,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--green-color);
+  background-color: var(--beige-color);
   width: 100%;
 }
 .navbar-menu {

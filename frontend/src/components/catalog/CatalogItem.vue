@@ -42,7 +42,7 @@ export default defineComponent({
 .sale-item {
   display: grid;
   grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
-  column-gap: 0px;
+  column-gap: 50px;
   width: 100%;
 	border-top: 1px solid var(--green-color);
   padding-top: 2%;

@@ -1,11 +1,13 @@
 <template>
-  <div class="container">
-    <AdminSaleTitle/>
-    <SaleItem
-      v-for="sale in sales"
-      v-bind:sale="sale"
-      v-bind:key="sale.id">
-    </SaleItem>
+  <div class="containerSaleList">
+    <div class="innerContainer">
+      <AdminSaleTitle/>
+      <SaleItem
+        v-for="sale in sales"
+        v-bind:sale="sale"
+        v-bind:key="sale.id">
+      </SaleItem>
+    </div>
   </div>
 </template>
 
@@ -41,13 +43,23 @@ export default defineComponent({
 
 
 <style scoped>
-.container {
+.innerContainer {
   display: flex;
   flex-direction: column;
-  margin: 8%;
-  width: 90%;
+  width: 94%;
+  height: 100%;
+  justify-content: top;
+  align-items: center;
+  background-color: var(--beige-color);
+}
+.containerSaleList {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8%;
+  width: 100%;
   height: 90%;
   justify-content: top;
   align-items: center;
+  background-color: var(--beige-color);
 }
 </style>
