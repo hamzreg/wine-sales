@@ -5,7 +5,7 @@
         Каталог
       </Button>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/aboutWines">
       <Button>
         О Винах
       </Button>
