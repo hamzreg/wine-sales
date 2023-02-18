@@ -5,6 +5,7 @@ import TestViewGadzhi from '../views/TestViewGadzhi.vue'
 import Authorization from '../views/AuthorizationView.vue'
 import Registration from '../views/RegistrationView.vue'
 import AdminSalesView from '@/views/AdminSalesView.vue'
+import SupplierSalesView from '@/views/SupplierSalesView.vue'
 import CatalogView from '@/views/CatalogView.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -42,6 +43,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/sales',
     name: 'Sales',
     component: AdminSalesView
+  },
+
+  {
+    path: '/supplierSales',
+    name: 'SupplierSales',
+    component: SupplierSalesView
   },
 
   {

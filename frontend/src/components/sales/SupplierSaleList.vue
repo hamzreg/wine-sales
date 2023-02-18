@@ -1,12 +1,12 @@
 <template>
   <div class="containerSaleList">
     <div class="innerContainer">
-      <AdminSaleTitle/>
-      <SaleItem
+      <SupplierSaleTitle/>
+      <SupplierSaleItem
         v-for="sale in sales"
         v-bind:sale="sale"
         v-bind:key="sale.id">
-      </SaleItem>
+      </SupplierSaleItem>
     </div>
   </div>
 </template>
@@ -14,16 +14,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AdminSaleTitle from '@/components/sales/AdminSaleTitle.vue'
-import SaleItem from './SaleItem.vue';
+import SupplierSaleTitle from './SupplierSaleTitle.vue'
+import SupplierSaleItem from './SupplierSaleItem.vue'
+import authentificationService from '@/authentificationService'
 
-import SaleInterface from '@/Interfaces/SaleInterface'
+import SupplierInterface from '@/Interfaces/SupplierInterface'
 
 export default defineComponent({
-  name: "SaleList",
+  name: "SupplierSaleList",
   components: {
-    AdminSaleTitle,
-    SaleItem
+    SupplierSaleTitle,
+    SupplierSaleItem
   },
   data() {
     return {
@@ -35,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     getSales() {
-      SaleInterface.getAll().then(json => {this.sales = json.data});
+      SupplierInterface.getSales(authentificationService.getCurrentUser().id).then(json => {this.sales = json.data});
     }
   }
 });
