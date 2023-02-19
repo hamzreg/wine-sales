@@ -2,6 +2,7 @@
   <Background>
     <NavBarView>
       <SupplierWineList/>
+      <Button class="add-button">Добавить вино</Button>
     </NavBarView>
   </Background>
 </template>
@@ -11,6 +12,7 @@ import { defineComponent } from 'vue'
 import Background from '@/components/background/Background.vue'
 import NavBarView from './NavBarView.vue'
 import SupplierWineList from '@/components/supplierWines/SupplierWineList.vue'
+import Button from '@/components/button/Button.vue'
     
 export default defineComponent({
   setup() {
@@ -19,11 +21,19 @@ export default defineComponent({
   components: {
     Background,
     NavBarView,
-    SupplierWineList
+    SupplierWineList,
+    Button
   },
 })
 </script>
 
 
 <style scoped>
+.add-button {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 80%;
+  bottom: 5%;
+}
 </style>

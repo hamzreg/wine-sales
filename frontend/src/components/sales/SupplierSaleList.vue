@@ -36,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     getSales() {
-      SupplierInterface.getSales(authentificationService.getCurrentUser().id).then(json => {this.sales = json.data});
+      SupplierInterface.getSales(authentificationService.getCurrentUser().roleId).then(json => {this.sales = json.data});
     }
   }
 });

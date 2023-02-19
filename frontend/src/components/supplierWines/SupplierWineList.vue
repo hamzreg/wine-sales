@@ -29,12 +29,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.getSupplierWines();
-  },
-  methods: {
-    getSupplierWines() {
-      SupplierInterface.getSupplierWines(authentificationService.getCurrentUser().id).then(json => {this.supplierWines = json.data});
-    }
+    SupplierInterface.getSupplierWines(authentificationService.getCurrentUser().roleId).then(json => {this.supplierWines = json.data});
   }
 });
 </script>
@@ -53,7 +48,7 @@ export default defineComponent({
 .containerSupplierWineList {
   display: flex;
   flex-direction: column;
-  margin-top: 8%;
+  margin-top: 6%;
   width: 100%;
   height: 90%;
   justify-content: top;
