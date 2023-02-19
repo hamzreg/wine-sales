@@ -3,7 +3,7 @@
   <form class="outContainer" @submit.prevent="getSupplierWines">
     <SelectLine @kind="setKind" name="kind" fontSize="var(--tiny-text)" placeholderText="Введите сорт"/>
     <SelectLine @wineColor="setColor" name="wineColor" fontSize="var(--tiny-text)" placeholderText="Введите цвет"/>
-    <Button>Поиск</Button>
+    <Button class="search-button">Поиск</Button>
   </form> 
   <div class="containerCatalogList">
       <CatalogItem
@@ -73,7 +73,9 @@ export default defineComponent({
 
 
 <style scoped>
-
+.search-button {
+  width: 20%;
+}
 .outoutContainer {
   display: flex;
   flex-direction: column;
@@ -88,7 +90,7 @@ export default defineComponent({
 .outContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 100px;
+  gap: 25px;
   width: 80%;
   height: 35%;
   align-items: center;
@@ -100,7 +102,7 @@ export default defineComponent({
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   flex-direction: column;
-  margin-top: 10%;
+  margin-top: 15%;
   width: 100%;
   height: 90%;
   justify-content: top;

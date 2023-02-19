@@ -1,9 +1,6 @@
 <template>
   <Background>
     <NavBarView>
-      <router-link style="text-decoration: none" to="/addSupplierWine">
-        <Button class="add-button">Добавить вино</Button>
-      </router-link>
       <SupplierWineList/>
     </NavBarView>
   </Background>
@@ -31,14 +28,4 @@ export default defineComponent({
 
 
 <style scoped>
-.add-button {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 85%;
-  bottom: 5%;
-}
-.external-container {
-  align-items: center;
-}
 </style>

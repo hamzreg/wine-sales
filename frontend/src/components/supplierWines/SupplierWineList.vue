@@ -1,5 +1,8 @@
 <template>
   <div class="containerSupplierWineList">
+    <router-link style="text-decoration: none" to="/addSupplierWine">
+        <Button class="add-button">Добавить вино</Button>
+      </router-link>
     <div class="innerContainer">
       <SupplierWineItem
         v-for="supplierWine in supplierWines"
@@ -15,13 +18,15 @@
 import { defineComponent } from 'vue'
 import SupplierWineItem from './SupplierWineItem.vue'
 import authentificationService from '@/authentificationService'
+import Button from '../button/Button.vue'
 
 import SupplierInterface from '@/Interfaces/SupplierInterface'
 
 export default defineComponent({
   name: "SupplierWineList",
   components: {
-    SupplierWineItem
+    SupplierWineItem,
+    Button
   },
   data() {
     return {
@@ -36,11 +41,19 @@ export default defineComponent({
 
 
 <style scoped>
+.add-button {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 80%;
+}
 .innerContainer {
   display: flex;
   flex-direction: column;
   width: 94%;
   height: 100%;
+  margin-top: 5%;
+  margin-bottom: 2%;
   justify-content: top;
   align-items: center;
   background-color: var(--beige-color);
@@ -48,7 +61,7 @@ export default defineComponent({
 .containerSupplierWineList {
   display: flex;
   flex-direction: column;
-  margin-top: 6%;
+  margin-top: 8%;
   width: 100%;
   height: 90%;
   justify-content: top;
