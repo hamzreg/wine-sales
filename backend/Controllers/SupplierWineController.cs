@@ -112,5 +112,23 @@ namespace WineSales.Controllers
            var supplier = _supplierInteractor.GetBySupplierWineID(id);
            return supplier != null ? Ok(_mapper.Map<SupplierDTO>(supplier)) : NotFound();
         }
+
+        [HttpGet("{color}")]
+        [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetByColor(string color)
+        {
+            var Wines = _supplierWineInteractor.GetSupplierWinesByColor(color);
+            return Wines != null ? Ok(_mapper.Map<List<SupplierWineDTO>>(Wines)) : NotFound();
+        }
+
+        [HttpGet("{kind}")]
+        [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetByKind(string kind)
+        {
+            var Wines = _supplierWineInteractor.GetSupplierWinesByKind(kind);
+            return Wines != null ? Ok(_mapper.Map<List<SupplierWineDTO>>(Wines)) : NotFound();
+        }
     }
 }

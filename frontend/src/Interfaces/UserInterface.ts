@@ -38,8 +38,8 @@ export default {
         return this.execute('post', '/login', {login, password});
     },
 
-    register (login: string, password: string) {
-        return this.execute('post', '/register', {login, password});
+    register (login: string, password: string, role: string, roleId: number) {
+        return this.execute('post', '/register', {login, password, role, roleId});
     },
 
     getAll() {

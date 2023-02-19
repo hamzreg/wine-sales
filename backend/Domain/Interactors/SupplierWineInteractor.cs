@@ -17,6 +17,8 @@ namespace WineSales.Domain.Interactors
         List<SupplierWineBL> GetBySupplierID(int supplierID);
         SupplierWineBL UpdateSupplierWine(SupplierWineBL supplierWine);
         SupplierWineBL DeleteSupplierWine(int id);
+        List<SupplierWineBL> GetSupplierWinesByColor(string color);
+        List<SupplierWineBL> GetSupplierWinesByKind(string kind);
     }
 
     public class SupplierWineInteractor : ISupplierWineInteractor
@@ -100,9 +102,25 @@ namespace WineSales.Domain.Interactors
             return true;
         }
 
-        private List<SupplierWineBL> GetSupplierWinesByColor(string color)
+        public List<SupplierWineBL> GetSupplierWinesByColor(string color)
         {
             var wines = _wineRepository.GetByColor(color);
+            var supplierWines = new List<SupplierWine>();
+
+            foreach (Wine wine in wines)
+            {
+                var nowSupplierWines = _supplierWineRepository.GetByWineID(wine.ID);
+
+                if (nowSupplierWines.Count != 0)
+                    supplierWines.AddRange(nowSupplierWines);
+            }
+
+            return _mapper.Map<List<SupplierWineBL>>(supplierWines);
+        }
+
+        public List<SupplierWineBL> GetSupplierWinesByKind(string kind)
+        {
+            var wines = _wineRepository.GetByKind(kind);
             var supplierWines = new List<SupplierWine>();
 
             foreach (Wine wine in wines)

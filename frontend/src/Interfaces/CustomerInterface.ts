@@ -5,14 +5,13 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 
 export interface Customer {
-    id: number
-    name: string
-    surname: string
-    phone: string
+    name: string,
+    surname: string,
+    phone: string,
 }
 
 const client = axios.create({
-    baseURL: 'http://localhost:5555/api/v1/sales',
+    baseURL: 'http://localhost:5555/api/v1/customers',
     validateStatus: function (status) {
         return status < 500;
     }
@@ -21,13 +20,12 @@ const client = axios.create({
 export default {
     name: "CustomerInterface",
 
-    execute(method: any, resource: any, data?: any, params?: any) {
+    execute(method: any, resource: any, data?: any) {
         return client({
             method,
             url: resource,
             data,
             headers: { },
-            params: params
         })
     },
 
@@ -40,11 +38,15 @@ export default {
     },
 
     post(customer: Customer) {
-        return this.execute('post', '/', customer, null);
+        return this.execute('post', '/', customer);
     },
 
+    // addCustomer(Name: string, Surname: string, Phone: string) {
+    //     return this.execute('post', '/', {Name, Surname, Phone});
+    // },
+
     patch(id: number, customer: Customer) {
-        return this.execute('put', `/${id}`, customer, null);
+        return this.execute('put', `/${id}`, customer);
     },
 
     delete(id: number) {

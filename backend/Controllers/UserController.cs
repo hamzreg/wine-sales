@@ -51,14 +51,14 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Create(UserPasswordDTO user)
+        public IActionResult Create(LoginDTO user)
         {
             try
             {
                 var createdUser = _userInteractor
                     .CreateUser(_mapper.Map<UserBL>(user));
 
-                return Ok(_mapper.Map<UserPasswordDTO>(createdUser));
+                return Ok(_mapper.Map<LoginDTO>(createdUser));
             }
             catch (Exception ex)
             {
@@ -118,11 +118,12 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Register(LoginDTO login)
         {
-            var user = new UserPasswordDTO
+            var user = new LoginDTO
             {
                 Login = login.Login,
                 Password = login.Password,
-                Role = login.Role
+                Role = login.Role,
+                RoleId = login.RoleId
             };
 
             return Create(user);
