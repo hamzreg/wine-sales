@@ -76,7 +76,7 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding: 5px;
   gap: 10px;
 }
 
@@ -85,5 +85,6 @@ export default defineComponent({
   flex-direction: row;
   gap: 10%;
   justify-content: center;
+  width: 40%;
 }
 </style>

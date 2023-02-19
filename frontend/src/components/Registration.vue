@@ -57,7 +57,7 @@
     },
     methods: {
       async onSubmit() {
-        console.log("Authorization:", this.login, this.password);
+        console.log("Registration:", this.login, this.password);
   
         if (this.login == '' || this.password == '') {
           this.$notify({
@@ -67,21 +67,23 @@
           return;
         }
   
-        const result = await auth.login(this.login, this.password);
+        const result = await auth.registerCustomer(this.login, this.password, "customer", this.FirstName, this.SecondName, this.Phone);
   
         if (result) {
-          console.log("You are logged in")
-          router.push("/");
+        await auth.login(this.login, this.password);
+        router.push("/");
         }
+
         else {
-          console.log("Incorrect Data")
+          console.log(result)
   
           this.$notify({
             title: "Error",
-            text: "Login Or Password is Incorrect",
+            text: "This account already extsts",
           });
         }
       },
+
       setLogin(login : string) {
         this.login = login;
       },
@@ -89,13 +91,13 @@
         this.password = password;
       },
       setFirstName(FirstName : string) {
-        this.password = FirstName;
+        this.FirstName = FirstName;
       },
       setSecondName(SecondName : string) {
-        this.password = SecondName;
+        this.SecondName = SecondName;
       },
       setPhone(Phone : string) {
-        this.password = Phone;
+        this.Phone = Phone;
       },
     }
   })

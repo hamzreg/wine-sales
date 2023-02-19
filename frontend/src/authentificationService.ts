@@ -1,9 +1,16 @@
 import UserInterface from "./Interfaces/UserInterface";
+import CustomerInterface from "./Interfaces/CustomerInterface";
 
 interface User {
     id: number,
     login: string,
-    Role: string
+    Role: string,
+}
+
+interface Customer {
+    name: string,
+    surname: string,
+    phone: string,
 }
 
 export default {
@@ -21,17 +28,22 @@ export default {
         return false;
     },
 
-    async register(login: string, password: string) {
-        const resUser = await UserInterface.register(login, password);
+    async registerCustomer(login: string, password: string, role: string, name: string, surname: string, phone: string) {
+        console.log("Register Customer")
+
+        const customer: Customer = {
+            name: name,
+            surname: surname,
+            phone: phone,
+        }
+        
+        const resCustomer = await CustomerInterface.post(customer);
+        console.log("AddCustomerAuth:", resCustomer.status);
+        
+        const resUser = await UserInterface.register(login, password, role, resCustomer.data["id"]);
         console.log("RegisterAuth:", resUser.status);
 
-        /* if (resUser.status == 200) {
-            const resSquad = await SquadInterface.addSquad(0, login + "Squad", 0);
-            console.log("AddSquadAuth:", resSquad.status);
-            return true;
-        } */
-
-        return false;
+        return true;
     },
     
     getCurrentUser() {
