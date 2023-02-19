@@ -5,7 +5,6 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 
 export interface Sale {
-    id: number
     sellingPrice: number
     purchasePrice: number
     profit: number

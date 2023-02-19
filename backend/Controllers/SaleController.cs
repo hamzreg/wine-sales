@@ -49,7 +49,7 @@ namespace WineSales.Controllers
                 var createdSale = _saleInteractor
                     .CreateSale(_mapper.Map<SaleBL>(sale));
 
-                return Ok(_mapper.Map<SupplierDTO>(createdSale));
+                return Ok(_mapper.Map<SaleDTO>(createdSale));
             }
             catch (Exception ex)
             {

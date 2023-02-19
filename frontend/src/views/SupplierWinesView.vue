@@ -2,7 +2,9 @@
   <Background>
     <NavBarView>
       <SupplierWineList/>
-      <Button class="add-button">Добавить вино</Button>
+      <router-link style="text-decoration: none" to="/addSupplierWine">
+        <Button class="add-button">Добавить вино</Button>
+      </router-link>
     </NavBarView>
   </Background>
 </template>
@@ -33,7 +35,10 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 80%;
+  left: 85%;
   bottom: 5%;
+}
+.external-container {
+  align-items: center;
 }
 </style>
