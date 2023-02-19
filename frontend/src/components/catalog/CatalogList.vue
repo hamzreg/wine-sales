@@ -1,40 +1,71 @@
 <template>
+<div class="outoutContainer">
+  <form class="outContainer" @submit.prevent="getSupplierWines">
+    <SelectLine @kind="setKind" name="kind" fontSize="var(--tiny-text)" placeholderText="Введите сорт"/>
+    <SelectLine @wineColor="setColor" name="wineColor" fontSize="var(--tiny-text)" placeholderText="Введите цвет"/>
+    <Button>Поиск</Button>
+  </form> 
   <div class="containerCatalogList">
-    <!-- <div class="innerContainer"> -->
       <CatalogItem
         v-for="supplierWine in supplierWines"
         v-bind:supplierWine="supplierWine"
         v-bind:key="supplierWine.id">
       </CatalogItem>
-    <!-- </div> -->
   </div>
+</div>
 </template>
 
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AdminSaleTitle from '@/components/sales/AdminSaleTitle.vue'
 import CatalogItem from './CatalogItem.vue';
+import Button from '@/components/button/Button.vue'
 
 import WineInterface from '@/Interfaces/WineInterface'
+import SelectLine from '@/components/SelectLine.vue'
 import SupplierWineInterface from '@/Interfaces/SupplierWineInterface'
 
 export default defineComponent({
   name: "CatalogList",
   components: {
-    CatalogItem
+    CatalogItem,
+    SelectLine,
+    Button
   },
   data() {
     return {
-      supplierWines: []
+      supplierWines: [],
+      kindStr: '',
+      colorStr: '',
     }
   },
+  props: [
+    "kind",
+    "wineColor"
+],
   mounted() {
     this.getSupplierWines();
   },
   methods: {
-    getSupplierWines() {
-      SupplierWineInterface.getAll().then(json => {this.supplierWines = json.data});
+    async getSupplierWines() {
+      console.log(this.kindStr, this.colorStr)
+      if (this.kindStr != ""){
+        const res = await SupplierWineInterface.getByKind(this.kindStr).then(json => {this.supplierWines = json.data});
+      }
+      else if (this.colorStr != ""){
+        const res = await SupplierWineInterface.getByColor(this.colorStr).then(json => {this.supplierWines = json.data});
+      }
+      else {
+        const res = await SupplierWineInterface.getAll().then(json => {this.supplierWines = json.data});
+      }
+    },
+
+    setKind(kind : string) {
+      this.kindStr = kind;
+    },
+
+    setColor(wineColor : string) {
+      this.colorStr = wineColor;
     }
   }
 });
@@ -42,20 +73,34 @@ export default defineComponent({
 
 
 <style scoped>
-/* .innerContainer {
+
+.outoutContainer {
   display: flex;
   flex-direction: column;
-  width: 94%;
+  margin: 0;
+  width: 100%;
   height: 100%;
   justify-content: top;
   align-items: center;
-  background-color: var(--beige-color);
-} */
+  padding-top: 0%;
+  gap: 20px;
+}
+.outContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 100px;
+  width: 80%;
+  height: 35%;
+  align-items: center;
+  position: absolute;
+  justify-content: center;
+  text-align: center;
+}
 .containerCatalogList {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   flex-direction: column;
-  margin-top: 8%;
+  margin-top: 10%;
   width: 100%;
   height: 90%;
   justify-content: top;

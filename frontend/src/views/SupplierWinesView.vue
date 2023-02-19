@@ -1,10 +1,10 @@
 <template>
   <Background>
     <NavBarView>
-      <SupplierWineList/>
       <router-link style="text-decoration: none" to="/addSupplierWine">
         <Button class="add-button">Добавить вино</Button>
       </router-link>
+      <SupplierWineList/>
     </NavBarView>
   </Background>
 </template>

@@ -113,7 +113,7 @@ namespace WineSales.Controllers
            return supplier != null ? Ok(_mapper.Map<SupplierDTO>(supplier)) : NotFound();
         }
 
-        [HttpGet("{color}")]
+        [HttpGet("{color}/winesByColor")]
         [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetByColor(string color)
@@ -122,7 +122,7 @@ namespace WineSales.Controllers
             return Wines != null ? Ok(_mapper.Map<List<SupplierWineDTO>>(Wines)) : NotFound();
         }
 
-        [HttpGet("{kind}")]
+        [HttpGet("{kind}/winesByKind")]
         [ProducesResponseType(typeof(SupplierWineDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetByKind(string kind)

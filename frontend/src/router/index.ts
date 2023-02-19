@@ -66,10 +66,17 @@ const routes: Array<RouteRecordRaw> = [
     component: AddSupplierWineForm
   },
 
+  // {
+  //   path: '/catalog',
+  //   name: 'Catalog',
+  //   component: CatalogView
+  // },
+
   {
-    path: '/catalog',
-    name: 'Catalog',
-    component: CatalogView
+    path: "/catalog:color?:kind?",
+    name: "catalog",
+    component: CatalogView,
+    props: true,
   },
 
   {
