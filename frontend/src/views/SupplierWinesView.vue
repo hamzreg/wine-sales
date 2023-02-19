@@ -2,7 +2,9 @@
   <Background>
     <NavBarView>
       <SupplierWineList/>
-      <Button class="add-button">Добавить вино</Button>
+      <router-link style="text-decoration: none" to="/addSupplierWine">
+        <Button class="add-button">Добавить вино</Button>
+      </router-link>
     </NavBarView>
   </Background>
 </template>
