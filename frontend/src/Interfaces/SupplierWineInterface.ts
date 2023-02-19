@@ -5,7 +5,6 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 
 export interface SupplierWine {
-    id: number
     supplierId: number
     wineId: number
     price: number

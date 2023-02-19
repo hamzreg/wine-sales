@@ -35,7 +35,10 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 80%;
+  left: 85%;
   bottom: 5%;
+}
+.external-container {
+  align-items: center;
 }
 </style>

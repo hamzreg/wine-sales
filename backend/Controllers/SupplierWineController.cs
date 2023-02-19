@@ -58,7 +58,7 @@ namespace WineSales.Controllers
                 var createdSupplierWine = _supplierWineInteractor
                     .CreateSupplierWine(_mapper.Map<SupplierWineBL>(supplierWine));
 
-                return Ok(_mapper.Map<SupplierDTO>(createdSupplierWine));
+                return Ok(_mapper.Map<SupplierWineDTO>(createdSupplierWine));
             }
             catch (Exception ex)
             {

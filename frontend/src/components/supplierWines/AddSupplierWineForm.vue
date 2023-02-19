@@ -64,7 +64,8 @@ export default defineComponent({
       price: 0,
       minPrice: 118,
       percent: 0,
-      minPercent: 43
+      minPercent: 43,
+      wineId: 0
     }
   },
   methods: {
@@ -110,7 +111,6 @@ export default defineComponent({
       }
 
       const wine: Wine = {
-        id: 0,
         kind: this.kind,
         color: this.color,
         sugar: this.sugar,
@@ -124,20 +124,37 @@ export default defineComponent({
       const wineResult = await WineInterface.post(wine);
       console.log(wineResult.status);
 
-      if (wineResult.status == 201) {
-        console.log(wineResult.data["ID"]);
+      if (wineResult.status == 200) {
+        this.wineId = wineResult.data["id"]
+        console.log(this.wineId);
+
+        const supplierWine: SupplierWine = {
+          supplierId: auth.getCurrentUser().roleId,
+          wineId: this.wineId,
+          price: this.price,
+          percent: this.percent
+        }
+
+        const supplierWineResult = await SupplierWineInterface.post(supplierWine);
+        console.log(supplierWineResult.status)
+
+        if (supplierWineResult.status == 200) {
+          router.push("/supplierWines");
+        }
+        else {
+          this.$notify({
+            title: "Ошибка",
+            text: "Ошибка создания SupplierWine."
+          })
+        }
       }
-
-      // const supplierWine: SupplierWine = {
-      //   id: 1,
-      //   supplierId: auth.getCurrentUser().roleId,
-      //   wineId: 1,
-      //   price: this.price,
-      //   percent: this.percent,
-      // }
-
-      // console.log(supplierWine)
-
+      else {
+        this.$notify({
+          title: "Ошибка",
+          text: "Ошибка создания Wine.",
+        }
+        )
+      }
     },
     setKind(kind : string) {
       this.kind = kind;
