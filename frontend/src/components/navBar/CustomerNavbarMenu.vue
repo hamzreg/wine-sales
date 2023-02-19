@@ -1,13 +1,13 @@
 <template>
   <div class="navbar-menu">
+    <router-link style="text-decoration: none" to="/">
+      <HomeButton>
+        WineSales
+      </HomeButton>
+    </router-link>
     <router-link style="text-decoration: none" to="/catalog">
       <HomeButton>
         Каталог
-      </HomeButton>
-    </router-link>
-    <router-link style="text-decoration: none" to="/">
-      <HomeButton>
-        Корзина
       </HomeButton>
     </router-link>
     <router-link style="text-decoration: none" to="/aboutWines">
