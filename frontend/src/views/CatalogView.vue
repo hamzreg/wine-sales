@@ -1,7 +1,9 @@
 <template>
   <Background>
     <NavBarView>
-      <CatalogList/>
+      <CatalogList
+      v-bind:wineColor="wineColor"
+      v-bind:kind="kind"/>
     </NavBarView>
   </Background>
 </template>
@@ -21,6 +23,10 @@ export default defineComponent({
     NavBarView,
     CatalogList
   },
+  props: [
+    "wineColor",
+    "kind"
+  ]
 })
 </script>
 

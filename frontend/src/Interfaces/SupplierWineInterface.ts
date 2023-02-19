@@ -53,5 +53,13 @@ export default {
 
     getSupplier(id: number) {
         return this.execute('get', `/${id}/supplier`);
-    }
+    },
+
+    getByColor(color: string) {
+        return this.execute('get', `/${color}/winesByColor`);
+    },
+
+    getByKind(kind: string) {
+        return this.execute('get', `/${kind}/winesByKind`);
+    },
 }
