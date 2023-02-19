@@ -5,7 +5,7 @@
         Каталог
       </Button>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/sales">
       <Button>
         Продажи
       </Button>

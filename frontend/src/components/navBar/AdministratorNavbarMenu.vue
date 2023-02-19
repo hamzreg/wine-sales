@@ -5,7 +5,7 @@
         Каталог
       </HomeButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/sales">
       <HomeButton>
         Продажи
       </HomeButton>

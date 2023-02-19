@@ -5,12 +5,12 @@
         Каталог
       </Button>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/supplierWines">
       <Button>
         Мои Вина
       </Button>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/supplierSales">
       <Button>
         Продажи
       </Button>
