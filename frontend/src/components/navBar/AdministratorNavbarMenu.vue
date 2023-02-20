@@ -15,16 +15,6 @@
         Продажи
       </HomeButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
-      <HomeButton>
-        Поставщики
-      </HomeButton>
-    </router-link>
-    <router-link style="text-decoration: none" to="/">
-      <HomeButton>
-        Пользователи
-      </HomeButton>
-    </router-link>
     <router-link style="text-decoration: none" to="/aboutWines">
       <HomeButton>
         О Винах
