@@ -92,11 +92,12 @@ export default defineComponent({
   grid-template-columns: 1fr 1fr 1fr;
   gap: 25px;
   width: 80%;
-  height: 35%;
+  height: 15%;
   align-items: center;
   position: absolute;
   justify-content: center;
   text-align: center;
+  margin: 6%;
 }
 .containerCatalogList {
   display: grid;
