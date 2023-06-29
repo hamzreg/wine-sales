@@ -39,6 +39,12 @@ namespace WineSales.Domain.Interactors
             if (sale.WineNumber < WineConfig.MinNumber)
                 throw new SaleException("Invalid input of wine number.");
 
+            var nowDate = Convert.ToString(DateTime.Now.ToShortDateString());
+            string[] strNowDate = nowDate.Split('.');
+            sale.Date = new DateOnly(Convert.ToInt32(strNowDate[2]), 
+                                     Convert.ToInt32(strNowDate[1]),
+                                     Convert.ToInt32(strNowDate[0]));
+
             var transmittedSale = _mapper.Map<Sale>(sale);
             return _mapper.Map<SaleBL>(_saleRepository.Create(transmittedSale));
         }

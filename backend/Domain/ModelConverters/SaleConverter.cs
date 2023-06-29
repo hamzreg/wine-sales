@@ -26,7 +26,6 @@ namespace WineSales.Domain.ModelConverters
                 SellingPrice = sale.SellingPrice ?? existingSale.SellingPrice,
                 PurchasePrice = sale.PurchasePrice ?? existingSale.PurchasePrice,
                 Profit = sale.Profit ?? existingSale.Profit,
-                Date = sale.Date ?? existingSale.Date,
                 WineNumber = sale.WineNumber ?? existingSale.WineNumber
             };
         }

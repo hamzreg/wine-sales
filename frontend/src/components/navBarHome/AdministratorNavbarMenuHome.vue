@@ -15,16 +15,6 @@
         Продажи
       </Button>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
-      <Button>
-        Поставщики
-      </Button>
-    </router-link>
-    <router-link style="text-decoration: none" to="/">
-      <Button>
-        Пользователи
-      </Button>
-    </router-link>
     <router-link style="text-decoration: none" to="/aboutWines">
       <Button>
         О Винах

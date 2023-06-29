@@ -21,6 +21,7 @@ namespace WineSales.Domain.Utils
 
             CreateMap<CustomerBaseDTO, CustomerBL>().ReverseMap();
             CreateMap<CustomerDTO, CustomerBL>().ReverseMap();
+            CreateMap<LoginDTO, UserBL>().ReverseMap();
             CreateMap<LoginDetailsDTO, LoginDetailsBL>().ReverseMap();
             CreateMap<LoginDetailsDTO, UserBL>().ReverseMap();
             CreateMap<SaleBaseDTO, SaleBL>().ReverseMap();

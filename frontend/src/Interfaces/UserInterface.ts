@@ -7,7 +7,8 @@ axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 export interface User {
     id: number,
     login: string,
-    Role: string
+    role: string,
+    roleId: number
 }
 
 export interface UserPermission {

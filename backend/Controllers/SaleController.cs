@@ -42,7 +42,7 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)] 
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Create(SaleDTO sale)
+        public IActionResult Create(SaleBaseDTO sale)
         {
             try
             {

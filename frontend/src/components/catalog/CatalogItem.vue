@@ -21,14 +21,9 @@
 			{{ Math.round(supplierWine.price * (1 + supplierWine.percent / 100)) }} ₽
 		</Text>
     <div v-if="isInRole == 'customer'">
-      <div class="form-rowCatalog">
-        <Button>
+        <Button v-on:click="createSale">
           Купить
         </Button>
-        <Button>
-          Поставщик
-        </Button>
-      </div>
     </div>
   </div>
 </template>
@@ -38,8 +33,11 @@
 import { defineComponent } from 'vue'
 import Text from '@/components/Text.vue'
 import WineInterface from '@/Interfaces/WineInterface'
+import { Sale } from '@/Interfaces/SaleInterface'
+import SaleInterface from '@/Interfaces/SaleInterface'
 import auth from '@/authentificationService'
 import Button from '@/components/button/Button.vue'
+import router from "@/router"
     
 export default defineComponent({
   name: "CatalogItem",
@@ -66,6 +64,30 @@ export default defineComponent({
   mounted() {
     WineInterface.getById(this.supplierWine["wineID"]).then(json => {this.wine = json.data});
   },
+  methods: {
+    async createSale() {
+      const sale: Sale = {
+        customerId: auth.getCurrentUser().roleId,
+        supplierWineId: this.supplierWine.id,
+        sellingPrice: Math.round(this.supplierWine.price * (1 + this.supplierWine.percent / 100)),
+        purchasePrice: this.supplierWine.price,
+        profit: (Math.round(this.supplierWine.price * (1 + this.supplierWine.percent / 100)) - this.supplierWine.price),
+        wineNumber: 1,
+      }
+
+      console.log(sale);
+
+      const saleResult = await SaleInterface.post(sale);
+      console.log(saleResult.status)
+
+      if (saleResult.status == 200) {
+        this.$notify({
+          title: "Успех.",
+          text: "Вы купили вино.",
+        });
+      }
+    }
+  }
 })
 </script>
   
@@ -76,7 +98,7 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 20px;
   gap: 10px;
 }
 
@@ -85,6 +107,6 @@ export default defineComponent({
   flex-direction: row;
   gap: 10%;
   justify-content: center;
-  width: 40%;
+  width: 60%;
 }
 </style>

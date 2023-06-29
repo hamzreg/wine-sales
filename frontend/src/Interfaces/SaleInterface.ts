@@ -5,13 +5,12 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = '*';
 
 export interface Sale {
+    customerId: number
+    supplierWineId: number
     sellingPrice: number
     purchasePrice: number
     profit: number
-    date: Date
     wineNumber: number
-    customerId: number
-    supplierWineId: number
 }
 
 const client = axios.create({

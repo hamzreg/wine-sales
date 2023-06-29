@@ -53,7 +53,7 @@ export default defineComponent({
     }
   },
   async mounted() {
-    this.supplierWine = await (await SupplierWineInterface.getById(this.sale.id)).data;
+    this.supplierWine = await (await SupplierWineInterface.getById(this.sale["supplierWineID"])).data;
     this.wine = await (await WineInterface.getById(this.supplierWine.wineID)).data;
   }
 })
