@@ -105,9 +105,6 @@ namespace WineSales.Domain.Interactors
             if (IsExistByLogin(loginDetails.Login))
                 throw new UserException("This user already exists.");
 
-            if (!IsPasswordCorrect(loginDetails.Password))
-                throw new UserException("Invalid input of password.");
-
             var newUser = new User(loginDetails.Login, loginDetails.Password, role);
             newUser.RoleID = roleID;
             return _mapper.Map<UserBL>(_userRepository.Register(newUser));

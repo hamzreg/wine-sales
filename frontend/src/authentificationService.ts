@@ -1,17 +1,20 @@
+import { User } from "./Interfaces/UserInterface";
 import UserInterface from "./Interfaces/UserInterface";
+import { Customer } from "./Interfaces/CustomerInterface";
 import CustomerInterface from "./Interfaces/CustomerInterface";
 
-interface User {
+export interface Login {
     id: number,
     login: string,
-    Role: string,
+    role: string,
+    roleId: number
 }
 
-interface Customer {
-    name: string,
-    surname: string,
-    phone: string,
-}
+// interface Customer {
+//     name: string,
+//     surname: string,
+//     phone: string,
+// }
 
 export default {
     async login(login: string, password: string) {
@@ -38,8 +41,8 @@ export default {
         }
         
         const resCustomer = await CustomerInterface.post(customer);
-        console.log("AddCustomerAuth:", resCustomer.status);
-        
+        console.log("AddCustomerAuth:", resCustomer.data["id"]);
+
         const resUser = await UserInterface.register(login, password, role, resCustomer.data["id"]);
         console.log("RegisterAuth:", resUser.status);
 
@@ -55,7 +58,8 @@ export default {
         const user: User = {
             id: 0,
             login: "guest",
-            Role: "user"
+            role: "user",
+            roleId: 0
         }
     
         localStorage.setItem('currentUser', JSON.stringify(user));
