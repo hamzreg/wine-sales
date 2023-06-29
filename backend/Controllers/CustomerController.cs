@@ -44,13 +44,11 @@ namespace WineSales.Controllers
             return Ok(_mapper.Map<List<CustomerDTO>>(_customerInteractor.GetAll()));
         }
 
-        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Create(CustomerDTO customer)
+        public IActionResult Create(CustomerBaseDTO customer)
         {
             try
             {
@@ -64,12 +62,10 @@ namespace WineSales.Controllers
                 return Conflict(ex.Message);
             }
         }
-
-        [Authorize]
+      
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Patch(int id, CustomerBaseDTO customer)
@@ -86,11 +82,9 @@ namespace WineSales.Controllers
                 return Conflict(ex.Message);
             }
         }
-
-        [Authorize]
+    
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {

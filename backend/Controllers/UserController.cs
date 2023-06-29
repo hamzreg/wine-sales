@@ -40,29 +40,25 @@ namespace WineSales.Controllers
             _userConverter = userConverter;
         }
 
-        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         public IActionResult GetAll()
         {
             return Ok(_mapper.Map<List<UserDTO>>(_userInteractor.GetAll()));
         }
 
-        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Create(UserPasswordDTO user)
+        public IActionResult Create(LoginDTO user)
         {
             try
             {
                 var createdUser = _userInteractor
                     .CreateUser(_mapper.Map<UserBL>(user));
 
-                return Ok(_mapper.Map<UserPasswordDTO>(createdUser));
+                return Ok(_mapper.Map<LoginDTO>(createdUser));
             }
             catch (Exception ex)
             {
@@ -70,11 +66,9 @@ namespace WineSales.Controllers
             }
         }
 
-        [Authorize]
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Patch(int id, UserBaseDTO user)
@@ -91,10 +85,8 @@ namespace WineSales.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
@@ -102,10 +94,8 @@ namespace WineSales.Controllers
             return deletedUser != null ? Ok(_mapper.Map<UserDTO>(deletedUser)) : NotFound();
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
@@ -114,53 +104,12 @@ namespace WineSales.Controllers
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        public IActionResult Login(LoginDetailsDTO loginDetailsDTO)
+        public IActionResult Login(LoginDetailsDTO login)
         {
-            var user = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(loginDetailsDTO));
-
-            if (user == null)
-            {
-                return NotFound("Такого пользователя не существует");
-            }
-
-            var identity = GetIdentity(user);
-            var now = DateTime.UtcNow;
-
-            // создаем JWT-токен
-            var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
-                    notBefore: now,
-                    claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var tokenDto = new TokenDTO
-            {
-                AccessToken = encodedJwt,
-                Username = identity.Name
-            };
-
-            return Json(tokenDto);
-        }
-
-        private ClaimsIdentity GetIdentity(UserBL user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
-            };
-
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-
-            return claimsIdentity;
+            var result = _userInteractor.AuthorizeUser(_mapper.Map<LoginDetailsBL>(login));
+            return result != null ? Ok(_mapper.Map<UserDTO>(result)) : NotFound();
         }
 
         [HttpPost("register")]
@@ -169,11 +118,12 @@ namespace WineSales.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Register(LoginDTO login)
         {
-            var user = new UserPasswordDTO
+            var user = new LoginDTO
             {
                 Login = login.Login,
                 Password = login.Password,
-                Role = "user"
+                Role = login.Role,
+                RoleId = login.RoleId
             };
 
             return Create(user);

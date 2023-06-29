@@ -30,42 +30,36 @@ namespace WineSales.Controllers
             _saleInteractor = saleInteractor;
             _mapper = mapper;
         }
-
-        [Authorize]
+  
         [HttpGet]
         [ProducesResponseType(typeof(List<SaleDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         public IActionResult GetAll()
         {
             return Ok(_mapper.Map<List<SaleDTO>>(_saleInteractor.GetAll()));
         }
-
-        [Authorize]
+ 
         [HttpPost]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)] 
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Create(SaleDTO sale)
+        public IActionResult Create(SaleBaseDTO sale)
         {
             try
             {
                 var createdSale = _saleInteractor
                     .CreateSale(_mapper.Map<SaleBL>(sale));
 
-                return Ok(_mapper.Map<SupplierDTO>(createdSale));
+                return Ok(_mapper.Map<SaleDTO>(createdSale));
             }
             catch (Exception ex)
             {
                 return Conflict(ex.Message);
             }
         }
-
-        [Authorize]
+ 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Put(int id, SaleBaseDTO sale)
@@ -82,11 +76,9 @@ namespace WineSales.Controllers
                 return Conflict(ex.Message);
             }
         }
-
-        [Authorize]
+ 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
@@ -94,10 +86,8 @@ namespace WineSales.Controllers
             return deletedSale != null ? Ok(_mapper.Map<SaleDTO>(deletedSale)) : NotFound();
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(SaleDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetByID(int id)
         {
