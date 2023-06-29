@@ -1,40 +1,42 @@
 # WineSales
 
-Информационная система для автоматизации продажи вина --- программное обеспечение, реализующее функциональность для всех участников виноторговли: покупателей и поставщиков.
+<img src="https://github.com/hamzreg/wine-sales/raw/master/docs/wine-sales.jpg" width="600">
 
-## Функциональные требования
+### О проекте
 
-Предъявляемые требования соответствуют возможным действиям пользователей:
-
+Информационная система для автоматизации продажи вина предоставляет функциональности для всех участников виноторговли: покупателей и поставщиков. Возможные действия пользователей:
 * регистрация и аутентификация пользователей;
 * получение данных о винах;
 * совершение покупок вин покупателем;
 * добавление, удаление, редактирование вин поставщиком.
 
-## Use-Case диаграмма
+### Технологический стек
 
-![Use-Case диаграмма для Неавторизованного пользователя](https://github.com/hamzreg/wine-sales/raw/main/schemes/guest.png)
+Backend:
+* C#, Python;
+* Entity Framework Core;
+* PostrgeSQL.
 
-![Use-Case диаграмма для Покупателя](https://github.com/hamzreg/wine-sales/raw/main/schemes/customer.png)
+Frontend:
+* TypeScript, HTML, CSS;
+* Vue.
 
-![Use-Case диаграмма для Поставщика](https://github.com/hamzreg/wine-sales/raw/main/schemes/supplier.png)
+Документация API:
+* Swagger.
 
-![Use-Case диаграмма для Администратора](https://github.com/hamzreg/wine-sales/raw/main/schemes/administrator.png)
+### Дизайн
 
-## ER-диаграмма
+* [доска настроения](https://www.figma.com/file/8EqNxMnvWhspPEhcoUxmJc/Mood-board?node-id=0%3A1&t=sEJINZSS4Z0tkRDx-1 "доска настроения");
+* [дизайн-язык](https://www.figma.com/file/5Nk0Qvzs0yEky68rDhkwsI/Design-language?node-id=0%3A1&t=10U2GYOWFzYmKxuu-1 "дизайн-язык");
+* [макет приложения](https://www.figma.com/file/l16LXfdSNHSLqTipHjDn4w/Lab_02?node-id=0%3A1&t=6CeEZpa3SBdGZ9hb-1 "макет приложения").
 
-![ER-диаграмма сущностей](https://github.com/hamzreg/wine-sales/raw/main/schemes/ER-diagram.png)
+### Авторы
 
-## Лабораторная работа №2
+* [Хамзина Регина](https://github.com/hamzreg "Хамзина Регина") — Fullstack-разработчик;
+* [Кишов Гаджи](https://github.com/E1ohere "Кишов Гаджи") — Fullstack-разработчик;
+* [Ковалец Кирилл](https://github.com/kovkir "Ковалец Кирилл") — Frontend-разработчик.
 
-### Доска настроения
-
-[Доска настроения](https://www.figma.com/file/8EqNxMnvWhspPEhcoUxmJc/Mood-board?node-id=0%3A1&t=sEJINZSS4Z0tkRDx-1)
-
-### Дизайн-язык
-
-[Дизайн-язык](https://www.figma.com/file/5Nk0Qvzs0yEky68rDhkwsI/Design-language?node-id=0%3A1&t=10U2GYOWFzYmKxuu-1)
-
-### Макет приложения 
-
-[Макет](https://www.figma.com/file/l16LXfdSNHSLqTipHjDn4w/Lab_02?node-id=0%3A1&t=6CeEZpa3SBdGZ9hb-1)
+```
+Разработано в рамках лабораторных работ по курсу "Основы разработки Web-приложений"
+7 семестр ИУ7, МГТУ им. Н. Э. Баумана, 2022
+```
