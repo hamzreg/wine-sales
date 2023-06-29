@@ -1,0 +1,1432 @@
+---
+openapi: 3.0.1
+info:
+  title: WineSales
+  description: The API for the WineSales project
+  version: v1
+paths:
+  "/api/v1/customers":
+    get:
+      tags:
+      - Customer
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CustomerDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CustomerDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CustomerDTO"
+    post:
+      tags:
+      - Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CustomerDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/CustomerDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/CustomerDTO"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict
+  "/api/v1/customers/{id}":
+    patch:
+      tags:
+      - Customer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CustomerBaseDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/CustomerBaseDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/CustomerBaseDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Customer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Customer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerDTO"
+        '404':
+          description: Not Found
+  "/api/v1/sales":
+    get:
+      tags:
+      - Sale
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SaleDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SaleDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SaleDTO"
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+      - Sale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SaleDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SaleDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SaleDTO"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict
+  "/api/v1/sales/{id}":
+    put:
+      tags:
+      - Sale
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SaleBaseDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SaleBaseDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SaleBaseDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Sale
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Sale
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SaleDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  "/api/v1/suppliers":
+    get:
+      tags:
+      - Supplier
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierDTO"
+    post:
+      tags:
+      - Supplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SupplierDTO"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict
+  "/api/v1/suppliers/{id}":
+    patch:
+      tags:
+      - Supplier
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierBaseDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierBaseDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SupplierBaseDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Supplier
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Supplier
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+        '404':
+          description: Not Found
+  "/api/v1/suppliers/{supplierId}/sales":
+    get:
+      tags:
+      - Supplier
+      parameters:
+      - name: supplierId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SaleDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SaleDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SaleDTO"
+        '401':
+          description: Unauthorized
+  "/api/v1/suppliers/{supplierId}/supplierWines":
+    get:
+      tags:
+      - Supplier
+      parameters:
+      - name: supplierId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierWineDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierWineDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierWineDTO"
+        '401':
+          description: Unauthorized
+  "/api/v1/supplierWine":
+    get:
+      tags:
+      - SupplierWine
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierWineDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierWineDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/SupplierWineDTO"
+    post:
+      tags:
+      - SupplierWine
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierWineDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierWineDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SupplierWineDTO"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict
+  "/api/v1/supplierWine/{id}":
+    patch:
+      tags:
+      - SupplierWine
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierWineBaseDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SupplierWineBaseDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SupplierWineBaseDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - SupplierWine
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - SupplierWine
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierWineDTO"
+        '404':
+          description: Not Found
+  "/api/v1/supplierWine/{supplierWineId}/supplier":
+    get:
+      tags:
+      - SupplierWine
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: supplierWineId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SupplierDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  "/api/v1/users":
+    get:
+      tags:
+      - User
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserDTO"
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDTO"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserIdPasswordDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserIdPasswordDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserIdPasswordDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict
+  "/api/v1/users/{id}":
+    patch:
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserBaseDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/UserBaseDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/UserBaseDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  "/api/v1/users/login":
+    post:
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDetailsDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDetailsDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/LoginDetailsDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/TokenDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TokenDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/TokenDTO"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+  "/api/v1/users/register":
+    post:
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/LoginDTO"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserIdPasswordDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserIdPasswordDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserIdPasswordDTO"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/api/v1/wines":
+    get:
+      tags:
+      - Wine
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/WineDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/WineDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/WineDTO"
+    post:
+      tags:
+      - Wine
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WineDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/WineDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/WineDTO"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict
+  "/api/v1/wines/{id}":
+    patch:
+      tags:
+      - Wine
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WineBaseDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/WineBaseDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/WineBaseDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Wine
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Wine
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/WineDTO"
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+components:
+  schemas:
+    CustomerBaseDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CustomerDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    DateOnly:
+      type: object
+      properties:
+        year:
+          type: integer
+          format: int32
+        month:
+          type: integer
+          format: int32
+        day:
+          type: integer
+          format: int32
+        dayOfWeek:
+          "$ref": "#/components/schemas/DayOfWeek"
+        dayOfYear:
+          type: integer
+          format: int32
+          readOnly: true
+        dayNumber:
+          type: integer
+          format: int32
+          readOnly: true
+      additionalProperties: false
+    DayOfWeek:
+      enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      type: string
+    LoginDetailsDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    LoginDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    SaleBaseDTO:
+      type: object
+      properties:
+        customerID:
+          type: integer
+          format: int32
+          nullable: true
+        supplierWineID:
+          type: integer
+          format: int32
+          nullable: true
+        sellingPrice:
+          type: number
+          format: double
+          nullable: true
+        purchasePrice:
+          type: number
+          format: double
+          nullable: true
+        profit:
+          type: number
+          format: double
+          nullable: true
+        date:
+          "$ref": "#/components/schemas/DateOnly"
+        wineNumber:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    SaleDTO:
+      type: object
+      properties:
+        customerID:
+          type: integer
+          format: int32
+          nullable: true
+        supplierWineID:
+          type: integer
+          format: int32
+          nullable: true
+        sellingPrice:
+          type: number
+          format: double
+          nullable: true
+        purchasePrice:
+          type: number
+          format: double
+          nullable: true
+        profit:
+          type: number
+          format: double
+          nullable: true
+        date:
+          "$ref": "#/components/schemas/DateOnly"
+        wineNumber:
+          type: integer
+          format: int32
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    SupplierBaseDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        license:
+          type: boolean
+          nullable: true
+      additionalProperties: false
+    SupplierDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        license:
+          type: boolean
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    SupplierWineBaseDTO:
+      type: object
+      properties:
+        supplierID:
+          type: integer
+          format: int32
+          nullable: true
+        wineID:
+          type: integer
+          format: int32
+          nullable: true
+        price:
+          type: number
+          format: double
+          nullable: true
+        percent:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    SupplierWineDTO:
+      type: object
+      properties:
+        supplierID:
+          type: integer
+          format: int32
+          nullable: true
+        wineID:
+          type: integer
+          format: int32
+          nullable: true
+        price:
+          type: number
+          format: double
+          nullable: true
+        percent:
+          type: integer
+          format: int32
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    TokenDTO:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserBaseDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        role:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        role:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+        roleId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    UserIdPasswordDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        role:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+        roleId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    UserPasswordDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        role:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    WineBaseDTO:
+      type: object
+      properties:
+        kind:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+        sugar:
+          type: string
+          nullable: true
+        volume:
+          type: number
+          format: double
+          nullable: true
+        alcohol:
+          type: number
+          format: double
+          nullable: true
+        number:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    WineDTO:
+      type: object
+      properties:
+        kind:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+        sugar:
+          type: string
+          nullable: true
+        volume:
+          type: number
+          format: double
+          nullable: true
+        alcohol:
+          type: number
+          format: double
+          nullable: true
+        number:
+          type: integer
+          format: int32
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: Please insert JWT with Bearer into field
+      name: Authorization
+      in: header
+security:
+- Bearer: []
+
