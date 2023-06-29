@@ -1,6 +1,6 @@
 # WineSales
 
-<img src="https://github.com/hamzreg/wine-sales/raw/main/docs/WineSales.jpg" width="900">
+<img src="https://github.com/hamzreg/wine-sales/raw/main/docs/WineSales.jpg" width="800">
 
 ### О проекте
 
